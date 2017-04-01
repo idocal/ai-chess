@@ -40,7 +40,7 @@ int main() {
 		return 0;
 	}
 	output_digits = convert_decimal_to_base(out_base, decimal_num, out_num);
-	printf("The result is: ");
+	printf("The result is : ");
 	while (output_digits >= 0) {
 		printf("%c", out_num[output_digits]);
 		output_digits--;
