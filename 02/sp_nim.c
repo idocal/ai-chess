@@ -12,7 +12,7 @@ int game_over(int *heaps, int n, int player){
             return 0;
         }
     }
-    if (player == 0){
+    if (player == 1){
         printf("Computer wins!\n");}
     else{
         printf("You win!\n");}
@@ -39,7 +39,7 @@ void compute_heap_NimSum_winner(int *NS_heaps, int *winner_heaps, const int *hea
     }
 }
 
-void copmuter_decision(int *computer_turn, int *NS_heaps, int *winner_heaps, const int *heaps, int n) {
+void computer_decision(int *computer_turn, int *NS_heaps, int *winner_heaps, const int *heaps, int n) {
     int NimSum = compute_NimSum(heaps, n);
     compute_heap_NimSum_winner(NS_heaps, winner_heaps, heaps, n, NimSum);
     if (NimSum != 0) {
@@ -59,4 +59,11 @@ void copmuter_decision(int *computer_turn, int *NS_heaps, int *winner_heaps, con
             }
         }
     }
+}
+
+void play_computer_turn(int *computer_turn, int * heaps) {
+    int heap_num = computer_turn[0];
+    int withdrawal = computer_turn[1];
+    heaps[heap_num] -= withdrawal;
+    printf("Computer takes %d objects from heap %d.\n", withdrawal, heap_num+1);
 }

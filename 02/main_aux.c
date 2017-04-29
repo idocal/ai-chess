@@ -92,7 +92,6 @@ int check_turn_validity(int *heaps, int *turn, int n) {
 }
 
 int play_turn(int *heaps, int *turn, int n) {
-    printf("Your turn: please enter the heap index and the number of removed objects.\n");
     parse_user_turn(turn);
     int heap_num = turn[0]-1;
     int heap_withdrawal = turn[1];
@@ -103,6 +102,7 @@ int play_turn(int *heaps, int *turn, int n) {
 
     else {
         heaps[heap_num] -= heap_withdrawal;
+        printf("You take %d objects from heap %d.\n", heap_withdrawal, heap_num+1);
         return 1;
     }
 }
