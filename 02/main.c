@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "main_aux.h"
 #include "sp_nim.h"
+#include "SPBufferset.h"
 
 
 int main() {
@@ -9,11 +10,11 @@ int main() {
     int player = 0;
     int turn = 1;
     int turn_decision[2];
-    printf("Enter the number of heaps\n");
+    printf("Enter the number of heaps:\n");
     scanf("%d", &N);
     if (check_num_heaps_validity(N) == 0){return 0;}
     #define LENGTH N
-    printf("Enter the heaps sizes\n");
+    printf("Enter the heap sizes:\n");
     int heaps[LENGTH];
     int NS_heaps[LENGTH];
     int winner_heaps[LENGTH];

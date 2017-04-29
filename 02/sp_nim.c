@@ -27,7 +27,7 @@ int compute_NimSum(int *heaps, int n){
     return NimSum;
 }
 
-void compute_heap_NimSum_winner(int *NS_heaps, int *winner_heaps, const int *heaps, int n, int NimSum) {
+void compute_heap_NimSum_winner(int *NS_heaps, int *winner_heaps, int *heaps, int n, int NimSum) {
     for (int i = 0; i < n; i++){
         NS_heaps[i] = heaps[i] ^ NimSum;
         if (NS_heaps[i] < heaps[i]){
@@ -39,7 +39,7 @@ void compute_heap_NimSum_winner(int *NS_heaps, int *winner_heaps, const int *hea
     }
 }
 
-void computer_decision(int *computer_turn, int *NS_heaps, int *winner_heaps, const int *heaps, int n) {
+void computer_decision(int *computer_turn, int *NS_heaps, int *winner_heaps,  int *heaps, int n) {
     int NimSum = compute_NimSum(heaps, n);
     compute_heap_NimSum_winner(NS_heaps, winner_heaps, heaps, n, NimSum);
     if (NimSum != 0) {
