@@ -1,7 +1,7 @@
-Full Name 1: 
-Id No 1: 
-User Name 1: 
-Full Name 2: 
-Id No 2: 
-User Name 2: 
+Full Name 1: Ofri Kleinfeld
+Id No 1: 302893680 
+User Name 1: ofrik
+Full Name 2: Ido Calman
+Id No 2: 308353499
+User Name 2: idocalman
 Assignment No: 2
