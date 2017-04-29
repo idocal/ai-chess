@@ -18,3 +18,45 @@ int game_over(int *heaps, int n, int player){
         printf("You win!\n");}
     return 1;
 }
+
+int compute_NimSum(int *heaps, int n){
+    int NimSum = heaps[0];
+    for (int i = 1; i < n; i++){
+        NimSum ^= heaps[i];
+    }
+    return NimSum;
+}
+
+void compute_heap_NimSum_winner(int *NS_heaps, int *winner_heaps, const int *heaps, int n, int NimSum) {
+    for (int i = 0; i < n; i++){
+        NS_heaps[i] = heaps[i] ^ NimSum;
+        if (NS_heaps[i] < heaps[i]){
+            winner_heaps[i] = 1;
+        }
+        else{
+            winner_heaps[i] = 0;
+        }
+    }
+}
+
+void copmuter_decision(int *computer_turn, int *NS_heaps, int *winner_heaps, const int *heaps, int n) {
+    int NimSum = compute_NimSum(heaps, n);
+    compute_heap_NimSum_winner(NS_heaps, winner_heaps, heaps, n, NimSum);
+    if (NimSum != 0) {
+        for (int i = 0; i < n; i++) {
+            if (winner_heaps[i] == 1) {
+                computer_turn[0] = i;
+                computer_turn[1] = heaps[i] - NS_heaps[i];
+                break;
+            }
+        }
+    } else{
+        for (int i = 0; i < n; i++){
+            if (heaps[i] > 0){
+                computer_turn[0] = i;
+                computer_turn[1] = 1;
+                break;
+            }
+        }
+    }
+}

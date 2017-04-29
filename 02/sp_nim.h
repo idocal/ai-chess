@@ -7,4 +7,5 @@
 
 int game_over(int *, int n, int player);
 
+
 #endif //NIMGAME_SP_NIM_H

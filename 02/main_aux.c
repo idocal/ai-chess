@@ -45,9 +45,7 @@ void print_game_board(int * heaps, int N) {
                 printf("\t");
             }
         }
-        if (i > 0){
-            printf("\n");
-        }
+        printf("\n");
     }
 }
 
@@ -65,4 +63,46 @@ int check_heap_size_validity(int *heaps, int n){
         }
     }
     return 1;
+}
+
+void print_turn_status(int turn, int *heaps, int n) {
+    printf("In turn %d heap sizes are:", turn);
+    for (int i = 0; i < n; i++) {
+        printf(" h%d=%d", i+1, heaps[i]);
+    }
+    printf(".\n");
+}
+
+void parse_user_turn(int *turn) {
+    for (int i = 0; i < 2; i++) {
+        scanf("%d", &turn[i]);
+    }
+}
+
+int check_turn_validity(int *heaps, int *turn, int n) {
+    int heap_num = turn[0]-1;
+    int heap_withdrawal = turn[1];
+    if (heaps[heap_num] - heap_withdrawal >= 0
+        && heap_withdrawal > 0
+        && heap_num < n && heap_num >= 0){
+        return 1;
+    }
+    printf("Error: Invalid input.\nPlease enter again the heap index and the number of removed objects.\n");
+    return 0;
+}
+
+int play_turn(int *heaps, int *turn, int n) {
+    printf("Your turn: please enter the heap index and the number of removed objects.\n");
+    parse_user_turn(turn);
+    int heap_num = turn[0]-1;
+    int heap_withdrawal = turn[1];
+
+    if (check_turn_validity(heaps, turn, n) == 0)  {
+        return 0;
+    }
+
+    else {
+        heaps[heap_num] -= heap_withdrawal;
+        return 1;
+    }
 }
