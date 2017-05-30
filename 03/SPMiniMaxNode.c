@@ -31,7 +31,7 @@ node *createNode(SPFiarGame *game, int depth, int moveColumn) {
 
     nodePointer->depth = depth;
     nodePointer->score = 0;
-    if (depth == USER_DIFFICULTY) {
+    if (depth == USER_DIFFICULTY || spFiarCheckWinner(nodePointer->game) != NULL) {
         nodePointer->isLeaf = true;
     } else {
         nodePointer->isLeaf = false;

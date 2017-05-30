@@ -22,8 +22,9 @@ int main() {
     spFiarGameSetMove(game, 6);
     spFiarGameSetMove(game, 4);
     spFiarGameSetMove(game, 5);
+    spFiarGamePrintBoard(game);
 
-    node *root = generateTree(game);
+    spMinimaxSuggestMove(game, 3);
 
 //    spFiarGamePrintBoard(game);
 //    int *scoreHist = (int *)calloc(9, sizeof(int));

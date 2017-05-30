@@ -25,4 +25,6 @@ node* generateTreeRoot(SPFiarGame* game);
 
 node* generateTree(SPFiarGame* game);
 
+void computeScore(node *nodePointer, OPTIMUM optimum);
+
 #endif
