@@ -1,0 +1,14 @@
+﻿
+Fixed the scoring funcion calculation. no wonder the computer was so easy to beat - he always
+tried to maximize the player's score and not his own!
+Now the minMax function works much better and the computer is not so easy to beat
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   03/SPMiniMax.c
+#
+

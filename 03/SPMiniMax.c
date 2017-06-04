@@ -127,7 +127,12 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth) {
     if (root == NULL) {
         return NULL;
     }
-    computeScore(root, MAX_NODE);
+    if (currentGame->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL){
+        computeScore(root, MAX_NODE);
+    }
+    else{
+        computeScore(root, MIN_NODE);
+    }
     int rootScore = root->score;
     int suggestMove = -1;
     for (int i=0; i<7; i++) {
