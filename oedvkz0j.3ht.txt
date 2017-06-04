@@ -1,0 +1,19 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   03/CMakeLists.txt
+#	modified:   03/SPFAIRParser.c
+#	modified:   03/SPFAIRParser.h
+#	new file:   03/SPMainAux.c
+#	modified:   03/SPMainAux.h
+#	modified:   03/SPMiniMax.c
+#	modified:   03/SPMiniMax.h
+#	modified:   03/SPMiniMaxNode.c
+#	modified:   03/SPMiniMaxNode.h
+#	modified:   03/main.c
+#
+
