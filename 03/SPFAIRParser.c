@@ -19,7 +19,7 @@ bool spParserIsInt(const char* str){
     return true;
 }
 
-SPCommand spParserPraseLine(char* str){
+SPCommand spParserPraseLine(const char* str){
     char string[1024];
     strcpy(string, str);
     SPCommand parse_command;
@@ -44,7 +44,9 @@ SPCommand spParserPraseLine(char* str){
 
 SP_COMMAND spParseCommandToEnum(char *command){
     SP_COMMAND enum_object_command;
-    if (strcmp(command, "undo_move") == 0){
+    if (command == NULL){
+        enum_object_command = SP_INVALID_LINE;
+    } else if (strcmp(command, "undo_move") == 0){
         enum_object_command = SP_UNDO_MOVE;
     } else if (strcmp(command, "add_disc") == 0){
         enum_object_command = SP_ADD_DISC;

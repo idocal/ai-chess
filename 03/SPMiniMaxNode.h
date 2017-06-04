@@ -2,7 +2,6 @@
 #define SPMINIMAXNODE_H_
 
 #include "SPFIARGame.h"
-#define USER_DIFFICULTY 1
 
 typedef struct node
 {
@@ -18,7 +17,8 @@ typedef enum optimum_t {
     MAX_NODE
 } OPTIMUM;
 
-node *createNode(SPFiarGame *game, int depth, int moveColumn);
+node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth);
+
 node *createRoot(SPFiarGame *game);
 
 void nodeDestroy(node *nodePointer);

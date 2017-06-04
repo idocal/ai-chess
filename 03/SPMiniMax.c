@@ -17,7 +17,7 @@ node* generateTreeRoot(SPFiarGame* game) {
     return root;
 }
 
-void generateChildrenNodes(node *root, bool *memoryFault) {
+void generateChildrenNodes(node *root, bool *memoryFault, int maxDepth) {
     if (root == NULL){
         return;
     }
@@ -27,7 +27,7 @@ void generateChildrenNodes(node *root, bool *memoryFault) {
 
     for (int i=0; i<7; i++) {
         if (spFiarGameIsValidMove(root->game, i)) {
-            root->children[i] = createNode(root->game, root->depth+1, i);
+            root->children[i] = createNode(root->game, root->depth+1, i, maxDepth);
             if (root->children[i] == NULL){
                 *memoryFault = true;
             }
@@ -36,19 +36,19 @@ void generateChildrenNodes(node *root, bool *memoryFault) {
 
     for (int i=0; i<7; i++) {
         if (root->children[i] != NULL) {
-            generateChildrenNodes(root->children[i], memoryFault);
+            generateChildrenNodes(root->children[i], memoryFault, maxDepth);
         }
     }
 }
 
-node* generateTree(SPFiarGame* game) {
+node* generateTree(SPFiarGame* game, int maxDepth) {
     node* root = generateTreeRoot(game);
     if (root == NULL) {
         return NULL;
     }
 
     bool memoryFault = false;
-    generateChildrenNodes(root, &memoryFault);
+    generateChildrenNodes(root, &memoryFault, maxDepth);
 
     if (memoryFault) {
         return NULL;
@@ -105,20 +105,42 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
         }
         nodePointer->score = minScore;
     }
+}
 
-
+void destroyTreeNode(node *treeNode){
+    if (treeNode->isLeaf){
+        nodeDestroy(treeNode);
+    }
+    else{
+        for (int i=0; i < 7; i++){
+            node *childNode = treeNode->children[i];
+            if (childNode != NULL){
+                destroyTreeNode(childNode);
+            }
+        }
+        nodeDestroy(treeNode);
+    }
 }
 
 int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth) {
-    node *root = generateTree(currentGame);
+    node *root = generateTree(currentGame, maxDepth);
     if (root == NULL) {
         return NULL;
     }
     computeScore(root, MAX_NODE);
     int rootScore = root->score;
+    int suggestMove = -1;
     for (int i=0; i<7; i++) {
-        if (root->children[i]->score == rootScore) {
-            return i;
+        if (root->children[i] == NULL){
+            continue;
+        }
+        else {
+            if (root->children[i]->score == rootScore) {
+                suggestMove = i;
+                break;
+            }
         }
     }
+    destroyTreeNode(root);
+    return suggestMove;
 }

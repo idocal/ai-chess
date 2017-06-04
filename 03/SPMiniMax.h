@@ -23,8 +23,10 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame,
 
 node* generateTreeRoot(SPFiarGame* game);
 
-node* generateTree(SPFiarGame* game);
+node* generateTree(SPFiarGame* game, int maxDepth);
 
 void computeScore(node *nodePointer, OPTIMUM optimum);
+
+void destroyTreeNode(node *treeNode);
 
 #endif

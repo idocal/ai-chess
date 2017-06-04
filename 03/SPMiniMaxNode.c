@@ -4,7 +4,7 @@
 
 #include "SPMiniMaxNode.h"
 
-node *createNode(SPFiarGame *game, int depth, int moveColumn) {
+node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth) {
     node *nodePointer = (node *) malloc(sizeof(node));
     if (nodePointer == NULL) {
         return NULL;
@@ -31,7 +31,7 @@ node *createNode(SPFiarGame *game, int depth, int moveColumn) {
 
     nodePointer->depth = depth;
     nodePointer->score = 0;
-    if (depth == USER_DIFFICULTY || spFiarCheckWinner(nodePointer->game) != NULL) {
+    if (depth == maxDepth || spFiarCheckWinner(nodePointer->game) != NULL) {
         nodePointer->isLeaf = true;
     } else {
         nodePointer->isLeaf = false;

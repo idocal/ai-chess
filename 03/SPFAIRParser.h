@@ -47,7 +47,7 @@ bool spParserIsInt(const char* str);
  *              is valid
  *   arg      - the integer argument in case validArg is set to true
  */
-SPCommand spParserPraseLine(char* str);
+SPCommand spParserPraseLine(const char* str);
 
 /** ----------- My function --------
  * Casts a command string into an SP_COMMAND type variable.
