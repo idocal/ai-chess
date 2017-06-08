@@ -48,6 +48,7 @@ int main() {
             } else if (cmd.cmd == SP_RESTART){
                 spFiarGameDestroy(game);
                 printf(RESTARTED);
+                shouldPrintBoard = 1;
                 break;
             } else if (cmd.cmd == SP_INVALID_LINE){
                 printf(ERROR_INVALID_COMMAND);
@@ -99,6 +100,7 @@ int main() {
                 } else if (endGameCommand.cmd == SP_RESTART){
                     printf(RESTARTED);
                     spFiarGameDestroy(game);
+                    shouldPrintBoard = 1;
                     break;
                 } else {
                     printf(ERROR_GAME_OVER);

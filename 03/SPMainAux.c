@@ -8,7 +8,7 @@
 int checkInitializationCommand(){
     int gameLevel;
     char *userInput = (char *) calloc(1024, sizeof(char));
-    gets(userInput);
+    scanf("%[^\n]%*c", userInput);
     if (strcmp(userInput, "quit") == 0){
         free(userInput);
         return -2;
@@ -41,7 +41,7 @@ int checkIfAddDiskCommandIsValid(SPCommand cmd){
 
 SPCommand parseUserCommand(){
     char *userInput = (char *) calloc(1024, sizeof(char));
-    gets(userInput);
+    scanf("%[^\n]%*c", userInput);
     SPCommand parse_command = spParserPraseLine(userInput);
     free(userInput);
     return parse_command;

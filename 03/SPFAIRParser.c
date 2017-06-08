@@ -28,16 +28,24 @@ SPCommand spParserPraseLine(const char* str){
     command_string = strtok(string, del);
     SP_COMMAND command = spParseCommandToEnum(command_string);
     parse_command.cmd = command;
-    if (parse_command.cmd == SP_ADD_DISC){
-        char *user_arg_str = strtok(NULL, del);
-        bool user_arg_is_int = spParserIsInt(user_arg_str);
+
+    char *second_arg = strtok(NULL, del);
+    char *third_arg = strtok(NULL, del);
+
+    if (
+            third_arg != NULL ||
+            (parse_command.cmd != SP_ADD_DISC && second_arg != NULL)
+            ) {
+        parse_command.cmd = SP_INVALID_LINE;
+    }  else if (parse_command.cmd == SP_ADD_DISC){
+        bool user_arg_is_int = spParserIsInt(second_arg);
         if (user_arg_is_int == true){
             parse_command.validArg = true;
-            parse_command.arg = atoi(user_arg_str);
+            parse_command.arg = atoi(second_arg);
         }
-    }
-    else{
-        parse_command.validArg = false;
+        else{
+            parse_command.validArg = false;
+        }
     }
     return parse_command;
 }
