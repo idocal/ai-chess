@@ -76,14 +76,12 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
     if (optimum == MAX_NODE){
         OPTIMUM childOptimum = MIN_NODE;
         int maxScore = -10000;
-        int maxScoreIndex = -1;
         for (int i=0; i<7; i++){
             if (nodePointer->children[i] != NULL) {
                 computeScore(nodePointer->children[i], childOptimum);
                 int childScore = nodePointer->children[i]->score;
                 if (childScore > maxScore) {
                     maxScore = childScore;
-                    maxScoreIndex = i;
                 }
             }
         }
@@ -92,14 +90,12 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
     else{
         OPTIMUM childOptimum = MAX_NODE;
         int minScore = 10000;
-        int minScoreIndex = -1;
         for (int i=0; i<7; i++){
             if (nodePointer->children[i] != NULL) {
                 computeScore(nodePointer->children[i], childOptimum);
                 int childScore = nodePointer->children[i]->score;
                 if (childScore < minScore) {
                     minScore = childScore;
-                    minScoreIndex = i;
                 }
             }
         }
