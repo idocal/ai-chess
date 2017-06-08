@@ -63,7 +63,7 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
     }
 
     if (nodePointer->isLeaf) {
-        int *gameHistogram = calloc(9, sizeof(int));
+        int *gameHistogram = (int *) calloc(9, sizeof(int));
         if (gameHistogram == NULL){
             return;
         }

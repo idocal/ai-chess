@@ -54,7 +54,7 @@ SP_COMMAND spParseCommandToEnum(char *command){
         enum_object_command = SP_SUGGEST_MOVE;
     } else if (strcmp(command, "quit") == 0){
         enum_object_command = SP_QUIT;
-    } else if (strcmp(command, "restart") == 0){
+    } else if (strcmp(command, "restart_game") == 0){
         enum_object_command = SP_RESTART;
     } else{
         enum_object_command = SP_INVALID_LINE;

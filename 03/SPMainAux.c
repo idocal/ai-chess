@@ -7,7 +7,7 @@
 
 int checkInitializationCommand(){
     int gameLevel;
-    char *userInput = calloc(1024, sizeof(char));
+    char *userInput = (char *) calloc(1024, sizeof(char));
     gets(userInput);
     if (strcmp(userInput, "quit") == 0){
         free(userInput);
@@ -40,7 +40,7 @@ int checkIfAddDiskCommandIsValid(SPCommand cmd){
 }
 
 SPCommand parseUserCommand(){
-    char *userInput = calloc(1024, sizeof(char));
+    char *userInput = (char *) calloc(1024, sizeof(char));
     gets(userInput);
     SPCommand parse_command = spParserPraseLine(userInput);
     free(userInput);
@@ -50,11 +50,11 @@ SPCommand parseUserCommand(){
 void handleGameOverScenario(char winnerSymbol, SPFiarGame *game){
     spFiarGamePrintBoard(game);
     if (winnerSymbol == SP_FIAR_GAME_PLAYER_1_SYMBOL){
-        printf("Game over: you win\nPlease enter 'quit' to exit or 'restart' to start a new game!\n");
+        printf(GAME_OVER_WIN);
     } else if (winnerSymbol == SP_FIAR_GAME_PLAYER_2_SYMBOL){
-        printf("Game over: computer wins\nPlease enter 'quit' to exit or 'restart' to start a new game!\n");
+        printf(GAME_OVER_LOSE);
     } else{
-        printf("Game over: it's a tie\nPlease enter 'quit' to exit or 'restart' to start a new game!\n");
+        printf(GAME_OVER_TIE);
     }
 }
 
@@ -71,15 +71,16 @@ int getLastColumnPlayed(SPFiarGame *game){
     return lastColumnPlayed;
 }
 
-void performUndoMoveActions(SPFiarGame *game){
+void performUndoMoveActions(SPFiarGame *game, int *shouldPrintBoardPointer){
     int columnComp = getLastColumnPlayed(game);
     if (columnComp == -1){
-        printf("Error: cannot undo previous move!\n");
+        printf(ERROR_CANNOT_UNDO);
     } else{
         spFiarGameUndoPrevMove(game);
-        printf("Remove disc: remove computer's disc at column %d\n", columnComp+1);
+        printf(REMOVE_COMPUTER_DISC, columnComp+1);
         int columnUser = getLastColumnPlayed(game);
         spFiarGameUndoPrevMove(game);
-        printf("Remove disc: remove user's disc at column %d\n", columnUser+1);
+        printf(REMOVE_USER_DISC, columnUser+1);
+        *shouldPrintBoardPointer = 1;
     }
 }
