@@ -37,6 +37,7 @@ int checkIfAddDiskCommandIsValid(SPCommand cmd){
     if (cmd.arg >= 1 && cmd.arg <= 7){
         return 1;
     }
+    else return 0;
 }
 
 SPCommand parseUserCommand(){
@@ -63,7 +64,6 @@ int getLastColumnPlayed(SPFiarGame *game){
         return -1;
     }
     SPArrayList *gameStack = game->gameStack;
-    int *tops = game->tops;
     if (spArrayListIsEmpty(gameStack) == true){
         return -1;
     }

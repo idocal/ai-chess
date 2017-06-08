@@ -68,7 +68,7 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
             return;
         }
         gameHistogram += 4;
-        gameHistogram = computeScoreHistogram(nodePointer->game->gameBoard, gameHistogram);
+        gameHistogram = computeScoreHistogram(nodePointer->game, gameHistogram);
         nodePointer->score = calculateScoringFunction(gameHistogram);
         free(gameHistogram - 4);
         return;
@@ -125,7 +125,7 @@ void destroyTreeNode(node *treeNode){
 int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth) {
     node *root = generateTree(currentGame, maxDepth);
     if (root == NULL) {
-        return NULL;
+        return -99;
     }
     if (currentGame->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL){
         computeScore(root, MAX_NODE);

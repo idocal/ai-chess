@@ -2,7 +2,7 @@
 // Created by okleinfeld on 5/17/2017.
 //
 
-#include "SPFAIRParser.h"
+#include "SPFIARParser.h"
 
 bool spParserIsInt(const char* str){
     char first_c = *str;

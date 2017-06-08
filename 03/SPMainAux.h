@@ -1,7 +1,7 @@
 #ifndef SPMAINAUX_H_
 #define SPMAINAUX_H_
 
-#include "SPFAIRParser.h"
+#include "SPFIARParser.h"
 #include "SPFIARGame.h"
 #include <stdio.h>
 #include <stdlib.h>

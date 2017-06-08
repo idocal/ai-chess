@@ -154,7 +154,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
 
 char spFiarGameGetCurrentPlayer(SPFiarGame* src){
     if (src == NULL){
-        return NULL;
+        return -99;
     }
     else{
         return src->currentPlayer;
@@ -162,14 +162,13 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 }
 
 int *computeScoreHistogram(SPFiarGame *game, int *scoreHist){
-    int * gameBoard = game->gameBoard;
-    if (gameBoard == NULL || scoreHist == NULL){
+    if (game == NULL || scoreHist == NULL){
         return NULL;
     }
-    calculateRowSpans(gameBoard, scoreHist);
-    calculateColumnsSpans(gameBoard, scoreHist);
-    calculateCRightCrossSpans(gameBoard, scoreHist);
-    calculateCLeftCrossSpans(gameBoard, scoreHist);
+    calculateRowSpans(game->gameBoard, scoreHist);
+    calculateColumnsSpans(game->gameBoard, scoreHist);
+    calculateCRightCrossSpans(game->gameBoard, scoreHist);
+    calculateCLeftCrossSpans(game->gameBoard, scoreHist);
     return scoreHist;
 }
 
@@ -284,14 +283,14 @@ void calculateCLeftCrossSpans(char gameBoard[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N
 
 char spFiarCheckWinner(SPFiarGame* src){
     if (src == NULL){
-        return NULL;
+        return -99;
     }
     int *gameHistogram = (int *) calloc(9, sizeof(int));
     if (gameHistogram == NULL){
-        return NULL;
+        return -99;
     }
     gameHistogram += 4;
-    gameHistogram = computeScoreHistogram(src->gameBoard, gameHistogram);
+    gameHistogram = computeScoreHistogram(src, gameHistogram);
     if (*(gameHistogram - 4) >= 1){
         free(gameHistogram-4);
         return SP_FIAR_GAME_PLAYER_2_SYMBOL;
@@ -315,12 +314,12 @@ char spFiarCheckWinner(SPFiarGame* src){
         return SP_FIAR_GAME_TIE_SYMBOL;
     }
     free(gameHistogram-4);
-    return NULL;
+    return '\0';
 }
 
 int calculateScoringFunction(int *scoreHistogram){
     if (scoreHistogram == NULL){
-        return NULL;
+        return -99;
     }
     if (*(scoreHistogram -4) > 0){
         return INT_MIN;

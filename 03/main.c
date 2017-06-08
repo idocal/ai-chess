@@ -59,7 +59,7 @@ int main() {
                         shouldPrintBoard = 1;
                         spFiarGameSetMove(game, columnToPlay);
                         char winnerSymbolUserTurn = spFiarCheckWinner(game);
-                        if (winnerSymbolUserTurn != NULL){
+                        if (winnerSymbolUserTurn != -99 && winnerSymbolUserTurn != '\0'){
                             handleGameOverScenario(winnerSymbolUserTurn, game);
                             playCurrentGame = 0;
                             break;
@@ -69,7 +69,7 @@ int main() {
                         printf(COMPUTER_MOVE, computerPlayColumn+1);
                         spFiarGameSetMove(game, computerPlayColumn);
                         char winnerSymbolCompTurn = spFiarCheckWinner(game);
-                        if (winnerSymbolCompTurn != NULL){
+                        if (winnerSymbolCompTurn != -99 && winnerSymbolCompTurn != '\0'){
                             handleGameOverScenario(winnerSymbolCompTurn, game);
                             playCurrentGame = 0;
                             break;
