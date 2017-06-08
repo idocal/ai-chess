@@ -5,7 +5,7 @@
 
 #define ENTER_DIFFICULTY "Please enter the difficulty level between [1-7]:\n"
 #define EXITING "Exiting...\n"
-#define ERROR_INVALID_LEVEL "Error: invalid level (should be between 1 to 7\n"
+#define ERROR_INVALID_LEVEL "Error: invalid level (should be between 1 to 7)\n"
 #define MAKE_NEXT_MOVE "Please make the next move:\n"
 #define RESTARTED "Game restarted!\n"
 #define ERROR_INVALID_COMMAND "Error: invalid command\n"

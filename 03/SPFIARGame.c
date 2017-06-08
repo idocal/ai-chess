@@ -137,12 +137,10 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
         }
         printf(" |\n");
     }
-    printf("%c", '-');
-    for (int i = 0; i < 7; i++){
-        printf(" -");
+    for (int i = 0; i < 17; i++){
+        printf("%c", '-');
     }
-    printf(" -\n");
-    printf("%c", ' ');
+    printf("\n%c", ' ');
     int counter = 1;
     for (int i = 0; i < 7; i++){
         printf(" %d", counter);
