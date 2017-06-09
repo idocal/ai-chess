@@ -17,9 +17,13 @@
 
 
 int main() {
-    int play = 1;
-    int playCurrentGame = 0;
-    int shouldPrintBoard = 1;
+
+    // Constant configuration flags
+    int play = 1; // Program is live (set 0 to quit)
+    int playCurrentGame = 0; // Still on current game (set 0 to restart)
+    int shouldPrintBoard = 1; // Prompt the board for next step
+
+    // Game loop
     while (play) {
         printf(ENTER_DIFFICULTY);
         int level = checkInitializationCommand();
@@ -31,43 +35,70 @@ int main() {
             printf(ERROR_INVALID_LEVEL);
             continue;
         }
+
         playCurrentGame = 1;
-        SPFiarGame *game = spFiarGameCreate(20);
+        SPFiarGame *game = spFiarGameCreate(20); // Create new game
+
+        // Current game loop
         while (playCurrentGame){
+
+            // Check if board should be printed upon next move
             if (shouldPrintBoard) {
                 spFiarGamePrintBoard(game);
                 printf(MAKE_NEXT_MOVE);
                 shouldPrintBoard = 0;
             }
-            SPCommand cmd = parseUserCommand();
+
+            SPCommand cmd = parseUserCommand(); // Parse user command
+
+            // Command = "quit"
             if (cmd.cmd == SP_QUIT){
                 play = 0;
                 spFiarGameDestroy(game);
                 printf(EXITING);
                 break;
-            } else if (cmd.cmd == SP_RESTART){
+            }
+
+            // Command = "restart_game"
+            else if (cmd.cmd == SP_RESTART){
                 spFiarGameDestroy(game);
                 printf(RESTARTED);
                 shouldPrintBoard = 1;
                 break;
-            } else if (cmd.cmd == SP_INVALID_LINE){
+            }
+
+            // Command is invalid
+            else if (cmd.cmd == SP_INVALID_LINE){
                 printf(ERROR_INVALID_COMMAND);
-            } else if (cmd.cmd == SP_ADD_DISC){
-                if (checkIfAddDiskCommandIsValid(cmd)){
-                    int columnToPlay = cmd.arg - 1;
-                    if (spFiarGameIsValidMove(game, columnToPlay)){
+            }
+
+            // Command is add_disc x
+            else if (cmd.cmd == SP_ADD_DISC){
+
+                // Check if x is a valid integer
+                if (checkIfAddDiskCommandIsValid(cmd)){  // If x is of the right form
+                    int columnToPlay = cmd.arg - 1; // 0-based
+
+                    if (spFiarGameIsValidMove(game, columnToPlay)){ // If move is legal (i.e. column is not full and in range)
+
                         shouldPrintBoard = 1;
-                        spFiarGameSetMove(game, columnToPlay);
-                        char winnerSymbolUserTurn = spFiarCheckWinner(game);
-                        if (winnerSymbolUserTurn != -99 && winnerSymbolUserTurn != '\0'){
+                        spFiarGameSetMove(game, columnToPlay); // Set the move on board
+                        char winnerSymbolUserTurn = spFiarCheckWinner(game); // Update symbol
+
+                        // Check if game is over after user move
+                        if (winnerSymbolUserTurn != -99 && winnerSymbolUserTurn != '\0'){ // -99 is the error conventions
                             handleGameOverScenario(winnerSymbolUserTurn, game);
                             playCurrentGame = 0;
                             break;
                         }
+
+                        // Handle computer turn using MiniMax algorithm
                         int computerPlayColumn;
                         computerPlayColumn = spMinimaxSuggestMove(game, level);
                         printf(COMPUTER_MOVE, computerPlayColumn+1);
                         spFiarGameSetMove(game, computerPlayColumn);
+
+                        // Check if game is over after computer move
                         char winnerSymbolCompTurn = spFiarCheckWinner(game);
                         if (winnerSymbolCompTurn != -99 && winnerSymbolCompTurn != '\0'){
                             handleGameOverScenario(winnerSymbolCompTurn, game);
@@ -75,34 +106,54 @@ int main() {
                             break;
                         }
                     }
-                    else{
+
+                    // If move is illegal
+                    else {
                         printf(ERROR_COLUMN_FULL, columnToPlay+1);
                     }
                 }
-                else{
+
+                // If move is off-range
+                else {
                     printf(ERROR_COLUMN_RANGE);
                 }
+
+            // If command = "suggest_move"
             } else if(cmd.cmd == SP_SUGGEST_MOVE){
                 int suggestedColumnMove = spMinimaxSuggestMove(game, level);
                 printf(SUGGESTED_MOVE, suggestedColumnMove+1);
-            } else if (cmd.cmd == SP_UNDO_MOVE){
+            }
+
+            // If command = "undo_move"
+            else if (cmd.cmd == SP_UNDO_MOVE){
                 performUndoMoveActions(game, &shouldPrintBoard);
             }
         }
+
+        // If current game is restarted
         if (playCurrentGame == 0){
-            while (true) {
+            while (true) { // Only allow quit and restart_game
+
                 SPCommand endGameCommand = parseUserCommand();
+
+                // If command = "quit"
                 if (endGameCommand.cmd == SP_QUIT){
                     printf(EXITING);
                     spFiarGameDestroy(game);
                     play = 0;
                     break;
-                } else if (endGameCommand.cmd == SP_RESTART){
+                }
+
+                // If command = "restart_game"
+                else if (endGameCommand.cmd == SP_RESTART){
                     printf(RESTARTED);
                     spFiarGameDestroy(game);
                     shouldPrintBoard = 1;
                     break;
-                } else {
+                }
+
+                // Any other command is illegal
+                else {
                     printf(ERROR_GAME_OVER);
                 }
             }
@@ -111,3 +162,5 @@ int main() {
 
     return (0);
 }
+
+

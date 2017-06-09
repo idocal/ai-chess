@@ -16,14 +16,11 @@ node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth) {
         return NULL;
     }
 
-
     SP_FIAR_GAME_MESSAGE gameMove = spFiarGameSetMove(nodePointer->game, moveColumn);
     if (gameMove != SP_FIAR_GAME_SUCCESS) {
         nodeDestroy(nodePointer);
         return NULL;
     }
-
-
 
     for (int i=0; i<7; i++) {
         nodePointer->children[i] = NULL;
@@ -36,7 +33,6 @@ node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth) {
     } else {
         nodePointer->isLeaf = false;
     }
-
 
     return nodePointer;
 }

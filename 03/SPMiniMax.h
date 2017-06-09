@@ -20,12 +20,45 @@
 int spMinimaxSuggestMove(SPFiarGame* currentGame,
 		unsigned int maxDepth);
 
+
+/**
+ * Generates the root node for the MiniMax tree using createRoot in SPMiniMaxNode.c
+ *
+ * @param game - A pointer to the game struct.
+ * @return
+ * NULL if failed to create root node
+ * A pointer to the root if the node is created.
+ */
 node* generateTreeRoot(SPFiarGame* game);
 
+/**
+ * Given a root node, generate all other root children accordin to MiniMax algorithm.
+ * Generation of each child is performed using generateChildrenNodes.
+ * The depth of the tree, maxDepth, is passed as an argument and is chosen in game difficulty.
+ *
+ * @param game - A pointer to the game struct.
+ * @param maxDepth - An integer that detects the depth of the tree generated.
+ * @return
+ * NULL if and only if one or more of the children could not be generated
+ * A pointer to the root of a tree of depth maxDepth
+ */
 node* generateTree(SPFiarGame* game, int maxDepth);
 
+/**
+ * Compute the score of each node in a tree using computeScoreHistogram in SPFIARGame.c
+ * The score calculated is updated in node->score
+ *
+ * @param nodePointer
+ * @param optimum
+ */
 void computeScore(node *nodePointer, OPTIMUM optimum);
 
+/**
+ * Frees all memory resources associated with the sub-tree whose root is treeNode. If the
+ * source array is NULL, then the function does nothing.
+ *
+ * @param treeNode - A pointer to the root node of the tree
+ */
 void destroyTreeNode(node *treeNode);
 
 #endif

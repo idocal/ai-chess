@@ -20,7 +20,7 @@ bool spParserIsInt(const char* str){
 }
 
 SPCommand spParserPraseLine(const char* str){
-    char string[1024];
+    char string[SP_MAX_LINE_LENGTH];
     strcpy(string, str);
     SPCommand parse_command;
     const char *del = " \t\r\n";
