@@ -3,6 +3,7 @@
 //
 
 #include "SPMiniMax.h"
+#include <stdio.h>
 
 node* generateTreeRoot(SPFiarGame* game) {
     if (game == NULL) {
@@ -69,6 +70,7 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
     if (nodePointer->isLeaf) {
         int *gameHistogram = (int *) calloc(9, sizeof(int));
         if (gameHistogram == NULL){
+            printf("Error: computeScore has failed");
             return;
         }
         gameHistogram += 4;

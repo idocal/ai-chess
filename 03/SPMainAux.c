@@ -9,10 +9,21 @@ int checkInitializationCommand(){
 
     int gameLevel;
     char *userInput = (char *) calloc(SP_MAX_LINE_LENGTH, sizeof(char));
-    scanf("%[^\n]%*c", userInput);
 
-//    char userInput[SP_MAX_LINE_LENGTH];
-//    fgets (userInput, sizeof (userInput), stdin);
+    if (userInput == NULL) { // Error in userInput allocation
+        printf("Error: checkInitializationCommand has failed");
+        return -99;
+    }
+
+    char *scanned = fgets (userInput, sizeof (userInput), stdin);
+    if (scanned == NULL) { // Error in fgets
+        printf("Error: checkInitializationCommand has failed");
+        return -99;
+    }
+
+    // fix the \n in fgets
+    size_t ln = strlen(userInput) - 1;
+    if (*userInput && userInput[ln] == '\n') userInput[ln] = '\0';
 
 
     // If command = "quit"
@@ -53,9 +64,24 @@ int checkIfAddDiskCommandIsValid(SPCommand cmd){
 
 SPCommand parseUserCommand(){
     char *userInput = (char *) calloc(SP_MAX_LINE_LENGTH, sizeof(char));
-    int scanned = scanf("%[^\n]%*c", userInput);
 
-    if (scanned == EOF) {
+    if (userInput == NULL) { // Error in userInput allocation
+        SP_COMMAND error_cmd = SP_ERROR;
+        SPCommand error;
+        error.cmd = error_cmd;
+        error.validArg = false;
+        error.arg = 0;
+        printf("Error: parseUserCommand has failed");
+        return error;
+    }
+
+    char *scanned = fgets (userInput, SP_MAX_LINE_LENGTH, stdin);
+
+    // fix the \n in fgets
+    size_t ln = strlen(userInput) - 1;
+    if (*userInput && userInput[ln] == '\n') userInput[ln] = '\0';
+
+    if (scanned == NULL) { // Error in fgets
         SP_COMMAND error_cmd = SP_ERROR;
         SPCommand error;
         error.cmd = error_cmd;

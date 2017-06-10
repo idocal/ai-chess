@@ -27,6 +27,8 @@ int main() {
     while (play) {
         printf(ENTER_DIFFICULTY);
         int level = checkInitializationCommand();
+
+        if (level == -99) break; // Error occurred while allocating memory
         if (level == -2) {
             printf(EXITING);
             break;
