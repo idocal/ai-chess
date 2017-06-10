@@ -11,6 +11,10 @@ int checkInitializationCommand(){
     char *userInput = (char *) calloc(SP_MAX_LINE_LENGTH, sizeof(char));
     scanf("%[^\n]%*c", userInput);
 
+//    char userInput[SP_MAX_LINE_LENGTH];
+//    fgets (userInput, sizeof (userInput), stdin);
+
+
     // If command = "quit"
     if (strcmp(userInput, "quit") == 0){
         free(userInput);
@@ -49,7 +53,18 @@ int checkIfAddDiskCommandIsValid(SPCommand cmd){
 
 SPCommand parseUserCommand(){
     char *userInput = (char *) calloc(SP_MAX_LINE_LENGTH, sizeof(char));
-    scanf("%[^\n]%*c", userInput);
+    int scanned = scanf("%[^\n]%*c", userInput);
+
+    if (scanned == EOF) {
+        SP_COMMAND error_cmd = SP_ERROR;
+        SPCommand error;
+        error.cmd = error_cmd;
+        error.validArg = false;
+        error.arg = 0;
+        printf("Error: parseUserCommand has failed");
+        return error;
+    }
+
     SPCommand parse_command = spParserPraseLine(userInput);
     free(userInput);
     return parse_command;

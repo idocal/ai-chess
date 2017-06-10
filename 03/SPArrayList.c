@@ -2,6 +2,7 @@
 // Created by okleinfeld on 5/18/2017.
 //
 
+#include <stdio.h>
 #include "SPArrayList.h"
 
 SPArrayList* spArrayListCreate(int maxSize){
@@ -12,12 +13,14 @@ SPArrayList* spArrayListCreate(int maxSize){
 
     SPArrayList *arrayListPointer = (SPArrayList *) malloc(sizeof(SPArrayList));
     if (arrayListPointer == NULL){
+        printf("Error: spArrayListCreate has failed");
         return NULL;
     }
 
     arrayListPointer->elements = (int *) calloc(maxSize, sizeof(int));
     if (arrayListPointer->elements == NULL){
         free(arrayListPointer);
+        printf("Error: spArrayListCreate has failed");
         return NULL;
     }
 

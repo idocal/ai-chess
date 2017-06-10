@@ -42,6 +42,10 @@ void generateChildrenNodes(node *root, bool *memoryFault, int maxDepth) {
 }
 
 node* generateTree(SPFiarGame* game, int maxDepth) {
+    if (game == NULL) {
+        return NULL;
+    }
+
     node* root = generateTreeRoot(game);
     if (root == NULL) {
         return NULL;

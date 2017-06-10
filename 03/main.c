@@ -38,6 +38,7 @@ int main() {
 
         playCurrentGame = 1;
         SPFiarGame *game = spFiarGameCreate(20); // Create new game
+        if (game == NULL)  break; // Memory allocation failed - exit the program
 
         // Current game loop
         while (playCurrentGame){
@@ -50,6 +51,11 @@ int main() {
             }
 
             SPCommand cmd = parseUserCommand(); // Parse user command
+            if (cmd.cmd == SP_ERROR) { // If error occurred while parsing the command (scanf)
+                play = 0;
+                spFiarGameDestroy(game);
+                break;
+            }
 
             // Command = "quit"
             if (cmd.cmd == SP_QUIT){
@@ -85,8 +91,14 @@ int main() {
                         spFiarGameSetMove(game, columnToPlay); // Set the move on board
                         char winnerSymbolUserTurn = spFiarCheckWinner(game); // Update symbol
 
+                        if (winnerSymbolUserTurn == -99) { // If error occurred while checking winner
+                            play = 0;
+                            spFiarGameDestroy(game);
+                            break;
+                        }
+
                         // Check if game is over after user move
-                        if (winnerSymbolUserTurn != -99 && winnerSymbolUserTurn != '\0'){ // -99 is the error conventions
+                        if (winnerSymbolUserTurn != '\0'){ // -99 is the error conventions
                             handleGameOverScenario(winnerSymbolUserTurn, game);
                             playCurrentGame = 0;
                             break;
@@ -95,12 +107,26 @@ int main() {
                         // Handle computer turn using MiniMax algorithm
                         int computerPlayColumn;
                         computerPlayColumn = spMinimaxSuggestMove(game, level);
+
+                        if (computerPlayColumn == -99) { // Error occurred in MiniMax algorithm
+                            play = 0;
+                            spFiarGameDestroy(game);
+                            break;
+                        }
+
                         printf(COMPUTER_MOVE, computerPlayColumn+1);
                         spFiarGameSetMove(game, computerPlayColumn);
 
                         // Check if game is over after computer move
                         char winnerSymbolCompTurn = spFiarCheckWinner(game);
-                        if (winnerSymbolCompTurn != -99 && winnerSymbolCompTurn != '\0'){
+
+                        if (winnerSymbolCompTurn == -99) {
+                            play = 0;
+                            spFiarGameDestroy(game);
+                            break;
+                        }
+
+                        if (winnerSymbolCompTurn != '\0'){ // 0 is returned when no winner detected
                             handleGameOverScenario(winnerSymbolCompTurn, game);
                             playCurrentGame = 0;
                             break;
@@ -121,6 +147,13 @@ int main() {
             // If command = "suggest_move"
             } else if(cmd.cmd == SP_SUGGEST_MOVE){
                 int suggestedColumnMove = spMinimaxSuggestMove(game, level);
+
+                if (suggestedColumnMove == -99) {
+                    play = 0;
+                    spFiarGameDestroy(game);
+                    break;
+                }
+
                 printf(SUGGESTED_MOVE, suggestedColumnMove+1);
             }
 
@@ -135,6 +168,11 @@ int main() {
             while (true) { // Only allow quit and restart_game
 
                 SPCommand endGameCommand = parseUserCommand();
+                if (endGameCommand.cmd == SP_ERROR) { // If error occurred while parsing the command (scanf)
+                    play = 0;
+                    spFiarGameDestroy(game);
+                    break;
+                }
 
                 // If command = "quit"
                 if (endGameCommand.cmd == SP_QUIT){
@@ -150,6 +188,11 @@ int main() {
                     spFiarGameDestroy(game);
                     shouldPrintBoard = 1;
                     break;
+                }
+
+                // Command is invalid
+                else if (endGameCommand.cmd == SP_INVALID_LINE){
+                    printf(ERROR_INVALID_COMMAND);
                 }
 
                 // Any other command is illegal
