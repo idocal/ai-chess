@@ -35,8 +35,11 @@ SPCommand spParserPraseLine(const char* str){
     if (
             third_arg != NULL ||
             (parse_command.cmd != SP_ADD_DISC && second_arg != NULL)
-            ) {
+        ) {
         parse_command.cmd = SP_INVALID_LINE;
+        parse_command.validArg = false;
+        parse_command.arg = -1;
+
     }  else if (parse_command.cmd == SP_ADD_DISC){
         bool user_arg_is_int = spParserIsInt(second_arg);
         if (user_arg_is_int == true){
