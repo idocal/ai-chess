@@ -84,7 +84,8 @@ void spFiarGameDestroy(SPFiarGame* src){
     if (src == NULL){
         return;
     }
-    free(src->gameStack);
+//    free(src->gameStack);
+    spArrayListDestroy(src->gameStack);
     free(src);
 }
 
