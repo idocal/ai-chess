@@ -22,25 +22,32 @@ int main() {
     int play = 1; // Program is live (set 0 to quit)
     int playCurrentGame = 0; // Still on current game (set 0 to restart)
     int shouldPrintBoard = 1; // Prompt the board for next step
+    int newGame = 1; // New game flag (used for undo after game over)
+    int level = 0; // Initial game level
+    SPFiarGame *game = NULL; // Pointer to current game
 
     // Game loop
     while (play) {
-        printf(ENTER_DIFFICULTY);
-        int level = checkInitializationCommand();
 
-        if (level == -99) break; // Error occurred while allocating memory
-        if (level == -2) {
-            printf(EXITING);
-            break;
-        }
-        if (level == -1){
-            printf(ERROR_INVALID_LEVEL);
-            continue;
+        if (newGame) {
+            printf(ENTER_DIFFICULTY);
+            level = checkInitializationCommand();
+
+            if (level == -99) break; // Error occurred while allocating memory
+            if (level == -2) {
+                printf(EXITING);
+                break;
+            }
+            if (level == -1){
+                printf(ERROR_INVALID_LEVEL);
+                continue;
+            }
+
+            playCurrentGame = 1;
+            game = spFiarGameCreate(20); // Create new game
+            if (game == NULL)  break; // Memory allocation failed - exit the program
         }
 
-        playCurrentGame = 1;
-        SPFiarGame *game = spFiarGameCreate(20); // Create new game
-        if (game == NULL)  break; // Memory allocation failed - exit the program
 
         // Current game loop
         while (playCurrentGame){
@@ -53,7 +60,7 @@ int main() {
             }
 
             SPCommand cmd = parseUserCommand(); // Parse user command
-            if (cmd.cmd == SP_ERROR) { // If error occurred while parsing the command (scanf)
+            if (cmd.cmd == SP_ERROR) { // If error occurred while parsing the command (fgets)
                 play = 0;
                 spFiarGameDestroy(game);
                 break;
@@ -165,22 +172,30 @@ int main() {
             }
         }
 
-        // If current game is restarted
+        // If current game has ended
         if (playCurrentGame == 0){
-            while (true) { // Only allow quit and restart_game
+            while (true) { // Only allow quit, restart_game and undo_move
 
                 SPCommand endGameCommand = parseUserCommand();
-                if (endGameCommand.cmd == SP_ERROR) { // If error occurred while parsing the command (scanf)
+                if (endGameCommand.cmd == SP_ERROR) { // If error occurred while parsing the command (fgets)
                     play = 0;
                     spFiarGameDestroy(game);
                     break;
                 }
 
                 // If command = "quit"
-                if (endGameCommand.cmd == SP_QUIT){
+                else if (endGameCommand.cmd == SP_QUIT){
                     printf(EXITING);
                     spFiarGameDestroy(game);
                     play = 0;
+                    break;
+                }
+
+                // If command = "undo_move"
+                else if (endGameCommand.cmd == SP_UNDO_MOVE){
+                    performUndoMoveActions(game, &shouldPrintBoard);
+                    playCurrentGame = 1;
+                    newGame = 0;
                     break;
                 }
 
