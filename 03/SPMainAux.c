@@ -15,7 +15,7 @@ int checkInitializationCommand(){
         return -99;
     }
 
-    char *scanned = fgets (userInput, sizeof (userInput), stdin);
+    char *scanned = fgets (userInput, SP_MAX_LINE_LENGTH, stdin);
     if (scanned == NULL) { // Error in fgets
         printf("Error: checkInitializationCommand has failed");
         return -99;
