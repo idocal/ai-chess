@@ -79,6 +79,7 @@ int main() {
                 spFiarGameDestroy(game);
                 printf(RESTARTED);
                 shouldPrintBoard = 1;
+                newGame = 1;
                 break;
             }
 
@@ -203,6 +204,7 @@ int main() {
                 else if (endGameCommand.cmd == SP_RESTART){
                     printf(RESTARTED);
                     spFiarGameDestroy(game);
+                    newGame = 1;
                     shouldPrintBoard = 1;
                     break;
                 }
