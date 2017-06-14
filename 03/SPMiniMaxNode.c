@@ -8,7 +8,7 @@
 node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth) {
     node *nodePointer = (node *) malloc(sizeof(node));
     if (nodePointer == NULL) {
-        printf("Error: createNode has failed");
+        printf("Error: createNode has failed\n");
         return NULL;
     }
 
@@ -42,7 +42,7 @@ node *createNode(SPFiarGame *game, int depth, int moveColumn, int maxDepth) {
 node *createRoot(SPFiarGame *game) {
     node *nodePointer = (node *) malloc(sizeof(node));
     if (nodePointer == NULL) {
-        printf("Error: createRoot has failed");
+        printf("Error: createRoot has failed\n");
         return NULL;
     }
 

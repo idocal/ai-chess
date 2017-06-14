@@ -70,7 +70,7 @@ void computeScore(node *nodePointer, OPTIMUM optimum) {
     if (nodePointer->isLeaf) {
         int *gameHistogram = (int *) calloc(9, sizeof(int));
         if (gameHistogram == NULL){
-            printf("Error: computeScore has failed");
+            printf("Error: computeScore has failed\n");
             return;
         }
         gameHistogram += 4;

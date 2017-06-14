@@ -11,13 +11,13 @@ int checkInitializationCommand(){
     char *userInput = (char *) calloc(SP_MAX_LINE_LENGTH, sizeof(char));
 
     if (userInput == NULL) { // Error in userInput allocation
-        printf("Error: checkInitializationCommand has failed");
+        printf("Error: checkInitializationCommand has failed\n");
         return -99;
     }
 
     char *scanned = fgets (userInput, SP_MAX_LINE_LENGTH, stdin);
     if (scanned == NULL) { // Error in fgets
-        printf("Error: checkInitializationCommand has failed");
+        printf("Error: checkInitializationCommand has failed\n");
         return -99;
     }
 
@@ -71,7 +71,7 @@ SPCommand parseUserCommand(){
         error.cmd = error_cmd;
         error.validArg = false;
         error.arg = 0;
-        printf("Error: parseUserCommand has failed");
+        printf("Error: parseUserCommand has failed\n");
         return error;
     }
 
@@ -87,7 +87,7 @@ SPCommand parseUserCommand(){
         error.cmd = error_cmd;
         error.validArg = false;
         error.arg = 0;
-        printf("Error: parseUserCommand has failed");
+        printf("Error: parseUserCommand has failed\n");
         return error;
     }
 

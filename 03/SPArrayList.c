@@ -13,14 +13,14 @@ SPArrayList* spArrayListCreate(int maxSize){
 
     SPArrayList *arrayListPointer = (SPArrayList *) malloc(sizeof(SPArrayList));
     if (arrayListPointer == NULL){
-        printf("Error: spArrayListCreate has failed");
+        printf("Error: spArrayListCreate has failed\n");
         return NULL;
     }
 
     arrayListPointer->elements = (int *) calloc(maxSize, sizeof(int));
     if (arrayListPointer->elements == NULL){
         free(arrayListPointer);
-        printf("Error: spArrayListCreate has failed");
+        printf("Error: spArrayListCreate has failed\n");
         return NULL;
     }
 

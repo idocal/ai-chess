@@ -15,7 +15,7 @@ SPFiarGame* spFiarGameCreate(int historySize){
     // Allocate memory for game struct
     SPFiarGame *game = (SPFiarGame *) malloc(sizeof(SPFiarGame));
     if (game == NULL){
-        printf("Error: spFiarGameCreate has failed");
+        printf("Error: spFiarGameCreate has failed\n");
         return NULL;
     }
 
@@ -52,7 +52,7 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
     // Allocate memory for game copy struct
     SPFiarGame *cpyGame = (SPFiarGame *) malloc(sizeof(SPFiarGame));
     if (cpyGame == NULL){
-        printf("Error: spFiarGameCopy has failed");
+        printf("Error: spFiarGameCopy has failed\n");
         return NULL;
     }
 
@@ -353,7 +353,7 @@ char spFiarCheckWinner(SPFiarGame* src){
     // Allocate memory for game histogram
     int *gameHistogram = (int *) calloc(9, sizeof(int));
     if (gameHistogram == NULL){
-        printf("Error: spFiarCheckWinner has failed");
+        printf("Error: spFiarCheckWinner has failed\n");
         return -99;
     }
 
