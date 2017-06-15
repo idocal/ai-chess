@@ -24,6 +24,7 @@ int checkInitializationCommand(){
     // fix the \n in fgets
     size_t ln = strlen(userInput) - 1;
     if (*userInput && userInput[ln] == '\n') userInput[ln] = '\0';
+    if (*userInput && userInput[ln-1] == '\r') userInput[ln-1] = '\0';
 
 
     // If command = "quit"
@@ -80,6 +81,7 @@ SPCommand parseUserCommand(){
     // fix the \n in fgets
     size_t ln = strlen(userInput) - 1;
     if (*userInput && userInput[ln] == '\n') userInput[ln] = '\0';
+    if (*userInput && userInput[ln-1] == '\r') userInput[ln-1] = '\0';
 
     if (scanned == NULL) { // Error in fgets
         SP_COMMAND error_cmd = SP_ERROR;
