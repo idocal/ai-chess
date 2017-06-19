@@ -34,7 +34,8 @@ SPCommand spParserPraseLine(const char* str){
 
     if (
             third_arg != NULL ||
-            (parse_command.cmd != SP_ADD_DISC && second_arg != NULL)
+            (parse_command.cmd != SP_ADD_DISC && second_arg != NULL) ||
+            (parse_command.cmd == SP_ADD_DISC && second_arg == NULL)
         ) {
         parse_command.cmd = SP_INVALID_LINE;
         parse_command.validArg = false;
