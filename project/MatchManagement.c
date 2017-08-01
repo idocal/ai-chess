@@ -9,7 +9,7 @@ CHESS_MATCH* createNewChessMatch(){
     if (chess_match == NULL){
         return NULL;
     }
-    chess_match->game = createEmptyGame();
+    chess_match->game = createEmptyGame(); // Create also ChessGame object
     if (chess_match->game == NULL){
         free(chess_match);
         return NULL;
@@ -24,7 +24,7 @@ void destroyChessMatch(CHESS_MATCH *match){
     if (match == NULL){
         return;
     }
-    destroyChessGame(match->game);
+    destroyChessGame(match->game); // have to first free memory attached with ChessGame object
     free(match);
 }
 
@@ -71,7 +71,7 @@ void printMatchSettings(CHESS_MATCH *match){
         } else{
             printf("USER_CLR: BLACK\n");
         }
-    } else{
+    } else{ // if two users play against each other, no meaning for difficulty and user color
         printf("GAME_MODE: 2\n");
     }
 }
