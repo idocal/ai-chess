@@ -49,7 +49,7 @@ GAME_MOVE* pop(MOVES_STACK *stack){
         stack->topIndex = -1;
     } else {
         stack->topIndex = (stack->topIndex - 1) % stack->capacity;
-        if (stack->topIndex < 0){ // "%" operator is reminder not modulo like in python
+        if (stack->topIndex < 0){ // "%" operator is remainder not modulo like in python
             stack->topIndex += stack->capacity; // a workaround this is to add the capacity - resulting in a positive value again
         }
     }

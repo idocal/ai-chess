@@ -30,12 +30,12 @@
 /**
  * enum, encapsulating a special game status
  */
-typedef enum special_game_status {
+typedef enum game_status {
     REGULAR,
     CHECK,
     MATE,
     TIE,
-} SPECIAL_GAME_STATUS;
+} GAME_STATUS;
 
 
 /**
@@ -48,7 +48,7 @@ typedef enum special_game_status {
  */
 typedef struct chess_game {
     char **gameBoard;
-    SPECIAL_GAME_STATUS specialGameStatus;
+    GAME_STATUS status;
     char currentPlayer;
 } CHESS_GAME;
 
@@ -59,7 +59,7 @@ typedef struct chess_game {
  */
 typedef struct game_move {
     int sourceRowIndex;
-    int soucreColIndex;
+    int sourceColIndex;
     int destRowIndex;
     int destColIndex;
     char sourceOriginalSymbol;

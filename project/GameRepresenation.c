@@ -12,9 +12,9 @@ CHESS_GAME* createEmptyGame(){
     /*
      * default settings are regular status, white player turn empty board (no tools at all)
      */
-    game->specialGameStatus = REGULAR;
+    game->status = REGULAR;
     game->currentPlayer = 1;
-    game->gameBoard = (char **) malloc(nRows * sizeof(int *)); // allocation of pointer array
+    game->gameBoard = (char **) malloc(nRows * sizeof(char *)); // allocation of pointer array
     if (game->gameBoard == NULL){
         free(game);
         return NULL;
@@ -41,7 +41,7 @@ CHESS_GAME* copyChessGame(CHESS_GAME *originalGame){
     if (cpyGame == NULL){
         return NULL;
     }
-    cpyGame->specialGameStatus = originalGame->specialGameStatus;
+    cpyGame->status = originalGame->status;
     cpyGame->currentPlayer = originalGame->currentPlayer;
     for (int i = 0; i < nRows; ++i){
         for (int j = 0; j < nCols; ++j){
@@ -81,8 +81,8 @@ void initGameBoard(CHESS_GAME *game){
     game->gameBoard[7][6] = 'N';
     game->gameBoard[7][7] = 'R';
     for (int i = 0; i < nCols; ++i){
-        game->gameBoard[1][i] = 'p';
-        game->gameBoard[6][i] = 'P';
+        game->gameBoard[1][i] = 'm';
+        game->gameBoard[6][i] = 'M';
     }
 }
 
@@ -118,7 +118,7 @@ GAME_MOVE *createGameMove(CHESS_GAME *game, int source_row, int source_col, int 
         return NULL;
     }
     move->sourceRowIndex = source_row;
-    move->soucreColIndex = source_col;
+    move->sourceColIndex = source_col;
     move->destRowIndex = dest_row;
     move->destColIndex = dest_col;
     move->sourceOriginalSymbol = game->gameBoard[source_row][source_col];

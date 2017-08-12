@@ -32,7 +32,7 @@ typedef struct game_moves_stack {
  * Creates a new empty/default chess game and return a pointer to it.
  * Preforms all the memory allocation commands needed.
  *
- * @param capacity - the Stack's maximun capacity
+ * @param capacity - the Stack's maximum capacity
  *
  * @return
  * NULL if  a memory allocation failure occurs.

@@ -19,12 +19,10 @@ void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command){
     if (command == NULL){
         return;
     }
-/*    if (command->addressForLoadCommand != NULL){
-        free(command->addressForLoadCommand);
-    }*/
 
     // No need to free addressForLoadCommand string. it wasn't allocated by the programmer!
     // was allocated by the OS as part of stdin creation
+    command->addressForLoadCommand = NULL;
     command->command_name = INVALID_COMMAND;
     command->commandArgument -1;
 }
