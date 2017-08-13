@@ -54,7 +54,7 @@ void concatBoardTag(char *fileStr, CHESS_GAME *game){
         appendCharToStringEnd(fileStr, currentRowNum);
         strcat(fileStr, ">");
         for (int j = 0; j < nCols; ++j){
-            currentRowChars[j] = game->gameBoard[i-1][j];
+            currentRowChars[j] = matGet(game->gameBoard, i-1, j);
         }
         currentRowChars[8] = '\0';
         strcat(fileStr, currentRowChars);

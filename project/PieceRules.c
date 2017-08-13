@@ -12,7 +12,7 @@ PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move) {
     int x = move->sourceRowIndex;
     int y = move->sourceColIndex;
 
-    char pieceChar = game->gameBoard[x][y];
+    char pieceChar = matGet(game->gameBoard, x, y);
     PIECE piece;
 
     switch(pieceChar) {
