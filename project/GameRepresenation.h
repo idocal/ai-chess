@@ -48,7 +48,7 @@ typedef enum game_status {
  * the second is the actual matrix represented using a flat one dimension 64 entries array
  */
 typedef struct chess_game {
-    char **gameBoard;
+    MATRIX *gameBoard;
     GAME_STATUS status;
     char currentPlayer;
 } CHESS_GAME;

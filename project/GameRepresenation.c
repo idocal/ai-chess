@@ -9,28 +9,22 @@ CHESS_GAME* createEmptyGame(){
     if (game == NULL){
         return NULL;
     }
-    /*
-     * default settings are regular status, white player turn empty board (no tools at all)
-     */
+
+    // default settings are regular status, white player turn empty board (no tools at all)
     game->status = REGULAR;
     game->currentPlayer = 1;
-    game->gameBoard = (char **) malloc(nRows * sizeof(char *)); // allocation of pointer array
+
+    // game board is a rows * cols matrix
+    game->gameBoard = matNew(nRows, nCols);
     if (game->gameBoard == NULL){
         free(game);
         return NULL;
     }
-    char *boardMatrix = (char *) malloc(nRows * nCols * sizeof(char)); // allocation of actual matrix
-    if (boardMatrix == NULL){
-        free(game->gameBoard);
-        free(game);
-        return NULL;
-    }
-    for (int i = 0; i < nRows; ++i){
-        game->gameBoard[i] = boardMatrix + i * nCols; // connect the pointer array to the matrix rows
-    }
+
+    // fill game board with blanks
     for(int i = 0; i < nRows; ++i){
         for (int j = 0; j < nCols; ++j){
-            game->gameBoard[i][j] = '_'; // initiate every matrix cell to represent empty cell
+            matSet(game->gameBoard, i, j, '_');
         }
     }
     return game;
@@ -45,7 +39,8 @@ CHESS_GAME* copyChessGame(CHESS_GAME *originalGame){
     cpyGame->currentPlayer = originalGame->currentPlayer;
     for (int i = 0; i < nRows; ++i){
         for (int j = 0; j < nCols; ++j){
-            cpyGame->gameBoard[i][j] = originalGame->gameBoard[i][j];
+            char originalVal = matGet(originalGame->gameBoard, i, j);
+            matSet(cpyGame->gameBoard, i, j, originalVal);
         }
     }
     return cpyGame;
@@ -55,7 +50,6 @@ void destroyChessGame(CHESS_GAME *game){
     if (game == NULL){
         return;
     }
-    free(game->gameBoard[0]); // free actual matrix (base address is row 0, which first cell in pointer array points to.
     free(game->gameBoard); // then free the pointers array
     free(game); // at last free the object itself.
 }
@@ -64,25 +58,33 @@ void initGameBoard(CHESS_GAME *game){
     if (game == NULL){
         return;
     }
-    game->gameBoard[0][0] = 'r';
-    game->gameBoard[0][1] = 'n';
-    game->gameBoard[0][2] = 'b';
-    game->gameBoard[0][3] = 'q';
-    game->gameBoard[0][4] = 'k';
-    game->gameBoard[0][5] = 'b';
-    game->gameBoard[0][6] = 'n';
-    game->gameBoard[0][7] = 'r';
-    game->gameBoard[7][0] = 'R';
-    game->gameBoard[7][1] = 'N';
-    game->gameBoard[7][2] = 'B';
-    game->gameBoard[7][3] = 'Q';
-    game->gameBoard[7][4] = 'K';
-    game->gameBoard[7][5] = 'B';
-    game->gameBoard[7][6] = 'N';
-    game->gameBoard[7][7] = 'R';
+
+    MATRIX *board = game->gameBoard;
+
+    // white player pieces
+    matSet(board, 0, 0, 'r');
+    matSet(board, 0, 1, 'n');
+    matSet(board, 0, 2, 'b');
+    matSet(board, 0, 3, 'q');
+    matSet(board, 0, 4, 'k');
+    matSet(board, 0, 5, 'b');
+    matSet(board, 0, 6, 'n');
+    matSet(board, 0, 7, 'r');
+
+    // black player pieces
+    matSet(board, 7, 0, 'R');
+    matSet(board, 7, 1, 'N');
+    matSet(board, 7, 2, 'B');
+    matSet(board, 7, 3, 'Q');
+    matSet(board, 7, 4, 'K');
+    matSet(board, 7, 5, 'B');
+    matSet(board, 7, 6, 'N');
+    matSet(board, 7, 7, 'R');
+
+    // white and black player pawns
     for (int i = 0; i < nCols; ++i){
-        game->gameBoard[1][i] = 'm';
-        game->gameBoard[6][i] = 'M';
+        matSet(board, 1, i, 'm');
+        matSet(board, 6, i, 'M');
     }
 }
 
@@ -93,7 +95,7 @@ void printChessGameBoard(CHESS_GAME *game){
     for (int i = nRows; i > 0; --i){
         printf("%d|",i);
         for (int j = 0; j < nCols; ++j){
-            printf(" %c", game->gameBoard[i-1][j]);
+            printf(" %c", matGet(game->gameBoard, i-1, j));
         }
         printf(" |\n");
     }
@@ -121,8 +123,8 @@ GAME_MOVE *createGameMove(CHESS_GAME *game, int source_row, int source_col, int 
     move->sourceColIndex = source_col;
     move->destRowIndex = dest_row;
     move->destColIndex = dest_col;
-    move->sourceOriginalSymbol = game->gameBoard[source_row][source_col];
-    move->destOriginalSymbol = game->gameBoard[dest_row][dest_col];
+    move->sourceOriginalSymbol = matGet(game->gameBoard, source_row, source_col);
+    move->destOriginalSymbol = matGet(game->gameBoard, dest_row, dest_col);
     return move;
 }
 
