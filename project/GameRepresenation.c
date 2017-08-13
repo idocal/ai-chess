@@ -12,7 +12,7 @@ CHESS_GAME* createEmptyGame(){
 
     // default settings are regular status, white player turn empty board (no tools at all)
     game->status = REGULAR;
-    game->currentPlayer = 1;
+    game->currentPlayer = 1; // white is 1, black is 0
 
     // game board is a rows * cols matrix
     game->gameBoard = matNew(nRows, nCols);
@@ -50,7 +50,7 @@ void destroyChessGame(CHESS_GAME *game){
     if (game == NULL){
         return;
     }
-    free(game->gameBoard); // then free the pointers array
+    matDestroy(game->gameBoard); // destroy the board matrix
     free(game); // at last free the object itself.
 }
 
