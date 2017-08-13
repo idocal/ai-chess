@@ -70,3 +70,14 @@ PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move) {
 
     return piece;
 }
+
+char **pawnPossibleMoves(CHESS_GAME *game, int x, int y) {
+    // Dynamically allocate a matrix
+    char (*movesMatrix)[nRows] = calloc(1 ,sizeof(char[nRows][nCols]));
+
+    if (movesMatrix == NULL)
+
+
+    return movesMatrix;
+
+}

@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "Matrix.h"
 #define nRows 8
 #define nCols 8
 

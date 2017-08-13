@@ -2,8 +2,18 @@
 #include "GameRepresenation.h"
 #include "MovesStack.h"
 #include "CommandParsing.h"
+#include "PieceRules.h"
 
 int main() {
+    char (*movesMatrix)[nRows] = calloc(1 ,sizeof(char[nRows][nCols]));
+//    char * movesMatrix = (char *) calloc(nRows, sizeof(char));
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            printf("%d", movesMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
 /*    CHESS_GAME *game = createEmptyGame();
     printChessGameBoard(game);
     printf("\nnow ready to start a game\n");
