@@ -133,7 +133,7 @@ void printChessGameBoard(CHESS_GAME *);
  * NULL if  a memory allocation failure occurs.
  * Otherwise, a pointer to a the new game move instance.
  */
-GAME_MOVE* createGameMove(CHESS_GAME *, int, int, int, int);
+GAME_MOVE* createGameMove(CHESS_GAME *, int sourceRow, int sourceCol, int destRow, int destCol);
 
 
 
