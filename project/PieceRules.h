@@ -37,12 +37,49 @@ bool isMoveValid(CHESS_GAME *game, GAME_MOVE *move);
  */
 char pieceOwner(char piece, char player);
 
+/**
+ * Detect if moving to an invalid location (i.e. out of the border)
+ *
+ * @param x (row)
+ * @param y (column)
+ * @return true iff the desired location is out of the board.
+ */
 bool isOutOfBounds(int x, int y);
 
+/**
+ * Detect if the slot which the player wants to move in is already occupied
+ * by another piece of the player.
+ *
+ * @param game
+ * @param x
+ * @param y
+ * @param playerMoved - the player (0 black,1 white) that performs the move
+ * @return true iff slot is occupied
+ */
 bool isSlotOccupied(CHESS_GAME *game, int x, int y, char playerMoved);
 
+/**
+ * Detect if the game is in Check situation,
+ * this means that opponent owns one or more pieces which
+ * are able to move to the player's king location on next move.
+ *
+ * @param game
+ * @param playerChecked - the player (0 black,1 white) that is being Checked
+ * @return true iff the player is Checked
+ */
 bool isGameCheck(CHESS_GAME *game, char playerChecked);
 
+/**
+ * Decide whether a certain move is possible by:
+ * Slot occupation or
+ * Out of bounds or
+ * Player Checked on next move (if allowed includeCheck)
+ *
+ * @param game
+ * @param move
+ * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
+ * @return
+ */
 bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck);
 
 /**
@@ -55,6 +92,18 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck);
  */
 PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move);
 
+/**
+ * Calls one of the functions below to retrieve movesMatrix,
+ * a 0/1 matrix that represents possible moves for a certain piece.
+ * 1 is where piece can move, 0 where it cannot.
+ *
+ * @param game
+ * @param piece type (char symbol)
+ * @param x - piece's row location
+ * @param y - piece's column location
+ * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
+ * @return the movesMatrix defined above
+ */
 MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool includeCheck);
 
 /**
@@ -67,62 +116,6 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
  * @return matrix with 1's where move is possible and 0 where move is impossible
  */
 MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
-
-/**
- * Calculate the bishop's possible moves according to location <x,y>
- * and a specified game state
- *
- * @param game
- * @param x (row)
- * @param y (column)
- * @return matrix with 1's where move is possible and 0 where move is impossible
- */
-MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y);
-
-/**
- * Calculate the rook's possible moves according to location <x,y>
- * and a specified game state
- *
- * @param game
- * @param x (row)
- * @param y (column)
- * @return matrix with 1's where move is possible and 0 where move is impossible
- */
-MATRIX *rookPossibleMoves(CHESS_GAME *game, int x, int y);
-
-/**
- * Calculate the knight's possible moves according to location <x,y>
- * and a specified game state
- *
- * @param game
- * @param x (row)
- * @param y (column)
- * @return matrix with 1's where move is possible and 0 where move is impossible
- */
-MATRIX *knightPossibleMoves(CHESS_GAME *game, int x, int y);
-
-
-/**
- * Calculate the queen's possible moves according to location <x,y>
- * and a specified game state
- *
- * @param game
- * @param x (row)
- * @param y (column)
- * @return matrix with 1's where move is possible and 0 where move is impossible
- */
-MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y);
-
-/**
- * Calculate the king's possible moves according to location <x,y>
- * and a specified game state
- *
- * @param game
- * @param x (row)
- * @param y (column)
- * @return matrix with 1's where move is possible and 0 where move is impossible
- */
-MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y);
 
 
 #endif //PROJECT_PIECERULES_H
