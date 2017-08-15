@@ -288,11 +288,12 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     return movesMatrix;
 }
 
-//MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
-//    MATRIX *movesMatrix = matNew(nRows, nCols);
-//    if (movesMatrix == NULL) {
-//        return NULL;
-//    }
-//
-//
-//}
+MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+    MATRIX *movesMatrix = matNew(nRows, nCols);
+    if (movesMatrix == NULL) {
+        return NULL;
+    }
+
+    addOrthogonalMoves(movesMatrix,game, x, y, player, includeCheck);
+    return movesMatrix;
+}

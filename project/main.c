@@ -22,7 +22,7 @@ int main() {
     printChessGameBoard(game);
     printf("\n");
 
-    MATRIX *moves = pawnPossibleMoves(game, 1, 0, 0, false);
+    MATRIX *moves = bishopPossibleMoves(game, 7, 7, 0, false);
     matPrint(moves);
     matDestroy(moves);
 }
