@@ -77,10 +77,11 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked);
  *
  * @param game
  * @param move
+ * @param player
  * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
  * @return
  */
-bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck);
+bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool includeCheck);
 
 /**
  * Add to the movesMatrix linear possible slots.
@@ -127,7 +128,7 @@ void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, cha
  * @param player
  * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
  */
-void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+void addDiagonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 /**
  * Assuming <x,y> is a valid location on the board,
@@ -163,6 +164,17 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
  * @return matrix with 1's where move is possible and 0 where move is impossible
  */
 MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
+ * Calculate the bishop's possible moves according to location <x,y>
+ * and a specified game state
+ *
+ * @param game
+ * @param x (row)
+ * @param y (column)
+ * @return matrix with 1's where move is possible and 0 where move is impossible
+ */
+MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 
 #endif //PROJECT_PIECERULES_H
