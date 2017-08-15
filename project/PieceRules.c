@@ -70,7 +70,7 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked) {
 }
 
 bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck) {
-    int x = move->destRowIndex
+    int x = move->destRowIndex;
     int y = move->destColIndex;
     char player = game->currentPlayer;
 
@@ -97,6 +97,54 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck) {
     destroyGameMove(move);
     destroyChessGame(game);
     return true;
+}
+
+void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int right, int up) {
+    MATRIX *board = game->gameBoard;
+
+    int i = 1;
+    CHESS_GAME *cpyGame = copyChessGame(game);
+    GAME_MOVE *newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
+
+    while (isMovePossible(cpyGame, newMove, includeCheck)) { // stop going when a move is impossible
+        matSet(movesMatrix, x + right * i, y + up * i, 1);
+
+        // if slot is a conquering one, stop going
+        char piece = matGet(board, x + right * i, y + up * i);
+        if (pieceOwner(piece, player) == 0) break;
+
+        i++;
+        cpyGame = copyChessGame(game);
+        newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
+    }
+}
+
+void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+    // add rightward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, 1, 0);
+
+    // add leftward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, -1, 0);
+
+    // add upward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, 0, 1);
+
+    // add downward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, 0, -1);
+}
+
+void addDiagonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+    // add right-upward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, 1, 1);
+
+    // add right-downward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, 1, -1);
+
+    // add left-upward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, -1, 1);
+
+    // add left-downward slots
+    linearMoves(movesMatrix, game, x, y, player, includeCheck, -1, -1);
 }
 
 PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move) {
@@ -204,4 +252,8 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     }
 
     return movesMatrix;
+}
+
+MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+
 }

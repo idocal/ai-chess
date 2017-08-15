@@ -83,6 +83,53 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked);
 bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck);
 
 /**
+ * Add to the movesMatrix linear possible slots.
+ * This function computes possibleMoves of a given direction (up and right)
+ * For example: diagonal move up-right is (1,1) and horizontal move left is (-1,0)
+ * This function is used by addOrthogonalMoves and addDiagonalMoves.
+ * If a slot is not a possible move, the function stops "going" in the specified direction.
+ * If a slot is opponent's (that is, conquering) the function stops "going" in the specified direction.
+ *
+ * @param movesMatrix
+ * @param game
+ * @param x
+ * @param y
+ * @param player
+ * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
+ * @param right (-1, 0, 1)
+ * @param up (-1, 0, 1)
+ */
+void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int right, int up);
+
+/**
+ * Orthogonal moves are right, left, up and down.
+ * This function uses linearMoves to add to the movesMatrix of a certain piece
+ * all the orthogonal possible moves
+ *
+ * @param movesMatrix
+ * @param game
+ * @param x
+ * @param y
+ * @param player
+ * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
+ */
+void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
+ * Diagonal moves are right-up, right-down, left-up, left-down.
+ * This function uses linearMoves to add to the movesMatrix of a certain piece
+ * all the diagonal possible moves
+ *
+ * @param movesMatrix
+ * @param game
+ * @param x
+ * @param y
+ * @param player
+ * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
+ */
+void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
  * Assuming <x,y> is a valid location on the board,
  * Find out which type of piece is set on <x,y>
  *
