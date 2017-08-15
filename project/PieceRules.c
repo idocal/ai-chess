@@ -20,6 +20,12 @@ char pieceOwner(char piece, char player) {
     return 0;
 }
 
+bool isPawnInitialLocation(char player, int x) {
+    if (player == 0 && x == 6) return true;
+    else if (player == 1 && x == 1) return true;
+    return false;
+}
+
 bool isOutOfBounds(int x, int y) {
     if (x > 7 || x < 0 || y > 7 || y < 0) return true;
     return false;
@@ -69,10 +75,9 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked) {
     return false;
 }
 
-bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck) {
+bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool includeCheck) {
     int x = move->destRowIndex;
     int y = move->destColIndex;
-    char player = game->currentPlayer;
 
     // check if <x,y> is out of the board, or slot is occupied by player's piece
     if (isOutOfBounds(x, y) || isSlotOccupied(game, x, y, player)) {
@@ -106,7 +111,7 @@ void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char playe
     CHESS_GAME *cpyGame = copyChessGame(game);
     GAME_MOVE *newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
 
-    while (isMovePossible(cpyGame, newMove, includeCheck)) { // stop going when a move is impossible
+    while (isMovePossible(cpyGame, newMove, player, includeCheck)) { // stop going when a move is impossible
         matSet(movesMatrix, x + right * i, y + up * i, 1);
 
         // if slot is a conquering one, stop going
@@ -234,26 +239,60 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
         return NULL;
     }
 
+    MATRIX *board = game->gameBoard;
     int moveOne = x + player + (-1 * (1 - player)); // white player moves to x+1, black player moves to x-1
     int moveTwo = x + 2 * player + (-2 * (1 - player)); // white player moves to x+2, black player moves to x-2
 
     // move one forward
     CHESS_GAME *cpyGame = copyChessGame(game);
     GAME_MOVE *newMove = createGameMove(cpyGame, x, y, moveOne, y);
-    if (isMovePossible(cpyGame, newMove, includeCheck)) {
+    if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
         matSet(movesMatrix, moveOne, y, 1); // set 1 on moves matrix if the move is possible
     }
 
-    // move two forward
-    cpyGame = copyChessGame(game); // copy original game again since it might have changed
-    newMove = createGameMove(cpyGame, x, y, moveTwo, y);
-    if (isMovePossible(cpyGame, newMove, includeCheck)) {
-        matSet(movesMatrix, moveTwo, y, 1); // set 1 on moves matrix if the move is possible
+    if (isPawnInitialLocation(player, x)) {
+        // move two forward
+        cpyGame = copyChessGame(game); // copy original game again since it might have changed
+        newMove = createGameMove(cpyGame, x, y, moveTwo, y);
+        if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
+            matSet(movesMatrix, moveTwo, y, 1); // set 1 on moves matrix if the move is possible
+        }
+    }
+
+    // apply diagonal conquer moves
+    cpyGame = copyChessGame(game);
+    newMove = createGameMove(cpyGame, x, y, moveOne, y+1);
+    if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
+        matSet(movesMatrix, moveOne, y+1, 2); // set 2 on moves matrix if the conquer move is possible
+    }
+    cpyGame = copyChessGame(game);
+    newMove = createGameMove(cpyGame, x, y, moveOne, y-1);
+    if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
+        matSet(movesMatrix, moveOne, y-1, 2); // set 2 on moves matrix if the conquer move is possible
+    }
+
+    // verify that slots do not contain opponent's piece
+    for (int i = 0; i < movesMatrix->rows; i++) {
+        for (int j = 0; j < movesMatrix->cols; j++) {
+            char piece = matGet(board, i, j);
+            char current = matGet(movesMatrix, i, j);
+            if (pieceOwner(piece, player) == 0) { //piece owner is opponent
+                if (current == 2) matSet(movesMatrix, i, j, 1); // conquered slot
+                else matSet(movesMatrix, i, j, 0);
+            }
+            current = matGet(movesMatrix, i, j);
+            if (current == 2) matSet(movesMatrix, i, j, 0); //unconquered slot should be removed anyhow
+        }
     }
 
     return movesMatrix;
 }
 
-MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
-
-}
+//MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+//    MATRIX *movesMatrix = matNew(nRows, nCols);
+//    if (movesMatrix == NULL) {
+//        return NULL;
+//    }
+//
+//
+//}

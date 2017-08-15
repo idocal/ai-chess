@@ -36,3 +36,13 @@ void matSet(MATRIX *mat, int x, int y, char val) {
 char matGet(MATRIX *mat, int x, int y) {
     return mat->p[x * mat->rows + y];
 }
+
+void matPrint(MATRIX *mat) {
+    for (int i = 0; i < mat->rows; i++) {
+        for (int j =0; j < mat->cols; j++) {
+            char cell = matGet(mat, i, j);
+            printf("%d ", cell);
+        }
+        printf("\n");
+    }
+}

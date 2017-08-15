@@ -5,6 +5,7 @@
 #include "XMLParser.h"
 #include "Matrix.h"
 #include "GameAux.h"
+#include "PieceRules.h"
 
 int main() {
 //    CHESS_MATCH *match = createNewChessMatch();
@@ -21,10 +22,8 @@ int main() {
     printChessGameBoard(game);
     printf("\n");
 
-    GAME_MOVE *newMove = createGameMove(game, 1, 3, 5, 3);
-
-    performMove(game,newMove);
-
-    printChessGameBoard(game);
+    MATRIX *moves = pawnPossibleMoves(game, 1, 0, 0, false);
+    matPrint(moves);
+    matDestroy(moves);
 }
 

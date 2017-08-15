@@ -6,6 +6,7 @@
 #define PROJECT_MATRIX_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct matrix {
     int rows;
@@ -20,5 +21,7 @@ void matDestroy(MATRIX * mat);
 void matSet(MATRIX *mat, int x, int y, char val);
 
 char matGet(MATRIX *mat, int x, int y);
+
+void matPrint(MATRIX *mat);
 
 #endif //PROJECT_MATRIX_H

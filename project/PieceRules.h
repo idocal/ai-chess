@@ -77,10 +77,11 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked);
  *
  * @param game
  * @param move
+ * @param player
  * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
  * @return
  */
-bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, bool includeCheck);
+bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool includeCheck);
 
 /**
  * Add to the movesMatrix linear possible slots.
@@ -127,7 +128,7 @@ void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, cha
  * @param player
  * @param includeCheck - this is important because in Check certifying a move is possible even if it leads to a counter-Check
  */
-void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+void addDiagonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 /**
  * Assuming <x,y> is a valid location on the board,

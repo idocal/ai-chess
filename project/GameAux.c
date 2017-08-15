@@ -4,7 +4,7 @@
 
 #include "GameAux.h"
 
-void move(CHESS_GAME *game, GAME_MOVE *move) {
+void performMove(CHESS_GAME *game, GAME_MOVE *move) {
     MATRIX *board = game->gameBoard;
     char piece = matGet(board, move->sourceRowIndex, move->sourceColIndex); // get the piece on previous cell
     matSet(board, move->sourceRowIndex, move->sourceColIndex, '_'); // fill blank on previous cell
