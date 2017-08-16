@@ -100,6 +100,35 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool include
  * @param right (-1, 0, 1)
  * @param up (-1, 0, 1)
  */
+
+/**
+ * Test if a certain location is a valid possibility using isMovePossible.
+ * If it is, mark it with marker on the movesMatrix.
+ *
+ * @param movesMatrix
+ * @param game
+ * @param x
+ * @param y
+ * @param player
+ * @param includeCheck
+ * @param marker (1,2)
+ */
+void testPossibility(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int marker);
+
+/**
+ * Perform a linear move change on the movesMatrix.
+ * The linear direction is provided by (x,y) -
+ * For example: up-right is (1,1) and left is (0,-1)
+ *
+ * @param movesMatrix
+ * @param game
+ * @param x
+ * @param y
+ * @param player
+ * @param includeCheck
+ * @param right
+ * @param up
+ */
 void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int right, int up);
 
 /**
@@ -166,6 +195,17 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
 MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 /**
+ * Calculate the rook's possible moves according to location <x,y>
+ * and a specified game state
+ *
+ * @param game
+ * @param x (row)
+ * @param y (column)
+ * @return matrix with 1's where move is possible and 0 where move is impossible
+ */
+MATRIX *rookPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
  * Calculate the bishop's possible moves according to location <x,y>
  * and a specified game state
  *
@@ -176,5 +216,26 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
  */
 MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
+/**
+ * Calculate the queen's possible moves according to location <x,y>
+ * and a specified game state
+ *
+ * @param game
+ * @param x (row)
+ * @param y (column)
+ * @return matrix with 1's where move is possible and 0 where move is impossible
+ */
+MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
+ * Calculate the king's possible moves according to location <x,y>
+ * and a specified game state
+ *
+ * @param game
+ * @param x (row)
+ * @param y (column)
+ * @return matrix with 1's where move is possible and 0 where move is impossible
+ */
+MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 #endif //PROJECT_PIECERULES_H
