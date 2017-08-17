@@ -300,6 +300,39 @@ MATRIX *rookPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     return movesMatrix;
 }
 
+MATRIX *knightPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
+    MATRIX *movesMatrix = matNew(nRows, nCols);
+    if (movesMatrix == NULL) {
+        return NULL;
+    }
+
+    // move two up one right
+    testPossibility(movesMatrix, game, x+2, y+1, player, includeCheck, 1);
+
+    // move two up one left
+    testPossibility(movesMatrix, game, x+2, y-1, player, includeCheck, 1);
+
+    // move two down one right
+    testPossibility(movesMatrix, game, x-2, y+1, player, includeCheck, 1);
+
+    // move two down one left
+    testPossibility(movesMatrix, game, x-2, y-1, player, includeCheck, 1);
+
+    // move two right one up
+    testPossibility(movesMatrix, game, x+1, y+2, player, includeCheck, 1);
+
+    // move two right one down
+    testPossibility(movesMatrix, game, x-1, y+2, player, includeCheck, 1);
+
+    // move two left one up
+    testPossibility(movesMatrix, game, x+1, y-2, player, includeCheck, 1);
+
+    // move two left one down
+    testPossibility(movesMatrix, game, x-1, y-2, player, includeCheck, 1);
+
+    return movesMatrix;
+}
+
 MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
     MATRIX *movesMatrix = matNew(nRows, nCols);
     if (movesMatrix == NULL) {
@@ -316,8 +349,6 @@ MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     if (movesMatrix == NULL) {
         return NULL;
     }
-
-    MATRIX *board = game->gameBoard;
 
     // move one right
     testPossibility(movesMatrix, game, x, y+1, player, includeCheck, 1);

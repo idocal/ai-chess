@@ -217,6 +217,17 @@ MATRIX *rookPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
 MATRIX *bishopPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
 /**
+ * Calculate the knight's possible moves according to location <x,y>
+ * and a specified game state
+ *
+ * @param game
+ * @param x (row)
+ * @param y (column)
+ * @return matrix with 1's where move is possible and 0 where move is impossible
+ */
+MATRIX *knightPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
+
+/**
  * Calculate the queen's possible moves according to location <x,y>
  * and a specified game state
  *
