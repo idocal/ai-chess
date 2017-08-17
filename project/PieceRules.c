@@ -64,10 +64,12 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked) {
             char piece = matGet(board, i, j);
             if (pieceOwner(piece, playerChecked) == 0) { // piece owner is opponent
                 MATRIX *pieceMoves = piecePossibleMoves(game, piece, i, j, false); // piece possibilities matrix
+//                printf("Calling piece moves for: %c\n", piece);
                 if (matGet(pieceMoves, kingX, kingY) == 1) { // if king's location is a possible move - player is Checked.
                     matDestroy(pieceMoves);
                     return true;
                 }
+                matDestroy(pieceMoves);
             }
         }
     }
@@ -90,6 +92,9 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool include
     if (includeCheck) {
         performMove(game, move);
 
+        printf("board after pawn move is:\n");
+        printChessGameBoard(game);
+
         // if game after move leads to Check of the player moved, move is impossible
         if (isGameCheck(game, player)) {
             destroyGameMove(move);
@@ -104,9 +109,9 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool include
     return true;
 }
 
-void testPossibility(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int marker) {
+void testPossibility(MATRIX *movesMatrix, CHESS_GAME *game, int x, int x_, int y, int y_, char player, bool includeCheck, int marker) {
     CHESS_GAME *cpyGame = copyChessGame(game);
-    GAME_MOVE *newMove = createGameMove(cpyGame, x, y, x, y);
+    GAME_MOVE *newMove = createGameMove(cpyGame, x_, y_, x, y);
 
     if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
         matSet(movesMatrix, x, y, marker); // set 1 on moves matrix if the move is possible
@@ -236,6 +241,36 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
         case 'M' :
             return pawnPossibleMoves(game, x, y, 0, includeCheck);
 
+        case 'b' :
+            return bishopPossibleMoves(game, x, y, 1, includeCheck);
+
+        case 'B' :
+            return bishopPossibleMoves(game, x, y, 0, includeCheck);
+
+        case 'r' :
+            return rookPossibleMoves(game, x, y, 0, includeCheck);
+
+        case 'R' :
+            return rookPossibleMoves(game, x, y, 1, includeCheck);
+
+        case 'n' :
+            return knightPossibleMoves(game, x, y, 0, includeCheck);
+
+        case 'N' :
+            return knightPossibleMoves(game, x, y, 1, includeCheck);
+
+        case 'q' :
+            return queenPossibleMoves(game, x, y, 0, includeCheck);
+
+        case 'Q' :
+            return queenPossibleMoves(game, x, y, 1, includeCheck);
+
+        case 'k' :
+            return kingPossibleMoves(game, x, y, 0, includeCheck);
+
+        case 'K' :
+            return kingPossibleMoves(game, x, y, 1, includeCheck);
+
         default :
             return NULL;
     }
@@ -253,15 +288,15 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     int moveTwo = x + 2 * player + (-2 * (1 - player)); // white player moves to x+2, black player moves to x-2
 
     // move one forward
-    testPossibility(movesMatrix, game, moveOne, y, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, moveOne, x, y, y, player, includeCheck, 1);
 
     // move two forward
     if (isPawnInitialLocation(player, x))
-        testPossibility(movesMatrix, game, moveTwo, y, player, includeCheck, 1);
+        testPossibility(movesMatrix, game, moveTwo, x, y, y, player, includeCheck, 1);
 
     // apply diagonal conquer moves
-    testPossibility(movesMatrix, game, moveOne, y+1, player, includeCheck, 2);
-    testPossibility(movesMatrix, game, moveOne, y-1, player, includeCheck, 2);
+    testPossibility(movesMatrix, game, moveOne, x, y+1, y, player, includeCheck, 2);
+    testPossibility(movesMatrix, game, moveOne, x, y-1, y, player, includeCheck, 2);
 
     // verify that slots do not contain opponent's piece
     for (int i = 0; i < movesMatrix->rows; i++) {
@@ -307,28 +342,28 @@ MATRIX *knightPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool in
     }
 
     // move two up one right
-    testPossibility(movesMatrix, game, x+2, y+1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+2, x, y+1, y, player, includeCheck, 1);
 
     // move two up one left
-    testPossibility(movesMatrix, game, x+2, y-1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+2, x, y-1, y, player, includeCheck, 1);
 
     // move two down one right
-    testPossibility(movesMatrix, game, x-2, y+1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-2, x, y+1, y, player, includeCheck, 1);
 
     // move two down one left
-    testPossibility(movesMatrix, game, x-2, y-1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-2, x, y-1, y, player, includeCheck, 1);
 
     // move two right one up
-    testPossibility(movesMatrix, game, x+1, y+2, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+1, x, y+2, y, player, includeCheck, 1);
 
     // move two right one down
-    testPossibility(movesMatrix, game, x-1, y+2, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-1, x, y+2, y, player, includeCheck, 1);
 
     // move two left one up
-    testPossibility(movesMatrix, game, x+1, y-2, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+1, x, y-2, y, player, includeCheck, 1);
 
     // move two left one down
-    testPossibility(movesMatrix, game, x-1, y-2, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-1, x, y-2, y, player, includeCheck, 1);
 
     return movesMatrix;
 }
@@ -341,6 +376,7 @@ MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool inc
 
     addDiagonalMoves(movesMatrix,game, x, y, player, includeCheck);
     addOrthogonalMoves(movesMatrix,game, x, y, player, includeCheck);
+
     return movesMatrix;
 }
 
@@ -351,28 +387,28 @@ MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     }
 
     // move one right
-    testPossibility(movesMatrix, game, x, y+1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x, x, y+1, y, player, includeCheck, 1);
 
     // move one left
-    testPossibility(movesMatrix, game, x, y-1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x, x, y-1, y, player, includeCheck, 1);
 
     // move one up
-    testPossibility(movesMatrix, game, x+1, y, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+1, x, y, y, player, includeCheck, 1);
 
     // move one down
-    testPossibility(movesMatrix, game, x-1, y, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-1, x, y, y, player, includeCheck, 1);
 
     // move one up-right
-    testPossibility(movesMatrix, game, x+1, y+1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+1, x, y+1, y, player, includeCheck, 1);
 
     // move one up-left
-    testPossibility(movesMatrix, game, x+1, y-1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x+1, x, y-1, y, player, includeCheck, 1);
 
     // move one down-right
-    testPossibility(movesMatrix, game, x-1, y+1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-1, x, y+1, y, player, includeCheck, 1);
 
     // move one down-left
-    testPossibility(movesMatrix, game, x-1, y-1, player, includeCheck, 1);
+    testPossibility(movesMatrix, game, x-1, x, y-1, y, player, includeCheck, 1);
 
     return movesMatrix;
 }

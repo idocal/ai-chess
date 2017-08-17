@@ -107,13 +107,15 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool include
  *
  * @param movesMatrix
  * @param game
- * @param x
- * @param y
+ * @param x - destination row
+ * @param x_ - source row
+ * @param y - source column
+ * @param y_ - destination column
  * @param player
  * @param includeCheck
  * @param marker (1,2)
  */
-void testPossibility(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck, int marker);
+void testPossibility(MATRIX *movesMatrix, CHESS_GAME *game, int x, int x_, int y, int y_, char player, bool includeCheck, int marker);
 
 /**
  * Perform a linear move change on the movesMatrix.

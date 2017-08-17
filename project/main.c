@@ -19,11 +19,21 @@ int main() {
 
     CHESS_GAME *game = createEmptyGame();
     initGameBoard(game);
+    GAME_MOVE *move = createGameMove(game, 7, 3, 3, 7);
+    performMove(game, move);
+    destroyGameMove(move);
     printChessGameBoard(game);
-    printf("\n");
+    printf("\n\n");
 
-    MATRIX *moves = knightPossibleMoves(game, 5, 0, 0, false);
-    matPrint(moves);
+//    move = createGameMove(game, 1, 5, 2, 5);
+//    performMove(game, move);
+//    destroyGameMove(move);
+//    printChessGameBoard(game);
+//    printf("\n\n");
+
+
+    MATRIX *moves = pawnPossibleMoves(game, 1, 5, 1, true);
+    matPrint(moves, 0);
     matDestroy(moves);
 }
 

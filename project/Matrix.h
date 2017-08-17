@@ -22,6 +22,6 @@ void matSet(MATRIX *mat, int x, int y, char val);
 
 char matGet(MATRIX *mat, int x, int y);
 
-void matPrint(MATRIX *mat);
+void matPrint(MATRIX *mat, char inverse);
 
 #endif //PROJECT_MATRIX_H
