@@ -92,9 +92,6 @@ bool isMovePossible(CHESS_GAME *game, GAME_MOVE *move, char player, bool include
     if (includeCheck) {
         performMove(game, move);
 
-        printf("board after pawn move is:\n");
-        printChessGameBoard(game);
-
         // if game after move leads to Check of the player moved, move is impossible
         if (isGameCheck(game, player)) {
             destroyGameMove(move);
@@ -248,28 +245,28 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
             return bishopPossibleMoves(game, x, y, 0, includeCheck);
 
         case 'r' :
-            return rookPossibleMoves(game, x, y, 0, includeCheck);
-
-        case 'R' :
             return rookPossibleMoves(game, x, y, 1, includeCheck);
 
-        case 'n' :
-            return knightPossibleMoves(game, x, y, 0, includeCheck);
+        case 'R' :
+            return rookPossibleMoves(game, x, y, 0, includeCheck);
 
-        case 'N' :
+        case 'n' :
             return knightPossibleMoves(game, x, y, 1, includeCheck);
 
-        case 'q' :
-            return queenPossibleMoves(game, x, y, 0, includeCheck);
+        case 'N' :
+            return knightPossibleMoves(game, x, y, 0, includeCheck);
 
-        case 'Q' :
+        case 'q' :
             return queenPossibleMoves(game, x, y, 1, includeCheck);
 
+        case 'Q' :
+            return queenPossibleMoves(game, x, y, 0, includeCheck);
+
         case 'k' :
-            return kingPossibleMoves(game, x, y, 0, includeCheck);
+            return kingPossibleMoves(game, x, y, 1, includeCheck);
 
         case 'K' :
-            return kingPossibleMoves(game, x, y, 1, includeCheck);
+            return kingPossibleMoves(game, x, y, 0, includeCheck);
 
         default :
             return NULL;
@@ -376,6 +373,14 @@ MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool inc
 
     addDiagonalMoves(movesMatrix,game, x, y, player, includeCheck);
     addOrthogonalMoves(movesMatrix,game, x, y, player, includeCheck);
+
+//    printf("\nGame now:\n\n");
+//    printChessGameBoard(game);
+//    printf("\n\n");
+//    printf("Queen in location: (%d,%d) possible moves: \n", x,y);
+//    matPrint(movesMatrix, 0);
+//    printf("\n----------------\n\n\n");
+
 
     return movesMatrix;
 }

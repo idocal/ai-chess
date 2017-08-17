@@ -24,7 +24,7 @@ int main() {
     destroyGameMove(move);
     printChessGameBoard(game);
     printf("\n\n");
-
+//
 //    move = createGameMove(game, 1, 5, 2, 5);
 //    performMove(game, move);
 //    destroyGameMove(move);
@@ -32,7 +32,7 @@ int main() {
 //    printf("\n\n");
 
 
-    MATRIX *moves = pawnPossibleMoves(game, 1, 5, 1, true);
+    MATRIX *moves = pawnPossibleMoves(game, 1, 3, 1, true);
     matPrint(moves, 0);
     matDestroy(moves);
 }
