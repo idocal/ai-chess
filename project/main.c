@@ -27,7 +27,7 @@ int main() {
 //    performMove(game,newMove);
 //
 //    printChessGameBoard(game);
-    char *path = "C:\\Users\\oklainfeld\\Downloads\\chess_match.xml";
+    char *path = "C:\\Users\\oklainfeld\\Documents\\GitHub\\software-project\\project\\game_xml_example.xml";
     CHESS_MATCH *match = parseXMLGameFile(path);
     printChessGameBoard(match->game);
 
