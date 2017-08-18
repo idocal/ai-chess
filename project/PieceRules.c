@@ -163,73 +163,6 @@ void addDiagonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char 
     linearMoves(movesMatrix, game, x, y, player, includeCheck, -1, -1);
 }
 
-PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move) {
-    if (game == NULL || move == NULL) {
-        return BLANK;
-    }
-
-    int x = move->sourceRowIndex;
-    int y = move->sourceColIndex;
-
-    char pieceChar = matGet(game->gameBoard, x, y);
-    PIECE piece;
-
-    switch(pieceChar) {
-        case 'm' :
-            piece = PAWN;
-            break;
-
-        case 'M' :
-            piece = PAWN;
-            break;
-
-        case 'b' :
-            piece = BISHOP;
-            break;
-
-        case 'B' :
-            piece = BISHOP;
-            break;
-
-        case 'r' :
-            piece = ROOK;
-            break;
-
-        case 'R' :
-            piece = ROOK;
-            break;
-
-        case 'n' :
-            piece = KNIGHT;
-            break;
-
-        case 'N' :
-            piece = KNIGHT;
-            break;
-
-        case 'q' :
-            piece = QUEEN;
-            break;
-
-        case 'Q' :
-            piece = QUEEN;
-            break;
-
-        case 'k' :
-            piece = KING;
-            break;
-
-        case 'K' :
-            piece = KING;
-            break;
-
-        default :
-            piece = BLANK;
-    }
-
-    return piece;
-}
-
 MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool includeCheck) {
     switch(piece) {
         case 'm' :
@@ -373,14 +306,6 @@ MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool inc
 
     addDiagonalMoves(movesMatrix,game, x, y, player, includeCheck);
     addOrthogonalMoves(movesMatrix,game, x, y, player, includeCheck);
-
-//    printf("\nGame now:\n\n");
-//    printChessGameBoard(game);
-//    printf("\n\n");
-//    printf("Queen in location: (%d,%d) possible moves: \n", x,y);
-//    matPrint(movesMatrix, 0);
-//    printf("\n----------------\n\n\n");
-
 
     return movesMatrix;
 }

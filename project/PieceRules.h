@@ -8,17 +8,6 @@
 #ifndef PROJECT_PIECERULES_H
 #define PROJECT_PIECERULES_H
 
-typedef enum {
-    PAWN,
-    BISHOP,
-    ROOK,
-    KNIGHT,
-    QUEEN,
-    KING,
-    BLANK
-} PIECE;
-
-
 /**
  * Check if a move is valid according to the piece type and game state
  *
@@ -169,7 +158,7 @@ void addDiagonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char 
  * @param move
  * @return the piece that is set on the board in the specified location
  */
-PIECE pieceByLocation(CHESS_GAME *game, GAME_MOVE *move);
+char pieceByLocation(CHESS_GAME *game, GAME_MOVE *move);
 
 /**
  * Calls one of the functions below to retrieve movesMatrix,
