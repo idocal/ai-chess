@@ -2,7 +2,7 @@
 // Created by okleinfeld on 8/12/2017.
 //
 
-#include "XMLParser.h"
+#include "XMLSaveParser.h"
 
 
 int writeXMLStringToFile(char *xmlString, char* addressToFile){

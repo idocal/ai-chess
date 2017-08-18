@@ -2,10 +2,11 @@
 #include "MatchManagement.h"
 #include "MovesStack.h"
 #include "CommandParsing.h"
-#include "XMLParser.h"
+#include "XMLSaveParser.h"
 #include "Matrix.h"
 #include "GameAux.h"
-#include "PieceRules.h"
+#include "XMLLoadParser.h"
+#include "PieceRules.h
 
 int main() {
 //    CHESS_MATCH *match = createNewChessMatch();
@@ -16,6 +17,7 @@ int main() {
 //    matchStr = transformMatchToXMLString(match);
 //    printf("the representation is:\n%s", matchStr);
 //    writeXMLStringToFile(matchStr, "C:\\Users\\oklainfeld\\Downloads\\chess_match.xml");
+
 
     CHESS_GAME *game = createEmptyGame();
     initGameBoard(game);
@@ -35,5 +37,21 @@ int main() {
     MATRIX *moves = pawnPossibleMoves(game, 1, 3, 1, true);
     matPrint(moves, 0);
     matDestroy(moves);
+
+//    CHESS_GAME *game = createEmptyGame();
+//    initGameBoard(game);
+//    printChessGameBoard(game);
+//    printf("\n");
+//
+//    GAME_MOVE *newMove = createGameMove(game, 1, 3, 5, 3);
+//
+//    performMove(game,newMove);
+//
+//    printChessGameBoard(game);
+    char *path = "C:\\Users\\oklainfeld\\Documents\\GitHub\\software-project\\project\\game_xml_example.xml";
+    CHESS_MATCH *match = parseXMLGameFile(path);
+    printChessGameBoard(match->game);
+
+
 }
 
