@@ -32,4 +32,12 @@ XmlTag parseTagNameStringToEnum(char* tagName);
 
 XMLTagObject* parseXmlLineToTagObject(char* line);
 
+void parseTagObjectToMatchAttribute(CHESS_MATCH *match, XMLTagObject *tag);
+
+void parseBoardTagFromFileToMatchAttribute(FILE *fp, char* buffer, CHESS_MATCH *match);
+
+void parseRowTagLineToMatchAttribute(char *line, CHESS_MATCH *match, int rowIndex);
+
+CHESS_MATCH* parseXMLGameFile(char *fileAddress);
+
 #endif //PROJECT_XMLLOADPARSER_H

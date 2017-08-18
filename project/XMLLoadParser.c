@@ -12,7 +12,9 @@ void readLineFromFileIntoBuffer(FILE* fp, char* buffer){
     while ((c = fgetc(fp)) != '\n'){
         if (c == '\r'){
             continue;
-        } else{
+        } else if (c == EOF){
+            break;
+        } else {
             *buffer = c;
             buffer++;
         }
@@ -56,3 +58,60 @@ XMLTagObject* parseXmlLineToTagObject(char* line){
     return tag;
 }
 
+void parseTagObjectToMatchAttribute(CHESS_MATCH *match, XMLTagObject *tag){
+    if (match == NULL || tag == NULL)
+        return;
+    if (tag->tagName == INVALID_TAG_NAME)
+        return;
+    if (tag->tagName == GAME_MODE_TAG){
+        match->gameMode = tag->tagValue;
+    } else if (tag->tagName == CURRENT_TURN_TAG){
+        match->game->currentPlayer = tag->tagValue;
+    } else if (tag->tagName == DIFFICULTY_TAG){
+        match->level = tag->tagValue;
+    } else if (tag ->tagName == USER_COLOR_TAG) {
+        match->userColor = tag->tagValue;
+    }
+    free(tag);
+}
+
+void parseBoardTagFromFileToMatchAttribute(FILE *fp, char* buffer, CHESS_MATCH *match){
+    readLineFromFileIntoBuffer(fp, buffer); // read the "<board>" line
+    for (int i = nRows -1; i >= 0; --i){
+        readLineFromFileIntoBuffer(fp, buffer); // read "<row_x>" line
+        parseRowTagLineToMatchAttribute(buffer, match, i); // update the game board with the line values
+    }
+    readLineFromFileIntoBuffer(fp, buffer); // read the "</board>" line
+}
+
+void parseRowTagLineToMatchAttribute(char *line, CHESS_MATCH *match, int rowIndex){
+    while (*line != '>'){
+        line++;
+    }
+    line++;
+    for (int j = 0; j < nCols; ++j){
+        matSet(match->game->gameBoard, rowIndex, j, *line);
+        line++;
+    }
+}
+
+CHESS_MATCH* parseXMLGameFile(char *fileAddress){
+    FILE *fp = fopen(fileAddress, "r");
+    if (fp == NULL){
+        return NULL;
+    }
+    char * buffer = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    CHESS_MATCH * match = createNewChessMatch();
+    readLineFromFileIntoBuffer(fp, buffer); // read header xml line
+    readLineFromFileIntoBuffer(fp, buffer); // read "<game>" tag line
+    for (int i = 0; i < 4; ++i){ // parse 4 lines of game setting tags (current turn, game mode, etc)
+        readLineFromFileIntoBuffer(fp, buffer);
+        XMLTagObject *tag = parseXmlLineToTagObject(buffer);
+        parseTagObjectToMatchAttribute(match, tag); // this function also frees the Tag object memory!
+    }
+    parseBoardTagFromFileToMatchAttribute(fp, buffer, match); // parse the board content part
+    readLineFromFileIntoBuffer(fp, buffer); // read the "</game>" tag line
+    fclose(fp); // close file
+    free(buffer); // free read line buffer
+    return match;
+}

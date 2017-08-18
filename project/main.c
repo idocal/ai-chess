@@ -27,25 +27,9 @@ int main() {
 //    performMove(game,newMove);
 //
 //    printChessGameBoard(game);
-
-    FILE *fp = fopen("C:\\Users\\oklainfeld\\Downloads\\chess_match.xml", "r");
-    char * buffer = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    readLineFromFileIntoBuffer(fp, buffer);
-    printf("%s\n", buffer);
-    readLineFromFileIntoBuffer(fp, buffer);
-    printf("%s\n", buffer);
-    readLineFromFileIntoBuffer(fp, buffer);
-    printf("%s\n", buffer);
-    XMLTagObject *tag = parseXmlLineToTagObject(buffer);
-    printf("the tag value is %d\n", tag->tagValue);
-    readLineFromFileIntoBuffer(fp, buffer);
-    printf("%s\n", buffer);
-    XMLTagObject *tag2 = parseXmlLineToTagObject(buffer);
-    printf("the tag value is %d\n", tag2->tagValue);
-    readLineFromFileIntoBuffer(fp, buffer);
-    printf("%s\n", buffer);
-    XMLTagObject *tag3 = parseXmlLineToTagObject(buffer);
-    printf("the tag value is %d\n", tag3->tagValue);
+    char *path = "C:\\Users\\oklainfeld\\Downloads\\chess_match.xml";
+    CHESS_MATCH *match = parseXMLGameFile(path);
+    printChessGameBoard(match->game);
 
 }
 
