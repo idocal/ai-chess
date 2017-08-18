@@ -6,7 +6,7 @@
 #include "Matrix.h"
 #include "GameAux.h"
 #include "XMLLoadParser.h"
-#include "PieceRules.h
+#include "PieceRules.h"
 
 int main() {
 //    CHESS_MATCH *match = createNewChessMatch();
