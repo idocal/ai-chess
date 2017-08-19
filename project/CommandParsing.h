@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "GameRepresenation.h"
+
 #define MAX_COMMAND_LENGTH 1024
 
 /**
@@ -49,6 +51,33 @@ typedef struct setting_state_command {
     int commandArgument;
     char *addressForLoadCommand;
 } SETTING_STATE_COMMAND;
+
+/**
+ * Enum defining all possible game actions
+ */
+typedef enum {
+    MOVE,
+    GET_MOVES,
+    SAVE,
+    UNDO,
+    RESET,
+    INVALID_GAME_COMMAND
+} COMMAND_TYPE;
+
+/**
+ * Structure that represents a parsed user command - only for the actual game phase commands!
+ * move only for MOVE command.
+ * filename only for SAVE command.
+ * <x,y> only for GET_MOVES command
+ *
+ */
+typedef struct game_command {
+    COMMAND_TYPE type;
+    GAME_MOVE move;
+    char *filename;
+    int x;
+    int y;
+} GAME_COMMAND;
 
 
 /**
