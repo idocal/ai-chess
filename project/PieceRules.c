@@ -64,7 +64,6 @@ bool isGameCheck(CHESS_GAME *game, char playerChecked) {
             char piece = matGet(board, i, j);
             if (pieceOwner(piece, playerChecked) == 0) { // piece owner is opponent
                 MATRIX *pieceMoves = piecePossibleMoves(game, piece, i, j, false); // piece possibilities matrix
-//                printf("Calling piece moves for: %c\n", piece);
                 if (matGet(pieceMoves, kingX, kingY) == 1) { // if king's location is a possible move - player is Checked.
                     matDestroy(pieceMoves);
                     return true;
