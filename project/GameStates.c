@@ -44,9 +44,7 @@ bool isCheckMate(CHESS_GAME *game) {
 }
 
 bool isTie(CHESS_GAME *game) {
-    if (isCheck(game)) return false;
-    if (existsPossibleMove(game)) return false;
-    return true;
+    return !existsPossibleMove(game);
 }
 
 void updateGameState(CHESS_GAME *game) {
