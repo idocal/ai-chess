@@ -10,7 +10,7 @@ SETTING_STATE_COMMAND *createDefaultStateCommand(){
         return NULL;
     }
     command->command_name = INVALID_COMMAND;
-    command->addressForLoadCommand = NULL;
+    command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
     command->commandArgument = -1;
     return command;
 }
@@ -22,7 +22,8 @@ void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command){
 
     // No need to free addressForLoadCommand string. it wasn't allocated by the programmer!
     // was allocated by the OS as part of stdin creation
-    command->addressForLoadCommand = NULL;
+    free(command->addressForLoadCommand);
+    command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
     command->command_name = INVALID_COMMAND;
     command->commandArgument -1;
 }
@@ -31,7 +32,7 @@ void destroyStateCommand(SETTING_STATE_COMMAND *command){
     if (command == NULL){
         return;
     }
-    // also here no need to free extra memory
+    free(command->addressForLoadCommand);// free the address to file string memory;
     free(command);
 }
 
@@ -106,7 +107,7 @@ SETTING_STATE_COMMAND *parseUserCommand(){
             settingCommand->command_name = INVALID_COMMAND; // change name to INVALID_COMMAND
         }
     } else if (settingCommand->command_name == LOAD) {
-        settingCommand->addressForLoadCommand = commandArgument; // no need to convert the argument
+        strcpy(settingCommand->addressForLoadCommand, commandArgument); // no need to convert the argument
         // if the file name is not correct will result in an error in later functions no this one
     } else { // commands with single integer argument
         settingCommand->commandArgument = transformCommandArgFromStrToInt(commandArgument);

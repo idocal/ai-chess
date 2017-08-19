@@ -4,6 +4,14 @@
 
 #include "XMLSaveParser.h"
 
+void writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile){
+    char *fileContent = transformMatchToXMLString(match);
+    if (fileContent == NULL){
+        return;
+    }
+    writeXMLStringToFile(fileContent, addressToFile);
+    free(fileContent);
+}
 
 int writeXMLStringToFile(char *xmlString, char* addressToFile){
     FILE *fp = fopen(addressToFile, "w");
@@ -20,6 +28,9 @@ char *transformMatchToXMLString(CHESS_MATCH *match){
         return NULL;
     }
     char *fileStr = (char *) calloc(MAX_FILE_SIZE, sizeof(char));
+    if (fileStr == NULL){
+        return NULL;
+    }
     strcat(fileStr, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     strcat(fileStr, "<game>\n");
     concatSettingTag(fileStr, "current_turn", match);
