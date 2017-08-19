@@ -14,7 +14,7 @@ int main() {
     if (match == NULL){
         return 0;
     }
-    bool initGame = initiateChessGame(match);
+    bool initGame = initiateChessGame(&match);
     if (initGame == false){
         destroyChessMatch(match);
         return 0;

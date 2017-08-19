@@ -13,7 +13,7 @@ void performMove(CHESS_GAME *game, GAME_MOVE *move);
 
 int evaluateSettingStateCommand(CHESS_MATCH **match, SETTING_STATE_COMMAND *cmd);
 
-bool initiateChessGame(CHESS_MATCH *match);
+bool initiateChessGame(CHESS_MATCH **match);
 
 
 
