@@ -109,6 +109,7 @@ void printChessGameBoard(CHESS_GAME *game){
     for (int m = 0; m < nCols; ++m){
         printf(" %c", startCol + m);
     }
+    printf("\n");
 }
 
 GAME_MOVE *createGameMove(CHESS_GAME *game, int source_row, int source_col, int dest_row, int dest_col){

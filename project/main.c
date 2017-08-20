@@ -25,8 +25,7 @@ int main() {
     }
 
     // Game state
-    CHESS_GAME *game = match->game;
-    printChessGameBoard(game);
+    initiateChessGame(match);
 }
 
 

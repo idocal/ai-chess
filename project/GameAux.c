@@ -4,6 +4,8 @@
 
 #include "GameAux.h"
 #include "XMLLoadParser.h"
+
+// Match settings state messages
 #define PRINT_INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
 #define PRINT_SET_ONE_PLAYER_COMMAND "Game mode is set to 1 player\n"
 #define PRINT_SET_TWO_PLAYERS_COMMAND "Game mode is set to 2 players\n"
@@ -17,6 +19,11 @@
 #define PRINT_LOAD_FILE_ERROR "Eror: File doesn't exist or cannot be opened\n"
 #define PRINT_GAME_SETTING_DEFAULT "Game settings are reset to default\n"
 #define PRINT_EXIT_MESSAGE "Exiting...\n"
+
+// Game state messages
+#define NEXT_MOVE_MESSAGE "player - enter your move:\n"
+
+#define color(x) ((x == 0) ? "black " : "white ")
 
 void performMove(CHESS_GAME *game, GAME_MOVE *move) {
     MATRIX *board = game->gameBoard;
@@ -126,3 +133,15 @@ bool initiateChessMatch(CHESS_MATCH **match){
     return retValue;
 }
 
+void initiateChessGame(CHESS_MATCH *match) {
+    CHESS_GAME *game = match->game;
+    int mode = match->gameMode;
+    int status = 0;
+
+    while (status == 0) {
+        printChessGameBoard(game);
+        printf(color(game->currentPlayer));
+        printf(NEXT_MOVE_MESSAGE);
+        status = 1;
+    }
+}
