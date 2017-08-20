@@ -21,12 +21,6 @@ CHESS_GAME* createEmptyGame(){
         return NULL;
     }
 
-    // fill game board with blanks
-    for(int i = 0; i < nRows; ++i){
-        for (int j = 0; j < nCols; ++j){
-            matSet(game->gameBoard, i, j, '_');
-        }
-    }
     return game;
 }
 
@@ -60,6 +54,13 @@ void initGameBoard(CHESS_GAME *game){
     }
 
     MATRIX *board = game->gameBoard;
+
+    // fill game board with blanks
+    for(int i = 0; i < nRows; ++i){
+        for (int j = 0; j < nCols; ++j){
+            matSet(game->gameBoard, i, j, '_');
+        }
+    }
 
     // white player pieces
     matSet(board, 0, 0, 'r');

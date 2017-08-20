@@ -356,3 +356,9 @@ bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move) {
     bool retValue = (indicator == 1) ? true : false;
     return retValue;
 }
+
+MATRIX *getPossibleMoves(CHESS_GAME *game, int x, int y) {
+    MATRIX *board = game->gameBoard;
+    char piece = matGet(board, x,y);
+    return piecePossibleMoves(game, piece, x, y, true);
+}

@@ -34,3 +34,9 @@ void performMove(CHESS_GAME *game, GAME_MOVE *move) {
     matSet(board, move->sourceRowIndex, move->sourceColIndex, '_'); // fill blank on previous cell
     matSet(board, move->destRowIndex, move->destColIndex, piece); // set piece on current cell
 }
+
+void revertMove(CHESS_GAME *game, GAME_MOVE *move) {
+    GAME_MOVE *inverseMove = createGameMove(game, move->destRowIndex, move->destColIndex, move->sourceRowIndex, move->sourceColIndex);
+    performMove(game, inverseMove);
+    destroyGameMove(inverseMove);
+}

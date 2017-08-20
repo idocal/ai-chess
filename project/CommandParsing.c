@@ -115,3 +115,7 @@ SETTING_STATE_COMMAND *parseUserSettingCommand(){
     }
     return settingCommand;
 }
+
+GAME_STATE_COMMAND *parseUserGameCommand() {
+
+}

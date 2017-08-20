@@ -17,6 +17,17 @@
 bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move);
 
 /**
+ * Find all possible moves for a certain piece defined by location
+ * The returned matrix contains 1 where moves is possible and 0 where it doesn't
+ *
+ * @param game
+ * @param x - piece row index
+ * @param y - piece column index
+ * @return possible move matrix
+ */
+MATRIX *getPossibleMoves(CHESS_GAME *game, int x, int y);
+
+/**
  * Detect who owns a certain piece, relative to the player "asking"
  *
  * @param piece

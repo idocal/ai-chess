@@ -6,11 +6,13 @@
 #define PROJECT_GAMEAUX_H
 
 #include "MatchManagement.h"
+#include "MovesStack.h"
 #include "CommandParsing.h"
-#include "GameMoves.h"
 #include "PieceRules.h"
 #include "XMLLoadParser.h"
+#include "XMLSaveParser.h"
 #include <stdbool.h>
+#include <string.h>
 
 /**
  * This function evaluates the SETTING_COMMAND that has been
@@ -39,7 +41,8 @@ bool initiateChessMatch(CHESS_MATCH **match);
  * Loops through the user moves during game state.
  *
  * @param match
+ * @return true iff resetting (this means program is still live)
  */
-void initiateChessGame(CHESS_MATCH *match);
+bool initiateChessGame(CHESS_MATCH *match);
 
 #endif //PROJECT_GAMEAUX_H

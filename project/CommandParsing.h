@@ -61,6 +61,7 @@ typedef enum {
     SAVE,
     UNDO,
     RESET,
+    QUIT_GAME,
     INVALID_GAME_COMMAND
 } GAME_STATE_COMMAND_NAME;
 

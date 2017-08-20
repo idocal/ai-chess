@@ -56,4 +56,16 @@ void destroyGameMove(GAME_MOVE *);
  */
 void performMove(CHESS_GAME *game, GAME_MOVE *move);
 
+/**
+ * Performs the INVERSE move on the actual game board.
+ * This function changes the game->gameBoard matrix,
+ * so in some cases it is necessary to provide with a copy
+ * this can be achieved via copy copyChessGame function.
+ * Reverting is useful for Undo actions.
+ *
+ * @param game
+ * @param move
+ */
+void revertMove(CHESS_GAME *game, GAME_MOVE *move);
+
 #endif //PROJECT_GAMEMOVES_H
