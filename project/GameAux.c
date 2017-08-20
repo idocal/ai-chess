@@ -9,13 +9,13 @@
 #define opponent(player) ((char) (1 - player))
 
 // Match settings state messages
-#define PRINT_INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
-#define PRINT_SET_ONE_PLAYER_COMMAND "Game mode is set to 1 player\n"
-#define PRINT_SET_TWO_PLAYERS_COMMAND "Game mode is set to 2 players\n"
-#define PRINT_WRONG_GAME_MODE_COMMAND "Wrong game mode\n"
-#define PRINT_WRONG_DIFFICULTY_LEVEL_ERROR "Wrong difficulty level. the value should be between 1 to 5\n"
-#define PRINT_LOAD_FILE_ERROR "Eror: File doesn't exist or cannot be opened\n"
-#define PRINT_EXIT_MESSAGE "Exiting...\n"
+#define INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
+#define SET_ONE_PLAYER_COMMAND "Game mode is set to 1 player\n"
+#define SET_TWO_PLAYERS_COMMAND "Game mode is set to 2 players\n"
+#define WRONG_GAME_MODE_COMMAND "Wrong game mode\n"
+#define WRONG_DIFFICULTY_LEVEL_ERROR "Wrong difficulty level. the value should be between 1 to 5\n"
+#define LOAD_FILE_ERROR "Eror: File doesn't exist or cannot be opened\n"
+#define EXIT_MESSAGE "Exiting...\n"
 
 // Game state messages
 #define NEXT_MOVE_MESSAGE "player - enter your move:\n"
@@ -25,6 +25,9 @@
 #define UNDO_UNAVAILABLE_MESSAGE "Undo command not avaialbe in 2 players mode\n"
 #define EMPTY_HISTORY_MESSAGE "Empty history, move cannot be undone\n"
 #define RESTARTING_MESSAGE "Restarting...\n"
+#define CHECKMATE_MESSAGE "Checkmate! %s player wins the game\n"
+#define TIE_MESSAGE "The game is tied\n"
+#define CHECK_MESSAGE "Check: %s King is threatend!\n"
 
 int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *cmd) {
     SETTING_STATE_COMMAND_NAME name = cmd->command_name;
@@ -34,16 +37,16 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
 
     switch(name) {
         case INVALID_COMMAND : {
-            printf(PRINT_INVALID_COMMAND_ERROR);
+            printf(INVALID_COMMAND_ERROR);
             return 0;
         }
 
         case GAME_MODE : {
             if (arg == 1 || arg == 2) {
                 match->gameMode = arg;
-                (arg == 1) ? printf(PRINT_SET_ONE_PLAYER_COMMAND) : printf(PRINT_SET_TWO_PLAYERS_COMMAND);
+                (arg == 1) ? printf(SET_ONE_PLAYER_COMMAND) : printf(SET_TWO_PLAYERS_COMMAND);
             } else {
-                printf(PRINT_WRONG_GAME_MODE_COMMAND);
+                printf(WRONG_GAME_MODE_COMMAND);
             }
             return 0;
         }
@@ -51,7 +54,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         case DIFFICULTY : {
             if (match->gameMode == 1) {
                 if (arg >= 1 && arg <= 5) match->level = arg;
-                else printf(PRINT_WRONG_DIFFICULTY_LEVEL_ERROR);
+                else printf(WRONG_DIFFICULTY_LEVEL_ERROR);
             }
             return 0;
         }
@@ -64,7 +67,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         case LOAD : {
             CHESS_MATCH *newMatch = parseXMLGameFile(addressArg);
             if (newMatch == NULL){
-                printf(PRINT_LOAD_FILE_ERROR);
+                printf(LOAD_FILE_ERROR);
                 return 0;
             }
             CHESS_MATCH *destroyMatch = match;
@@ -84,7 +87,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         }
 
         case QUIT : {
-            printf(PRINT_EXIT_MESSAGE);
+            printf(EXIT_MESSAGE);
             return 2;
         }
 
@@ -144,7 +147,7 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
 
     switch (name) {
         case INVALID_GAME_COMMAND : {
-            printf(PRINT_INVALID_COMMAND_ERROR);
+            printf(INVALID_COMMAND_ERROR);
             return 0;
         }
 
@@ -188,7 +191,7 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
         }
 
         case QUIT_GAME : {
-            printf(PRINT_EXIT_MESSAGE);
+            printf(EXIT_MESSAGE);
             return 2;
         }
 
@@ -198,17 +201,29 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
 
 bool initiateChessGame(CHESS_MATCH *match) {
     CHESS_GAME *game = match->game;
+    GAME_STATUS state = game->status;
+    char player = game->currentPlayer;
     int mode = match->gameMode;
     int status = 0;
+    bool firstTurn = true;
 
     MOVES_STACK *stack = createEmptyStack(UNDO_CAPACITY);
 
     // Game state loop
     while (status == 0) {
-        printChessGameBoard(game);
-        printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
-        GAME_STATE_COMMAND *cmd = parseUserGameCommand();
-        status = evaluateGameStateCommand(match, cmd, stack);
+        if (!firstTurn) game->currentPlayer = opponent(player); // switch turns
+        firstTurn = false;
+        updateGameState(game); // detect check or checkmate or tie
+        
+        if (state == MATE) printf(CHECKMATE_MESSAGE, color(opponent(player)));
+        else if (state == TIE) printf(TIE_MESSAGE);
+        else {
+            printChessGameBoard(game);
+            if (state == CHECK) printf(CHECK_MESSAGE, color(player));
+            printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
+            GAME_STATE_COMMAND *cmd = parseUserGameCommand();
+            status = evaluateGameStateCommand(match, cmd, stack);
+        }
     }
 
     // Game is terminated after loop

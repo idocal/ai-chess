@@ -9,6 +9,7 @@
 #include "MovesStack.h"
 #include "CommandParsing.h"
 #include "PieceRules.h"
+#include "GameStates.h"
 #include "XMLLoadParser.h"
 #include "XMLSaveParser.h"
 #include <stdbool.h>
