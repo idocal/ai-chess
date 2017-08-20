@@ -115,7 +115,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
     return -1; // this should not happen. IF it does - there is a bug in the command parsing module
 }
 
-bool initiateChessGame(CHESS_MATCH **match){
+bool initiateChessMatch(CHESS_MATCH **match){
     int status = 0;
     while (status == 0){
         SETTING_STATE_COMMAND *cmd = parseUserCommand();

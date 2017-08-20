@@ -8,19 +8,25 @@
 #include "XMLLoadParser.h"
 #include "PieceRules.h"
 
+#define WELCOME_MESSAGE "Specify game setting or type 'start' to begin a game with the current setting:\n"
+
 int main() {
-    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
+    printf(WELCOME_MESSAGE);
     CHESS_MATCH *match = createNewChessMatch();
     if (match == NULL){
         return 0;
     }
-    bool initGame = initiateChessGame(&match);
+
+    // Match settings state loop
+    bool initGame = initiateChessMatch(&match);
     if (initGame == false){
         destroyChessMatch(match);
         return 0;
     }
-    printf("The Game has initiated\n");
-    printChessGameBoard(match->game);
+
+    // Game state
+    CHESS_GAME *game = match->game;
+    printChessGameBoard(game);
 }
 
 
