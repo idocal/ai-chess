@@ -7,18 +7,10 @@
 
 #include "MatchManagement.h"
 #include "CommandParsing.h"
+#include "GameMoves.h"
+#include "PieceRules.h"
+#include "XMLLoadParser.h"
 #include <stdbool.h>
-
-/**
- * Performs the move on the actual game board.
- * This function changes the game->gameBoard matrix,
- * so in some cases it is necessary to provide with a copy
- * this can be achieved via copy copyChessGame function.
- *
- * @param game
- * @param move
- */
-void performMove(CHESS_GAME *game, GAME_MOVE *move);
 
 /**
  * This function evaluates the SETTING_COMMAND that has been

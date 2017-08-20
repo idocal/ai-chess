@@ -2,7 +2,7 @@
 // Created by Ido on 8/19/17.
 //
 
-#include "GameRepresenation.h"
+#include "GameMoves.h"
 #include "PieceRules.h"
 #include "stdbool.h"
 

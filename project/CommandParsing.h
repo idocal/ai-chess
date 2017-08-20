@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "GameRepresenation.h"
+#include "GameMoves.h"
 
 #define MAX_COMMAND_LENGTH 1024
 
@@ -131,7 +131,14 @@ void destroyStateCommand(SETTING_STATE_COMMAND *command);
  * do not return INVALID_COMMAND in order to apply a distinction between these error in later functions.
 */
 
-SETTING_STATE_COMMAND *parseUserCommand();
+SETTING_STATE_COMMAND *parseUserSettingCommand();
+
+/**
+ * Transform a user input (from stdin) to a matching GAME_STATE_COMMAND object
+ *
+ * @return a Game State Command object
+ */
+GAME_STATE_COMMAND *parseUserGameCommand();
 
 
 /**

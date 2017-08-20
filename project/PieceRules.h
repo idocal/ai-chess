@@ -2,8 +2,7 @@
 // Created by Ido on 8/12/17.
 //
 #include <stdbool.h>
-#include "GameRepresenation.h"
-#include "GameAux.h"
+#include "GameMoves.h"
 
 #ifndef PROJECT_PIECERULES_H
 #define PROJECT_PIECERULES_H
@@ -15,7 +14,7 @@
  * @param move
  * @return true iff move is valid
  */
-bool isMoveValid(CHESS_GAME *game, GAME_MOVE *move);
+bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move);
 
 /**
  * Detect who owns a certain piece, relative to the player "asking"

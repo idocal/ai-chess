@@ -55,20 +55,6 @@ typedef struct chess_game {
 
 
 /**
- * Structure used to represent a game move object
- * Will be later saved in a special "Stack" data structure for history and undo command management
- */
-typedef struct game_move {
-    int sourceRowIndex;
-    int sourceColIndex;
-    int destRowIndex;
-    int destColIndex;
-    char sourceOriginalSymbol;
-    char destOriginalSymbol;
-} GAME_MOVE;
-
-
-/**
  * Creates a new empty/default chess game and return a pointer to it.
  * Preforms all the memory allocation commands needed.
  *
@@ -118,30 +104,5 @@ void initGameBoard(CHESS_GAME *);
  * @param pointer to a valid chess game object.
  */
 void printChessGameBoard(CHESS_GAME *);
-
-
-/**
- * Creates a new game move object to be later stored in a Stack data structure
- *
- * @param
- * source row number (0 based)
- * source column number (0 based)
- * destination row number (0 based)
- * destination column number (0 based)
- *
- * @return
- * NULL if  a memory allocation failure occurs.
- * Otherwise, a pointer to a the new game move instance.
- */
-GAME_MOVE* createGameMove(CHESS_GAME *, int sourceRow, int sourceCol, int destRow, int destCol);
-
-
-
-/**
- * Frees all the memory allocated fot the given game move instance
- *
- * @param pointer to a valid game move object.
- */
-void destroyGameMove(GAME_MOVE *);
 
 #endif //PROJECT_GAMEREPRESENATION_H

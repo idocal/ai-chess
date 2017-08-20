@@ -5,7 +5,7 @@
 #ifndef PROJECT_MOVESSTACK_H
 #define PROJECT_MOVESSTACK_H
 
-#include "GameRepresenation.h"
+#include "GameMoves.h"
 
 /**
  * MoveStack Summary:

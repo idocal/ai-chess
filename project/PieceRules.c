@@ -341,3 +341,18 @@ MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
 
     return movesMatrix;
 }
+
+bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move) {
+    int sourceX = move->sourceRowIndex;
+    int sourceY = move->sourceColIndex;
+    int destX = move->destRowIndex;
+    int destY = move->destColIndex;
+    MATRIX *board = game->gameBoard;
+
+    char piece = matGet(board, sourceX, sourceY);
+    MATRIX *possibleMoves = piecePossibleMoves(game, piece, sourceX, sourceY, true);
+    char indicator = matGet(possibleMoves, destX, destY);
+
+    bool retValue = (indicator == 1) ? true : false;
+    return retValue;
+}

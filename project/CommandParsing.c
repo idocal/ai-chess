@@ -77,7 +77,7 @@ int transformCommandArgFromStrToInt(char *commandArg){
 }
 
 
-SETTING_STATE_COMMAND *parseUserCommand(){
+SETTING_STATE_COMMAND *parseUserSettingCommand(){
     char userCommand[MAX_COMMAND_LENGTH];
     fgets(userCommand, MAX_COMMAND_LENGTH, stdin); // read input to buffer
     const char *del = " \t\r\n";

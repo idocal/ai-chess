@@ -3,7 +3,7 @@
 //
 
 #include "GameAux.h"
-#include "XMLLoadParser.h"
+
 
 // Match settings state messages
 #define PRINT_INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
@@ -23,20 +23,14 @@
 // Game state messages
 #define color(x) ((x == 0) ? "black" : "white")
 #define NEXT_MOVE_MESSAGE "player - enter your move:\n"
-
-
-void performMove(CHESS_GAME *game, GAME_MOVE *move) {
-    MATRIX *board = game->gameBoard;
-    char piece = matGet(board, move->sourceRowIndex, move->sourceColIndex); // get the piece on previous cell
-    matSet(board, move->sourceRowIndex, move->sourceColIndex, '_'); // fill blank on previous cell
-    matSet(board, move->destRowIndex, move->destColIndex, piece); // set piece on current cell
-}
+#define INVALID_POSITION_MESSAGE "Invalid position on the board\n"
+#define NO_PLAYER_PIECE_LOCATION_MESSAGE "The specified position does not contain your piece\n"
+#define ILLEGAL_MOVE "Illegal move\n"
 
 int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *cmd) {
     SETTING_STATE_COMMAND_NAME name = cmd->command_name;
     int arg = cmd->commandArgument;
     char *addressArg = cmd->addressForLoadCommand;
-
     CHESS_MATCH *match = *matchPtr;
 
     switch(name) {
@@ -126,7 +120,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
 bool initiateChessMatch(CHESS_MATCH **match){
     int status = 0;
     while (status == 0){
-        SETTING_STATE_COMMAND *cmd = parseUserCommand();
+        SETTING_STATE_COMMAND *cmd = parseUserSettingCommand();
         status = evaluateSettingStateCommand(match, cmd);
         destroyStateCommand(cmd);
     }
@@ -134,8 +128,37 @@ bool initiateChessMatch(CHESS_MATCH **match){
     return retValue;
 }
 
-int evaluateGameStateCommand(CHESS_GAME *game, SETTING_STATE_COMMAND *cmd, int mode) {
+int evaluateGameStateCommand(CHESS_GAME *game, GAME_STATE_COMMAND *cmd, int mode) {
+    GAME_STATE_COMMAND_NAME name = cmd->command_name;
+    GAME_MOVE *move = cmd->move;
+    char *filename = cmd->filename;
+    int x = cmd->x;
+    int y = cmd->y;
+    char player = game->currentPlayer;
 
+
+    switch (name) {
+//        MOVE,
+//        GET_MOVES,
+//        SAVE,
+//        UNDO,
+//        RESET,
+//        INVALID_GAME_COMMAND
+        case MOVE : {
+            int destX = move->destRowIndex;
+            int destY = move->destColIndex;
+            int sourceX = move->sourceRowIndex;
+            int sourceY = move->sourceColIndex;
+
+            if (isOutOfBounds(destX, destY)) printf(INVALID_POSITION_MESSAGE);
+            else if (!isSlotOccupied(game, sourceX, sourceY, player)) printf(NO_PLAYER_PIECE_LOCATION_MESSAGE);
+            else if (!isMoveLegal(game, move)) printf(ILLEGAL_MOVE);
+            else performMove(game, move);
+            return 0;
+        }
+
+        default : return -1; // this should not happen. IF it does - there is a bug in the command parsing module
+    }
 }
 
 void initiateChessGame(CHESS_MATCH *match) {
@@ -146,7 +169,7 @@ void initiateChessGame(CHESS_MATCH *match) {
     while (status == 0) {
         printChessGameBoard(game);
         printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
-        SETTING_STATE_COMMAND *cmd = parseUserCommand();
+        SETTING_STATE_COMMAND *cmd = parseUserSettingCommand();
         status = evaluateGameStateCommand(game, cmd, mode);
     }
 }
