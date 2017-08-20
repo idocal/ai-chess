@@ -72,7 +72,7 @@ typedef enum {
  *
  */
 typedef struct game_command {
-    GAME_STATE_COMMAND_NAME type;
+    GAME_STATE_COMMAND_NAME command_name;
     GAME_MOVE move;
     char *filename;
     int x;
