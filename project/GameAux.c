@@ -40,7 +40,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
 
     if (name == GAME_MODE) {
         if (arg == 1 || arg == 2) {
-            match->gameMode == arg;
+            match->gameMode = arg;
             (arg == 1) ? printf(PRINT_SET_ONE_PLAYER_COMMAND) : printf(PRINT_SET_TWO_PLAYERS_COMMAND);
         } else {
             printf(PRINT_WRONG_GAME_MODE_COMMAND);

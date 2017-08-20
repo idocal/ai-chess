@@ -1,0 +1,7 @@
+Full Name 1: Ido Calman
+Id No 1: 308353499
+User Name 1: idocalman
+Full Name 2: Ofri Kleinfeld
+Id No 2: 302893680
+User Name 2: ofrik
+Assignment: Final Project
