@@ -62,7 +62,7 @@ typedef enum {
     UNDO,
     RESET,
     INVALID_GAME_COMMAND
-} COMMAND_TYPE;
+} GAME_STATE_COMMAND_NAME;
 
 /**
  * Structure that represents a parsed user command - only for the actual game phase commands!
@@ -72,12 +72,12 @@ typedef enum {
  *
  */
 typedef struct game_command {
-    COMMAND_TYPE type;
+    GAME_STATE_COMMAND_NAME type;
     GAME_MOVE move;
     char *filename;
     int x;
     int y;
-} GAME_COMMAND;
+} GAME_STATE_COMMAND;
 
 
 /**
