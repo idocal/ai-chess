@@ -36,7 +36,25 @@ typedef struct game_move {
  */
 GAME_MOVE* createGameMove(CHESS_GAME *, int sourceRow, int sourceCol, int destRow, int destCol);
 
+/**
+ * Creates a new game move object to be later stored in a Stack data structure
+ * This function is used during the parsing of a user "MOVE" command.
+ * at that point a game object is not yet attached to the move and there is no connection to the game board
+ * just the source position and destination position required
+ *
+ * @param
+ * source row number (0 based)
+ * source column number (0 based)
+ * destination row number (0 based)
+ * destination column number (0 based)
+ *
+ * @return
+ * NULL if  a memory allocation failure occurs.
+ * Otherwise, a pointer to a the new game move instance.
+ */
 
+
+GAME_MOVE* createGameMoveWithoutGame(int sourceRow, int sourceCol, int destRow, int destCol);
 
 /**
  * Frees all the memory allocated fot the given game move instance

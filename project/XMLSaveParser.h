@@ -12,7 +12,7 @@
 
 #define MAX_FILE_SIZE 2048
 
-void writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile);
+int writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile);
 
 int writeXMLStringToFile(char *xmlString, char* addressToFile);
 

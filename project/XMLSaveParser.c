@@ -4,13 +4,16 @@
 
 #include "XMLSaveParser.h"
 
-void writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile){
+int writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile){
     char *fileContent = transformMatchToXMLString(match);
     if (fileContent == NULL){
-        return;
+        return -1;
     }
-    writeXMLStringToFile(fileContent, addressToFile);
+    if (writeXMLStringToFile(fileContent, addressToFile) == -1){
+        return -1;
+    }
     free(fileContent);
+    return 0;
 }
 
 int writeXMLStringToFile(char *xmlString, char* addressToFile){

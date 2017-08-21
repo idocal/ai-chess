@@ -27,7 +27,8 @@
 #define RESTARTING_MESSAGE "Restarting...\n"
 #define CHECKMATE_MESSAGE "Checkmate! %s player wins the game\n"
 #define TIE_MESSAGE "The game is tied\n"
-#define CHECK_MESSAGE "Check: %s King is threatend!\n"
+#define CHECK_MESSAGE "Check: %s King is threatened!\n"
+
 
 int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *cmd) {
     SETTING_STATE_COMMAND_NAME name = cmd->command_name;

@@ -21,6 +21,20 @@ GAME_MOVE *createGameMove(CHESS_GAME *game, int source_row, int source_col, int 
     return move;
 }
 
+GAME_MOVE* createGameMoveWithoutGame(int sourceRow, int sourceCol, int destRow, int destCol){
+    GAME_MOVE *move = (GAME_MOVE *) malloc(sizeof(GAME_MOVE));
+    if (move == NULL){
+        return NULL;
+    }
+    move->sourceRowIndex = sourceRow;
+    move->sourceColIndex = sourceCol;
+    move->destRowIndex = destRow;
+    move->destColIndex = destCol;
+    move->sourceOriginalSymbol = '\0';
+    move->destOriginalSymbol = '\0';
+    return move;
+}
+
 void destroyGameMove(GAME_MOVE *move){
     if (move == NULL){
         return;

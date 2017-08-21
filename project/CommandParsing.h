@@ -168,4 +168,12 @@ SETTING_STATE_COMMAND_NAME parseStringToSettingCommandEnum(char *string);
 */
 int transformCommandArgFromStrToInt(char *commandArg);
 
+GAME_STATE_COMMAND *createDefaultGameCommand();
+
+void destroyGameCommand(GAME_STATE_COMMAND *command);
+
+GAME_STATE_COMMAND_NAME parseStringToGameCommandEnum(char *commandString);
+
+int checkValidityOfMovePositionString(char *movePosSting);
+
 #endif //PROJECT_COMMANDPARSING_H

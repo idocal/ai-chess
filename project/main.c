@@ -23,7 +23,6 @@ int main() {
         // Game state
         live = initiateChessGame(match); // quit program if false
     }
-
     return 0;
 }
 
