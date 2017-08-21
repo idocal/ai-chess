@@ -3,9 +3,6 @@
 //
 
 #include "GameAux.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
-
 
 #define UNDO_CAPACITY 6
 #define color(player) ((player == 0) ? "black" : "white")
