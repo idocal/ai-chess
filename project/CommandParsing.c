@@ -25,7 +25,7 @@ void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command){
     free(command->addressForLoadCommand);
     command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
     command->command_name = INVALID_COMMAND;
-    command->commandArgument -1;
+    command->commandArgument = -1;
 }
 
 void destroyStateCommand(SETTING_STATE_COMMAND *command){
@@ -117,5 +117,5 @@ SETTING_STATE_COMMAND *parseUserSettingCommand(){
 }
 
 GAME_STATE_COMMAND *parseUserGameCommand() {
-
+    return NULL;
 }

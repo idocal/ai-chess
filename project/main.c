@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "MatchManagement.h"
 #include "GameAux.h"
-
+#include "SPSimpleMainWindow.h"
 
 #define WELCOME_MESSAGE "Specify game setting or type 'start' to begin a game with the current setting:\n"
 
@@ -24,6 +24,8 @@ int main() {
         // Game state
         live = initiateChessGame(match); // quit program if false
     }
+
+    return 0;
 }
 
 
