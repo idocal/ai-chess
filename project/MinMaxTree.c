@@ -42,6 +42,7 @@ MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, char *maxDepth)
 
                             if (head == NULL) {
                                 head = node;
+                                current = head;
                             } else {
                                 current->next = node;
                                 current = current->next;
@@ -57,7 +58,7 @@ MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, char *maxDepth)
         }
     }
 
-
+    return head;
 }
 
 int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, char *maxDepth) {
@@ -72,7 +73,9 @@ int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, char *maxDepth) {
     CHESS_GAME *nodeGame = node->game;
 
     nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
-    if (node->move != NULL) performMove(game, node->move);
+    if (node->move != NULL) {
+        performMove(nodeGame, node->move);
+    }
 
     if (isCheckMate(game)){
         node->value = (game->currentPlayer == 0) ? INT_MAX : INT_MIN;
@@ -92,17 +95,16 @@ int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, char *maxDepth) {
     node->children = createChildrenEmptyNodesList(node, maxDepth);
     if (node->children == NULL) return -1;
     MIN_MAX_NODE *currentChild = node->children;
-    int nodeValue = node->value;
 
     while (currentChild != NULL){
         int evalResult = evaluateNode(currentChild, nodeGame, maxDepth);
         if (evalResult == 1){
-            if (node->type == MAX && currentChild->value > nodeValue){
+            if (node->type == MAX && currentChild->value > node->value){
                 node->value = currentChild->value;
                 node->alpha = currentChild->value;
             }
 
-            if (node->type == MIN && currentChild->value < nodeValue){
+            if (node->type == MIN && currentChild->value < node->value){
                 node->value = currentChild->value;
                 node->beta = currentChild->value;
             }
@@ -128,12 +130,11 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, char *maxDepth) {
     GAME_MOVE *AINextMove = NULL;
 
     MIN_MAX_NODE *currentChild = root->children;
-    int nodeValue = root->value;
 
     while (currentChild != NULL){
         int evalResult = evaluateNode(currentChild, game, maxDepth);
         if (evalResult == 1){
-            if (root->type == MAX && currentChild->value > nodeValue){
+            if (root->type == MAX && currentChild->value > root->value){
                 root->value = currentChild->value;
                 root->alpha = currentChild->value;
                 if (AINextMove == NULL) {
@@ -144,7 +145,7 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, char *maxDepth) {
                 }
             }
 
-            if (root->type == MIN && currentChild->value < nodeValue){
+            if (root->type == MIN && currentChild->value < root->move){
                 root->value = currentChild->value;
                 root->beta = currentChild->value;
                 if (AINextMove == NULL) {

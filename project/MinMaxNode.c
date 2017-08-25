@@ -7,6 +7,8 @@
 #define SUFFICIENT_MIN -10000
 #define SUFFICIENT_MAX 10000
 
+bool isLeaf(char depth, char maxDepth);
+
 MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, char depth, char *maxDepth) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
@@ -53,4 +55,3 @@ bool isLeaf(char depth, char maxDepth) {
     else
         return false;
 }
-
