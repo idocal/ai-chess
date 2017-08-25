@@ -57,6 +57,18 @@ GAME_MOVE* createGameMove(CHESS_GAME *, int sourceRow, int sourceCol, int destRo
 GAME_MOVE* createGameMoveWithoutGame(int sourceRow, int sourceCol, int destRow, int destCol);
 
 /**
+ * Creates a copy game move object to be later stored in a Stack data structure
+ *
+ * @param
+ * Original move to copy
+ *
+ * @return
+ * NULL if  a memory allocation failure occurs.
+ * Otherwise, a pointer to a the copy game move instance.
+ */
+GAME_MOVE *copyGameMove(GAME_MOVE *move);
+
+/**
  * Frees all the memory allocated fot the given game move instance
  *
  * @param pointer to a valid game move object.
