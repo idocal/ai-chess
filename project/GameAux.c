@@ -224,6 +224,7 @@ bool initiateChessGame(CHESS_MATCH *match) {
             printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
             GAME_STATE_COMMAND *cmd = parseUserGameCommand();
             status = evaluateGameStateCommand(match, cmd, stack);
+            destroyGameCommand(cmd);
         }
     }
 
