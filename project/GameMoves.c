@@ -35,6 +35,20 @@ GAME_MOVE* createGameMoveWithoutGame(int sourceRow, int sourceCol, int destRow, 
     return move;
 }
 
+GAME_MOVE *copyGameMove(GAME_MOVE *move) {
+    GAME_MOVE *cpyMove = (GAME_MOVE *) malloc(sizeof(GAME_MOVE));
+    if (cpyMove == NULL){
+        return NULL;
+    }
+    cpyMove->sourceRowIndex = move->sourceRowIndex;
+    cpyMove->sourceColIndex = move->sourceColIndex;
+    cpyMove->destRowIndex = move->destRowIndex;
+    cpyMove->destColIndex = move->destColIndex;
+    cpyMove->sourceOriginalSymbol = move->sourceOriginalSymbol;
+    cpyMove->destOriginalSymbol = move->destOriginalSymbol;
+    return cpyMove;
+}
+
 void destroyGameMove(GAME_MOVE *move){
     if (move == NULL){
         return;
