@@ -226,8 +226,16 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         if (checkValidityOfMovePositionString(firstArg) == 0
             || strcmp(secondArg, "to") != 0
             || checkValidityOfMovePositionString(thirdArg) == 0){ // the string is not valid / not right format / not right positions
-            gameCommand->command_name = INVALID_GAME_COMMAND;
-        } else{
+            if (checkStructureOfMovePositionString(firstArg) == 1 && checkStructureOfMovePositionString(thirdArg) == 1 && strcmp(secondArg, "to") == 0){
+                // the structure of the command is right but one of the parameters aren't.
+                // in this case you have to print the error "Invalid position on the board"
+                gameCommand->command_name = MOVE;
+                gameCommand->move = NULL;
+            } else{
+                gameCommand->command_name = INVALID_GAME_COMMAND;
+            }
+        } else{ // this is in case of a "valid" MOVE command so only errors possible are 2 ("the position doesn't contains user's piece")
+                // or error 3 ("illegal move for a specific piece")
             char move_source_x[2];
             char move_source_y[2];
             char move_dest_x[2];
@@ -280,3 +288,30 @@ int checkValidityOfMovePositionString(char *movePosSting){
     return 1;
 }
 
+int checkStructureOfMovePositionString(char *movePosSting){
+    if (movePosSting == NULL){
+        return 0;
+    }
+    if (*movePosSting != '<'){
+        return 0;
+    }
+    movePosSting++;
+    while (*movePosSting != ',' && *movePosSting != '\0'){
+        movePosSting++;
+    }
+    if (*movePosSting == '\0'){
+        return 0;
+    }
+    movePosSting++;
+    while (*movePosSting != '>' && *movePosSting != '\0'){
+        movePosSting++;
+    }
+    if (*movePosSting == '\0'){
+        return 0;
+    }
+    movePosSting++;
+    if (*movePosSting != '\0'){
+        return 0;
+    }
+    return 1;
+}

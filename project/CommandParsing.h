@@ -176,4 +176,6 @@ GAME_STATE_COMMAND_NAME parseStringToGameCommandEnum(char *commandString);
 
 int checkValidityOfMovePositionString(char *movePosSting);
 
+int checkStructureOfMovePositionString(char *movePosSting);
+
 #endif //PROJECT_COMMANDPARSING_H
