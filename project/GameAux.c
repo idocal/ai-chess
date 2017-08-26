@@ -157,7 +157,7 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
         }
 
         case MOVE : {
-            if (isOutOfBounds(move->destRowIndex, move->destColIndex)) {
+            if (move == NULL) {
                 printf(INVALID_POSITION_MESSAGE);
                 return 3; // should not print board
             }
