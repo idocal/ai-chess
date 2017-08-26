@@ -7,6 +7,7 @@
 #define UNDO_CAPACITY 6
 #define color(player) ((player == 0) ? "black" : "white")
 #define opponent(player) ((char) (1 - player))
+#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
 
 // Match settings state messages
 #define INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
@@ -28,7 +29,10 @@
 #define CHECKMATE_MESSAGE "Checkmate! %s player wins the game\n"
 #define TIE_MESSAGE "The game is tied\n"
 #define CHECK_MESSAGE "Check: %s King is threatened!\n"
+#define CHECK_AI_MESSAGE "Check!\n"
 
+int applyGameState(CHESS_GAME *);
+int AIMove(CHESS_MATCH *, MOVES_STACK *);
 
 int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *cmd) {
     SETTING_STATE_COMMAND_NAME name = cmd->command_name;
@@ -121,7 +125,7 @@ void printUndoMessage(CHESS_GAME *game, GAME_MOVE *move) {
     sourceX += '1'; destX += '1';
     sourceY += 'A'; destY += 'A';
 
-    printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n", color(player), sourceX, sourceY, destX, destY);
+    printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n", color(player), destX, destY, sourceX, sourceY);
 }
 
 void handleUndoMove(CHESS_GAME *game, MOVES_STACK *stack) {
@@ -141,21 +145,30 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
     int y = cmd->y;
     char player = game->currentPlayer;
 
-    int destX = move->destRowIndex;
-    int destY = move->destColIndex;
-    int sourceX = move->sourceRowIndex;
-    int sourceY = move->sourceColIndex;
+    if (move != NULL) { // update move original symbols for revert
+        move->sourceOriginalSymbol = matGet(game->gameBoard, move->sourceRowIndex, move->sourceColIndex);
+        move->destOriginalSymbol = matGet(game->gameBoard, move->destRowIndex, move->destColIndex);
+    }
 
     switch (name) {
         case INVALID_GAME_COMMAND : {
             printf(INVALID_COMMAND_ERROR);
-            return 0;
+            return 3;
         }
 
         case MOVE : {
-            if (isOutOfBounds(destX, destY)) printf(INVALID_POSITION_MESSAGE);
-            else if (!isSlotOccupied(game, sourceX, sourceY, player)) printf(NO_PLAYER_PIECE_LOCATION_MESSAGE);
-            else if (!isMoveLegal(game, move)) printf(ILLEGAL_MOVE_MESSAGE);
+            if (isOutOfBounds(move->destRowIndex, move->destColIndex)) {
+                printf(INVALID_POSITION_MESSAGE);
+                return 3; // should not print board
+            }
+            else if (!isSlotOccupied(game, move->sourceRowIndex, move->sourceColIndex, player)) {
+                printf(NO_PLAYER_PIECE_LOCATION_MESSAGE);
+                return 3; // should not print board
+            }
+            else if (!isMoveLegal(game, move)) {
+                printf(ILLEGAL_MOVE_MESSAGE);
+                return 3; // should not print board
+            }
             else {
                 performMove(game, move);
                 push(stack, move);
@@ -179,11 +192,13 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
             else if (peek(stack) == NULL) printf(EMPTY_HISTORY_MESSAGE);
             else {
                 // twice for computer's turn as well
+                switchPlayers(game);
                 handleUndoMove(game, stack);
-                game->currentPlayer = opponent(player);
+                switchPlayers(game);
                 handleUndoMove(game, stack);
-                game->currentPlayer = opponent(player);
+                printChessGameBoard(game);
             }
+            return 3;
         }
 
         case RESET : {
@@ -202,36 +217,77 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
 
 bool initiateChessGame(CHESS_MATCH *match) {
     CHESS_GAME *game = match->game;
-    GAME_STATUS state = game->status;
-    char player = game->currentPlayer;
     int mode = match->gameMode;
-    int status = 0;
     bool firstTurn = true;
+    int status = 0;
 
     MOVES_STACK *stack = createEmptyStack(UNDO_CAPACITY);
 
     // Game state loop
-    while (status == 0) {
-        if (!firstTurn) game->currentPlayer = opponent(player); // switch turns
-        firstTurn = false;
-        updateGameState(game); // detect check or checkmate or tie
-        
-        if (state == MATE) printf(CHECKMATE_MESSAGE, color(opponent(player)));
-        else if (state == TIE) printf(TIE_MESSAGE);
-        else {
-            printChessGameBoard(game);
-            if (state == CHECK) printf(CHECK_MESSAGE, color(player));
-            printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
-            GAME_STATE_COMMAND *cmd = parseUserGameCommand();
-            status = evaluateGameStateCommand(match, cmd, stack);
-            destroyGameCommand(cmd);
+    while (status == 0 || status == 3) {
+        bool shouldPrintMessage = (status == 3) ? false : true;
+
+        if (shouldPrintMessage && mode == 2) { // if message is printed, current player should not switch (only 2 players mode)
+            if (!firstTurn) switchPlayers(game); // switch turns
         }
+
+        char player = game->currentPlayer;
+        firstTurn = false;
+
+        status = applyGameState(game);
+
+        if (shouldPrintMessage) {
+            printChessGameBoard(game);
+            if (game->status == CHECK) {
+                if (mode == 1) printf(CHECK_AI_MESSAGE);
+                if (mode == 2) printf(CHECK_MESSAGE, color(player));
+            }
+            printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
+        }
+
+        GAME_STATE_COMMAND *cmd = parseUserGameCommand();
+        status = evaluateGameStateCommand(match, cmd, stack);
+        destroyGameCommand(cmd);
+
+        if (status == 0 && mode == 1) status = AIMove(match, stack); // If command passed correctly, perform AI move
     }
 
     // Game is terminated after loop
     destroyChessMatch(match);
     destroyStack(stack);
 
-    bool retValue = (status == 1) ? true : false;
+    bool retValue = (status == 1) ? true : false; // quitting the loop is only status 1 or 2.
     return retValue;
+}
+
+int applyGameState(CHESS_GAME *game) {
+    updateGameState(game); // detect check or checkmate or tie
+    GAME_STATUS state = game->status;
+    char player = game->currentPlayer;
+
+    if (state == MATE) {
+        printf(CHECKMATE_MESSAGE, color(opponent(player)));
+        return 2;
+    }
+
+    else if (state == TIE) {
+        printf(TIE_MESSAGE);
+        return 2;
+    }
+
+    return 0;
+}
+
+int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
+    CHESS_GAME *game = match->game;
+    switchPlayers(game); // switch to opponent for computer move
+    int status = applyGameState(game);
+    if (status == 0) { // game is not over
+        GAME_MOVE *AIMove = AINextMove(game, &(match->level));
+        performMove(game, AIMove);
+        push(stack, AIMove);
+        switchPlayers(game); // switch back to player
+    }
+
+    return status;
 }

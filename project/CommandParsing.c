@@ -15,6 +15,7 @@ GAME_STATE_COMMAND *createDefaultGameCommand(){
     command->filename = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
     command->x = -1;
     command->y = -1;
+    return command;
 }
 
 void destroyGameCommand(GAME_STATE_COMMAND *command){

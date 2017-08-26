@@ -27,10 +27,10 @@ typedef struct minMaxNode {
     char depth;
 } MIN_MAX_NODE;
 
-MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, char depth, char *maxDepth);
+MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, int depth, int *maxDepth);
 
 void destroyNode(MIN_MAX_NODE *node);
 
-MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, char *maxDepth);
+MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth);
 
 #endif //PROJECT_MINMAXNODE_H

@@ -65,6 +65,7 @@ void performMove(CHESS_GAME *game, GAME_MOVE *move) {
 
 void revertMove(CHESS_GAME *game, GAME_MOVE *move) {
     GAME_MOVE *inverseMove = createGameMove(game, move->destRowIndex, move->destColIndex, move->sourceRowIndex, move->sourceColIndex);
+    matSet(game->gameBoard, move->destRowIndex, move->destColIndex, move->sourceOriginalSymbol); // assign the original piece on original destination
     performMove(game, inverseMove);
     destroyGameMove(inverseMove);
 }

@@ -10,7 +10,7 @@
 #define opponent(player) ((char) (1 - player))
 
 
-MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, char *maxDepth) {
+MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, int *maxDepth) {
     MIN_MAX_NODE *head = NULL;
     MIN_MAX_NODE *current = head;
     CHESS_GAME *game = parent->game;
@@ -61,7 +61,7 @@ MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, char *maxDepth)
     return head;
 }
 
-int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, char *maxDepth) {
+int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, int *maxDepth) {
 
     if (node->alpha >= node->beta){
         return 0;
@@ -117,7 +117,7 @@ int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, char *maxDepth) {
     return 1;
 }
 
-GAME_MOVE *AINextMove(CHESS_GAME *game, char *maxDepth) {
+GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
     char player = game->currentPlayer;
     NODE_TYPE type = (player == 1) ? MAX : MIN;
     MIN_MAX_NODE *root = createTreeRoot(type, game, maxDepth);
@@ -145,7 +145,7 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, char *maxDepth) {
                 }
             }
 
-            if (root->type == MIN && currentChild->value < root->move){
+            if (root->type == MIN && currentChild->value < root->value){
                 root->value = currentChild->value;
                 root->beta = currentChild->value;
                 if (AINextMove == NULL) {

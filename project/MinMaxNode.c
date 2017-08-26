@@ -7,9 +7,9 @@
 #define SUFFICIENT_MIN -10000
 #define SUFFICIENT_MAX 10000
 
-bool isLeaf(char depth, char maxDepth);
+bool isLeaf(int depth, int maxDepth);
 
-MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, char depth, char *maxDepth) {
+MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, int depth, int *maxDepth) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
     node->type = type;
@@ -25,7 +25,7 @@ MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int be
     return node;
 }
 
-MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, char *maxDepth) {
+MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
     node->type = type;
@@ -49,7 +49,7 @@ void destroyNode(MIN_MAX_NODE *node) {
     free(node);
 }
 
-bool isLeaf(char depth, char maxDepth) {
+bool isLeaf(int depth, int maxDepth) {
     if (depth == maxDepth)
         return true;
     else

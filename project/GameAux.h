@@ -12,6 +12,7 @@
 #include "GameStates.h"
 #include "XMLLoadParser.h"
 #include "XMLSaveParser.h"
+#include "MinMaxTree.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -42,6 +43,7 @@ bool initiateChessMatch(CHESS_MATCH **match);
  * Loops through the user moves during game state.
  *
  * @param match
+ * @param mode (1 or 2)
  * @return true iff resetting (this means program is still live)
  */
 bool initiateChessGame(CHESS_MATCH *match);
