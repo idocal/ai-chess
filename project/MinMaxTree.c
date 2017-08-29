@@ -24,18 +24,37 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
                                                                        node->alpha, node->beta, node->depth + 1,
                                                                        maxDepth);
 
+                            if (childNode == NULL) return;
                             evaluateNode(childNode, maxDepth);
 
                             if (node->type == MAX && childNode->value > node->value){
                                 node->value = childNode->value;
                                 node->alpha = childNode->value;
-                                if (isRoot) *AINextMove = childNode->move;
+                                if (isRoot) {
+                                    if (*AINextMove == NULL){
+                                        *AINextMove = copyGameMove(childNode->move);
+                                    }
+                                    else{
+                                        GAME_MOVE *tmpMove = *AINextMove;
+                                        *AINextMove = copyGameMove(childNode->move);
+                                        destroyGameMove(tmpMove);
+                                    }
+                                }
                             }
 
                             if (node->type == MIN && childNode->value < node->value){
                                 node->value = childNode->value;
                                 node->beta = childNode->value;
-                                if (isRoot) *AINextMove = childNode->move;
+                                if (isRoot) {
+                                    if (*AINextMove == NULL){
+                                        *AINextMove = copyGameMove(childNode->move);
+                                    }
+                                    else{
+                                        GAME_MOVE *tmpMove = *AINextMove;
+                                        *AINextMove = copyGameMove(childNode->move);
+                                        destroyGameMove(tmpMove);
+                                    }
+                                }
                             }
 
                             destroyNode(childNode);
@@ -93,5 +112,6 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
     GAME_MOVE *AINextMove = NULL;
     loopAllPossibleMoves(root, maxDepth, true, &AINextMove);
 
+    destroyNode(root);
     return AINextMove;
 }

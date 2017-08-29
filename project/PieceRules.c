@@ -206,6 +206,15 @@ MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool incl
     return NULL;
 }
 
+char *pieceName(char piece) {
+    if (piece == 'm' || piece == 'M') return "pawn";
+    if (piece == 'b' || piece == 'B') return "bishop";
+    if (piece == 'n' || piece == 'N') return "knight";
+    if (piece == 'r' || piece == 'R') return "rook";
+    if (piece == 'q' || piece == 'Q') return "queen";
+    if (piece == 'k' || piece == 'K') return "king";
+}
+
 MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
     MATRIX *movesMatrix = matNew(nRows, nCols);
     if (movesMatrix == NULL) {

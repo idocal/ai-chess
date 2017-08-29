@@ -185,6 +185,14 @@ char pieceByLocation(CHESS_GAME *game, GAME_MOVE *move);
 MATRIX *piecePossibleMoves(CHESS_GAME *game, char piece, int x, int y, bool includeCheck);
 
 /**
+ * Evaluates the piece name that is represented by char piece
+ *
+ * @param piece
+ * @return string with the name (in lowercase) of the evaluated piece
+ */
+char *pieceName(char piece);
+
+/**
  * Calculate the pawn's possible moves according to location <x,y>
  * and a specified game state
  *

@@ -13,6 +13,13 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
                                int *maxDepth) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
+    node->move = move;
+    node->type = type;
+    node->alpha = alpha;
+    node->beta = beta;
+    node->value = (type == MIN) ? SUFFICIENT_MAX : SUFFICIENT_MIN;
+    node->isLeaf = isLeaf(depth, *maxDepth);
+    node->depth = depth;
 
     node->game = copyChessGame(game);
     if (node->game == NULL) return NULL;
@@ -20,13 +27,6 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
     nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
     performMove(nodeGame, node->move); // update move on the board
 
-    node->type = type;
-    node->move = move;
-    node->alpha = alpha;
-    node->beta = beta;
-    node->value = (type == MIN) ? SUFFICIENT_MAX : SUFFICIENT_MIN;
-    node->isLeaf = isLeaf(depth, *maxDepth);
-    node->depth = depth;
     return node;
 }
 

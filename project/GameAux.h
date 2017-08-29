@@ -16,6 +16,38 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define UNDO_CAPACITY 6
+#define PIECE_NAME_SIZE 512
+#define color(player) ((player == 0) ? "black" : "white")
+#define opponent(player) ((char) (1 - player))
+#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
+
+// General messages
+#define FATAL_ERROR_MESSAGE "A fatal error occurred."
+
+// Match settings state messages
+#define INVALID_COMMAND_ERROR "Invalid command. Please try again\n"
+#define SET_ONE_PLAYER_COMMAND "Game mode is set to 1 player\n"
+#define SET_TWO_PLAYERS_COMMAND "Game mode is set to 2 players\n"
+#define WRONG_GAME_MODE_COMMAND "Wrong game mode\n"
+#define WRONG_DIFFICULTY_LEVEL_ERROR "Wrong difficulty level. the value should be between 1 to 5\n"
+#define LOAD_FILE_ERROR "Eror: File doesn't exist or cannot be opened\n"
+#define EXIT_MESSAGE "Exiting...\n"
+
+// Game state messages
+#define NEXT_MOVE_MESSAGE "player - enter your move:\n"
+#define INVALID_POSITION_MESSAGE "Invalid position on the board\n"
+#define NO_PLAYER_PIECE_LOCATION_MESSAGE "The specified position does not contain your piece\n"
+#define ILLEGAL_MOVE_MESSAGE "Illegal move\n"
+#define UNDO_UNAVAILABLE_MESSAGE "Undo command not avaialbe in 2 players mode\n"
+#define EMPTY_HISTORY_MESSAGE "Empty history, move cannot be undone\n"
+#define RESTARTING_MESSAGE "Restarting...\n"
+#define CHECKMATE_MESSAGE "Checkmate! %s player wins the game\n"
+#define TIE_MESSAGE "The game is tied\n"
+#define CHECK_MESSAGE "Check: %s King is threatened!\n"
+#define CHECK_AI_MESSAGE "Check!\n"
+#define COMPUTER_MOVE_MESSAGE "Computer: move %s at <%c,%c> to <%c,%c>\n"
+
 /**
  * This function evaluates the SETTING_COMMAND that has been
  * received from the user.
