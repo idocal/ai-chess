@@ -157,7 +157,7 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
 
         case SAVE : {
             writeMatchObjectToXmlFile(match, filename);
-            return 0;
+            return 3;
         }
 
         case UNDO : {
@@ -229,6 +229,8 @@ bool initiateChessGame(CHESS_MATCH *match) {
                 printf(FATAL_ERROR_MESSAGE);
             }
         }
+
+        if (game->pruningThreshold > 0) game->pruningThreshold -= 0.01;
     }
 
     // Game is terminated after loop
@@ -278,7 +280,15 @@ int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
     switchPlayers(game); // switch to opponent for computer move
     int status = applyGameState(game);
     if (status == 0) { // game is not over
-        GAME_MOVE *AIMove = AINextMove(game, &(match->level));
+        int maxDepth;
+        GAME_MOVE *AIMove = NULL;
+        if (match->level == 5) {
+            maxDepth = 4;
+            AIMove = AINextMove(game, &(maxDepth), true);
+        } else {
+            maxDepth = match->level;
+            AIMove = AINextMove(game, &(maxDepth), false);
+        }
         if (AIMove == NULL) return -1;
         performMove(game, AIMove);
         push(stack, AIMove);

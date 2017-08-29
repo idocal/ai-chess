@@ -51,6 +51,7 @@ typedef struct chess_game {
     MATRIX *gameBoard;
     GAME_STATUS status;
     char currentPlayer;
+    double pruningThreshold;
 } CHESS_GAME;
 
 

@@ -3,11 +3,16 @@
 //
 
 #include "MinMaxTree.h"
-#include "Scoring.h"
-#include "GameStates.h"
 
-void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_MOVE **AINextMove) {
+void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_MOVE **AINextMove, bool isExpert) {
     CHESS_GAME *nodeGame = node->game;
+
+    // expert level - allow pruning in some probability. not allowed in tree root
+    // the value game->pruningThreshold defines the probability of pruning and decreases as the game progresses
+    double randomNumber = (double) rand() / RAND_MAX;
+    if (isExpert == true && node->depth > 0 && randomNumber <= node->game->pruningThreshold){
+        return;
+    }
 
     // Loop through the player's pieces and detect possible moves:
     for (int x = 0; x < nRows; x++) {
@@ -25,7 +30,7 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
                                                                        maxDepth);
 
                             if (childNode == NULL) return;
-                            evaluateNode(childNode, maxDepth);
+                            evaluateNode(childNode, maxDepth, isExpert);
 
                             if (node->type == MAX && childNode->value > node->value){
                                 node->value = childNode->value;
@@ -77,7 +82,7 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
     return;
 }
 
-void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
+void evaluateNode(MIN_MAX_NODE *node, int *maxDepth, bool isExpert) {
     CHESS_GAME *nodeGame = node->game;
 
     // Halting terms:
@@ -98,11 +103,11 @@ void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
 
     // Loop through all player's possible moves
     // maxDepth "d" derives O(d) space complexity
-    loopAllPossibleMoves(node, maxDepth, false, NULL);
+    loopAllPossibleMoves(node, maxDepth, false, NULL, isExpert);
     return;
 }
 
-GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
+GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth, bool isExpert) {
     char player = game->currentPlayer;
     NODE_TYPE type = (player == 1) ? MAX : MIN;
     MIN_MAX_NODE *root = createTreeRoot(type, game, maxDepth);
@@ -110,7 +115,7 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
     if (root == NULL) return NULL;
 
     GAME_MOVE *AINextMove = NULL;
-    loopAllPossibleMoves(root, maxDepth, true, &AINextMove);
+    loopAllPossibleMoves(root, maxDepth, true, &AINextMove, isExpert);
 
     destroyNode(root);
     return AINextMove;

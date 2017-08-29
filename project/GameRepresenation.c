@@ -13,6 +13,7 @@ CHESS_GAME* createEmptyGame(){
     // default settings are regular status, white player turn empty board (no tools at all)
     game->status = REGULAR;
     game->currentPlayer = 1; // white is 1, black is 0
+    game->pruningThreshold = 0.1;
 
     // game board is a rows * cols matrix
     game->gameBoard = matNew(nRows, nCols);
@@ -31,6 +32,7 @@ CHESS_GAME* copyChessGame(CHESS_GAME *originalGame){
     }
     cpyGame->status = originalGame->status;
     cpyGame->currentPlayer = originalGame->currentPlayer;
+    cpyGame->pruningThreshold = originalGame->pruningThreshold;
     for (int i = 0; i < nRows; ++i){
         for (int j = 0; j < nCols; ++j){
             char originalVal = matGet(originalGame->gameBoard, i, j);

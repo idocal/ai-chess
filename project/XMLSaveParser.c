@@ -22,8 +22,13 @@ int writeXMLStringToFile(char *xmlString, char* addressToFile){
         return -1;
     }
     int xmlLength = strlen(xmlString);
-    fwrite(xmlString, sizeof(char), xmlLength, fp);
-    return 0;
+    int bytesWritten = fwrite(xmlString, sizeof(char), xmlLength, fp);
+    fclose(fp);
+    if (bytesWritten == xmlLength) {
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 char *transformMatchToXMLString(CHESS_MATCH *match){
