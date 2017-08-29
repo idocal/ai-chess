@@ -47,6 +47,42 @@ int pieceScore(char piece) {
     }
 }
 
+int expertPieceLegend(char piece) {
+    if (piece == 'r' || piece == 'R') return 5;
+    if (piece == 'n' || piece == 'N' || piece == 'b' || piece == 'B') return 5;
+    if (piece == 'q' || piece == 'Q') return 9;
+    if (piece == 'k' || piece == 'K') return 15;
+}
+
+int threatenedScore(CHESS_GAME *game, char player) {
+    MATRIX *board = game->gameBoard;
+    int score = 0;
+    for (int x = 0; x < nRows; x++) {
+        for (int y = 0; y < nCols; y++) {
+            char piece = matGet(board, x, y);
+            if (pieceOwner(piece, player) == 1 && piece != 'm' && piece != 'M') { // not checking pawns
+                int pieceThreatenedCounter = 0;
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nCols; j++) {
+                        char opponentPiece = matGet(board, i, j);
+                        char opponent = opponent(player);
+                        if (pieceOwner(opponentPiece, opponent) == 1) { // check opponent piece possible moves
+                            MATRIX *possibleMoves = piecePossibleMoves(game, opponentPiece, i, j, true);
+                            pieceThreatenedCounter += matGet(possibleMoves, x, y); // if possible move is (x,y) add to counter
+                            matDestroy(possibleMoves);
+                        }
+                    }
+                }
+
+                score += expertPieceLegend(piece) * pieceThreatenedCounter;
+
+            }
+
+        }
+    }
+    return score;
+}
+
 int score(CHESS_GAME *game) {
     MATRIX *board = game->gameBoard;
     int score = 0;
@@ -56,4 +92,15 @@ int score(CHESS_GAME *game) {
         }
     }
     return score;
+}
+
+int expertScore(CHESS_GAME *game) {
+    int expertModeScore = 0;
+
+    // combine naive scoring function with expert scoring function. give a different weight to each scoring function
+    expertModeScore += 3 * score(game); // original score function gets weight 3
+    expertModeScore += threatenedScore(game, opponent(game->currentPlayer));
+    expertModeScore -= threatenedScore(game, game->currentPlayer);
+
+    return expertModeScore;
 }
