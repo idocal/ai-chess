@@ -6,26 +6,8 @@
 #include "Scoring.h"
 #include "GameStates.h"
 
-void
-
-void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
+void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_MOVE **AINextMove) {
     CHESS_GAME *nodeGame = node->game;
-
-    // Halting terms:
-    if (isCheckMate(nodeGame)){
-        node->value = (nodeGame->currentPlayer == 0) ? INT_MAX : INT_MIN;
-        return;
-    }
-
-    if (isTie(nodeGame)) {
-        node->value = 0;
-        return;
-    }
-
-    if (node->isLeaf){
-        node->value = score(nodeGame);
-        return;
-    }
 
     // Loop through the player's pieces and detect possible moves:
     for (int x = 0; x < nRows; x++) {
@@ -47,11 +29,13 @@ void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
                             if (node->type == MAX && childNode->value > node->value){
                                 node->value = childNode->value;
                                 node->alpha = childNode->value;
+                                if (isRoot) *AINextMove = childNode->move;
                             }
 
                             if (node->type == MIN && childNode->value < node->value){
                                 node->value = childNode->value;
                                 node->beta = childNode->value;
+                                if (isRoot) *AINextMove = childNode->move;
                             }
 
                             destroyNode(childNode);
@@ -74,6 +58,31 @@ void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
     return;
 }
 
+void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
+    CHESS_GAME *nodeGame = node->game;
+
+    // Halting terms:
+    if (isCheckMate(nodeGame)){
+        node->value = (nodeGame->currentPlayer == 0) ? INT_MAX : INT_MIN;
+        return;
+    }
+
+    if (isTie(nodeGame)) {
+        node->value = 0;
+        return;
+    }
+
+    if (node->isLeaf){
+        node->value = score(nodeGame);
+        return;
+    }
+
+    // Loop through all player's possible moves
+    // maxDepth "d" derives O(d) space complexity
+    loopAllPossibleMoves(node, maxDepth, false, NULL);
+    return;
+}
+
 GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
     char player = game->currentPlayer;
     NODE_TYPE type = (player == 1) ? MAX : MIN;
@@ -82,4 +91,7 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
     if (root == NULL) return NULL;
 
     GAME_MOVE *AINextMove = NULL;
+    loopAllPossibleMoves(root, maxDepth, true, &AINextMove);
+
+    return AINextMove;
 }
