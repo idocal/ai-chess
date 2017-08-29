@@ -9,6 +9,9 @@
 #include "limits.h"
 #include "stdbool.h"
 
+#define opposite(type) ((type == MIN) ? MAX : MIN)
+#define opponent(player) ((char) (1 - player))
+
 typedef enum nodeType {
     MIN,
     MAX
@@ -18,16 +21,14 @@ typedef struct minMaxNode {
     NODE_TYPE type;
     CHESS_GAME *game;
     GAME_MOVE *move;
-    struct minMaxNode *children;
-    struct minMaxNode *next;
     int value;
     int alpha;
     int beta;
     bool isLeaf;
-    char depth;
+    int depth;
 } MIN_MAX_NODE;
 
-MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, int depth, int *maxDepth);
+MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move, int alpha, int beta, int depth, int *maxDepth);
 
 void destroyNode(MIN_MAX_NODE *node);
 

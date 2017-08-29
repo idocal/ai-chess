@@ -9,14 +9,19 @@
 
 bool isLeaf(int depth, int maxDepth);
 
-MIN_MAX_NODE *createEmptyNode(NODE_TYPE type, GAME_MOVE *move, int alpha, int beta, int depth, int *maxDepth) {
+MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move, int alpha, int beta, int depth,
+                               int *maxDepth) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
+
+    node->game = copyChessGame(game);
+    if (node->game == NULL) return NULL;
+    CHESS_GAME *nodeGame = node->game;
+    nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
+    performMove(nodeGame, node->move); // update move on the board
+
     node->type = type;
-    node->game = NULL;
     node->move = move;
-    node->children = NULL;
-    node->next = NULL;
     node->alpha = alpha;
     node->beta = beta;
     node->value = (type == MIN) ? SUFFICIENT_MAX : SUFFICIENT_MIN;
@@ -32,8 +37,6 @@ MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth) {
     node->game = copyChessGame(game);
     if (node->game == NULL) return NULL;
     node->move = NULL;
-    node->children = NULL;
-    node->next = NULL;
     node->alpha = INT_MIN;
     node->beta = INT_MAX;
     node->value = (type == MIN) ? SUFFICIENT_MAX : SUFFICIENT_MIN;

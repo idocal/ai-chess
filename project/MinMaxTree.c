@@ -6,115 +6,72 @@
 #include "Scoring.h"
 #include "GameStates.h"
 
-#define opposite(type) ((type == MIN) ? MAX : MIN)
-#define opponent(player) ((char) (1 - player))
+void
 
-
-MIN_MAX_NODE *createChildrenEmptyNodesList(MIN_MAX_NODE *parent, int *maxDepth) {
-    MIN_MAX_NODE *head = NULL;
-    MIN_MAX_NODE *current = head;
-    CHESS_GAME *game = parent->game;
-    MATRIX *board = game->gameBoard;
-    NODE_TYPE type = parent->type;
-    int alpha = parent->alpha;
-    int beta = parent->beta;
-    char player = game->currentPlayer;
-    char depth = parent->depth;
-
-    for (int x = 0; x < nRows; x++) {
-        for (int y = 0; y < nCols; y++) {
-
-            char piece = matGet(board, x, y);
-            if (pieceOwner(piece, player) == 1) {
-                MATRIX *possibleMoves = getPossibleMoves(game, x, y);
-                if (possibleMoves == NULL) return NULL;
-
-                for (int i = 0; i < nRows; i++) {
-                    for (int j = 0; j < nCols; j++) {
-
-                        char isPossible = matGet(possibleMoves, i, j);
-                        if (isPossible) {
-                            GAME_MOVE *move = createGameMove(game, x, y, i, j);
-                            if (move == NULL) return  NULL;
-
-                            MIN_MAX_NODE *node = createEmptyNode(opposite(type), move, alpha, beta, depth+1, maxDepth);
-                            if (node == NULL) return NULL;
-
-                            if (head == NULL) {
-                                head = node;
-                                current = head;
-                            } else {
-                                current->next = node;
-                                current = current->next;
-                            }
-                        }
-
-                    }
-                }
-
-                matDestroy(possibleMoves);
-            }
-
-        }
-    }
-
-    return head;
-}
-
-int evaluateNode(MIN_MAX_NODE *node, CHESS_GAME *game, int *maxDepth) {
-
-    if (node->alpha >= node->beta){
-        return 0;
-    }
-
-    node->game = copyChessGame(game);
-    if (node->game == NULL) return -1;
-
+void evaluateNode(MIN_MAX_NODE *node, int *maxDepth) {
     CHESS_GAME *nodeGame = node->game;
 
-    nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
-    if (node->move != NULL) {
-        performMove(nodeGame, node->move);
+    // Halting terms:
+    if (isCheckMate(nodeGame)){
+        node->value = (nodeGame->currentPlayer == 0) ? INT_MAX : INT_MIN;
+        return;
     }
 
-    if (isCheckMate(game)){
-        node->value = (game->currentPlayer == 0) ? INT_MAX : INT_MIN;
-        return 1;
-    }
-
-    if (isTie(game)) {
+    if (isTie(nodeGame)) {
         node->value = 0;
-        return 1;
+        return;
     }
 
     if (node->isLeaf){
-        node->value = score(game);
-        return 1;
+        node->value = score(nodeGame);
+        return;
     }
 
-    node->children = createChildrenEmptyNodesList(node, maxDepth);
-    if (node->children == NULL) return -1;
-    MIN_MAX_NODE *currentChild = node->children;
+    // Loop through the player's pieces and detect possible moves:
+    for (int x = 0; x < nRows; x++) {
+        for (int y = 0; y < nCols; y++) {
+            char piece = matGet(nodeGame->gameBoard, x, y);
+            if (pieceOwner(piece, nodeGame->currentPlayer) == 1) { // if board(x,y) is player's piece
+                MATRIX *possibleMoves = piecePossibleMoves(nodeGame, piece, x, y, true);
+                // Loop through the possible moves of the current piece:
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nCols; j++) {
+                        if (matGet(possibleMoves, i, j)){ // (i,j) is indeed a possible move
+                            GAME_MOVE *nextMove = createGameMove(nodeGame, x, y, i, j);
+                            MIN_MAX_NODE *childNode = createMinMaxNode(opposite(node->type), nodeGame, nextMove,
+                                                                       node->alpha, node->beta, node->depth + 1,
+                                                                       maxDepth);
 
-    while (currentChild != NULL){
-        int evalResult = evaluateNode(currentChild, nodeGame, maxDepth);
-        if (evalResult == 1){
-            if (node->type == MAX && currentChild->value > node->value){
-                node->value = currentChild->value;
-                node->alpha = currentChild->value;
+                            evaluateNode(childNode, maxDepth);
+
+                            if (node->type == MAX && childNode->value > node->value){
+                                node->value = childNode->value;
+                                node->alpha = childNode->value;
+                            }
+
+                            if (node->type == MIN && childNode->value < node->value){
+                                node->value = childNode->value;
+                                node->beta = childNode->value;
+                            }
+
+                            destroyNode(childNode);
+                        }
+
+                        if (node->alpha >= node->beta) break; // prune this node
+                    }
+
+                    if (node->alpha >= node->beta) break; // prune this node
+                }
+
             }
 
-            if (node->type == MIN && currentChild->value < node->value){
-                node->value = currentChild->value;
-                node->beta = currentChild->value;
-            }
+            if (node->alpha >= node->beta) break; // prune this node
         }
-        MIN_MAX_NODE *nextChild = currentChild->next;
-        destroyNode(currentChild);
-        currentChild = nextChild;
+
+        if (node->alpha >= node->beta) break; // prune this node
     }
 
-    return 1;
+    return;
 }
 
 GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
@@ -124,43 +81,5 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth) {
 
     if (root == NULL) return NULL;
 
-    root->children = createChildrenEmptyNodesList(root, maxDepth);
-    if (root->children == NULL) return NULL;
-
     GAME_MOVE *AINextMove = NULL;
-
-    MIN_MAX_NODE *currentChild = root->children;
-
-    while (currentChild != NULL){
-        int evalResult = evaluateNode(currentChild, game, maxDepth);
-        if (evalResult == 1){
-            if (root->type == MAX && currentChild->value > root->value){
-                root->value = currentChild->value;
-                root->alpha = currentChild->value;
-                if (AINextMove == NULL) {
-                    AINextMove = copyGameMove(currentChild->move);
-                } else {
-                    destroyGameMove(AINextMove);
-                    AINextMove = copyGameMove(currentChild->move);
-                }
-            }
-
-            if (root->type == MIN && currentChild->value < root->value){
-                root->value = currentChild->value;
-                root->beta = currentChild->value;
-                if (AINextMove == NULL) {
-                    AINextMove = copyGameMove(currentChild->move);
-                } else {
-                    destroyGameMove(AINextMove);
-                    AINextMove = copyGameMove(currentChild->move);
-                }
-            }
-        }
-        MIN_MAX_NODE *nextChild = currentChild->next;
-        destroyNode(currentChild);
-        currentChild = nextChild;
-    }
-
-    destroyNode(root);
-    return AINextMove;
 }
