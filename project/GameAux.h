@@ -31,7 +31,7 @@
 #define SET_TWO_PLAYERS_COMMAND "Game mode is set to 2 players\n"
 #define WRONG_GAME_MODE_COMMAND "Wrong game mode\n"
 #define WRONG_DIFFICULTY_LEVEL_ERROR "Wrong difficulty level. the value should be between 1 to 5\n"
-#define LOAD_FILE_ERROR "Eror: File doesn't exist or cannot be opened\n"
+#define LOAD_FILE_ERROR "Error: File doesn't exist or cannot be opened\n"
 #define EXIT_MESSAGE "Exiting...\n"
 
 // Game state messages
@@ -39,7 +39,7 @@
 #define INVALID_POSITION_MESSAGE "Invalid position on the board\n"
 #define NO_PLAYER_PIECE_LOCATION_MESSAGE "The specified position does not contain your piece\n"
 #define ILLEGAL_MOVE_MESSAGE "Illegal move\n"
-#define UNDO_UNAVAILABLE_MESSAGE "Undo command not avaialbe in 2 players mode\n"
+#define UNDO_UNAVAILABLE_MESSAGE "Undo command not available in 2 players mode\n"
 #define EMPTY_HISTORY_MESSAGE "Empty history, move cannot be undone\n"
 #define RESTARTING_MESSAGE "Restarting...\n"
 #define CHECKMATE_MESSAGE "Checkmate! %s player wins the game\n"
@@ -79,5 +79,16 @@ bool initiateChessMatch(CHESS_MATCH **match);
  * @return true iff resetting (this means program is still live)
  */
 bool initiateChessGame(CHESS_MATCH *match);
+
+/**
+ * Print all possible moves for a specific piece
+ * Add "Threatened" and "Captured" marks if the game level applies so
+ *
+ * @param sourceRow
+ * @param sourceCol
+ * @param game
+ * @param withThreatAndCapture
+ */
+void handleGetMovesCommand(int sourceRow, int sourceCol, CHESS_GAME *game , bool withThreatAndCapture);
 
 #endif //PROJECT_GAMEAUX_H

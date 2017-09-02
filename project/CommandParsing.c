@@ -209,7 +209,15 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         if (secondArg != NULL){
             gameCommand->command_name = INVALID_GAME_COMMAND; // "GET_MOVES" command that has more than one string after is illegal
         } else if (checkValidityOfMovePositionString(firstArg) == 0){
-            gameCommand->command_name = INVALID_GAME_COMMAND; // the argument for the command is not valid or not valid position
+            if (checkStructureOfMovePositionString(firstArg) == 1){
+                // the structure is valid but the arguments are not
+                // this case has to be identified separately in order to print the correct error message
+                gameCommand->command_name = GET_MOVES;
+                gameCommand->x = -1;
+                gameCommand->y = -1;
+            } else{
+                gameCommand->command_name = INVALID_GAME_COMMAND; // the argument for the command is not valid or not valid position
+            }
         } else{
             char get_move_x[2];
             char get_move_y[2];
