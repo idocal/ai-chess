@@ -87,8 +87,7 @@ bool initiateChessGame(CHESS_MATCH *match);
  * @param sourceRow
  * @param sourceCol
  * @param game
- * @param withThreatAndCapture
  */
-void handleGetMovesCommand(int sourceRow, int sourceCol, CHESS_GAME *game , bool withThreatAndCapture);
+void handleGetMovesCommand(int sourceRow, int sourceCol, CHESS_GAME *game);
 
 #endif //PROJECT_GAMEAUX_H

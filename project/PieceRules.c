@@ -366,6 +366,28 @@ bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move) {
     return retValue;
 }
 
+bool isThreatened(CHESS_GAME *game, int x, int y) {
+    char opponent = (char) 1 - (game->currentPlayer);
+    bool threatened = false;
+
+    for (int i = 0; i < nRows; ++i) {
+        for (int j = 0; j < nCols; ++j) {
+            char piece = matGet(game->gameBoard, i, j);
+            if (pieceOwner(piece, opponent) == 1) { // piece is opponent's
+                MATRIX *possibleMoves = getPossibleMoves(game, i , j);
+                if (matGet(possibleMoves, x, y) == 1) { // Opponent can move to <x,y>
+                    threatened = true;
+                    matDestroy(possibleMoves);
+                    return threatened;
+                }
+                matDestroy(possibleMoves);
+            }
+        }
+    }
+
+    return threatened;
+}
+
 MATRIX *getPossibleMoves(CHESS_GAME *game, int x, int y) {
     MATRIX *board = game->gameBoard;
     char piece = matGet(board, x,y);

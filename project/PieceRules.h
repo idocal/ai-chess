@@ -258,4 +258,13 @@ MATRIX *queenPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool inc
  */
 MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck);
 
+/**
+ * Determines if a piece located in <x,y> is threatened by any of opponents pieces.
+ * @param game
+ * @param x
+ * @param y
+ * @return true iff piece is threatened.
+ */
+bool isThreatened(CHESS_GAME *game, int x, int y);
+
 #endif //PROJECT_PIECERULES_H

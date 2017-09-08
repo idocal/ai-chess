@@ -108,6 +108,39 @@ void handleUndoMove(CHESS_GAME *game, MOVES_STACK *stack) {
     destroyGameMove(prevMove);
 }
 
+void handleGetMovesCommand(int x, int y, CHESS_GAME *game){
+    MATRIX *possibleMoves = getPossibleMoves(game, x, y);
+    for (int i = 0; i < nRows; ++i) {
+        for (int j = 0; j < nCols; ++j) {
+            if (matGet(possibleMoves, i, j) == 1) { // if move is a possible one
+                char iChar = (char) (i + '1');
+                char jChar = (char) (j + 'A');
+                char destPiece = matGet(game->gameBoard, i, j);
+                bool capture = (destPiece != '_') ? true : false; // since cell can not be player's
+
+                CHESS_GAME *cpyGame = copyChessGame(game);
+                GAME_MOVE *move = createGameMove(game, x, y, i, j); // move <x,y> -> <i,j>
+                performMove(cpyGame, move);
+                bool threat = isThreatened(cpyGame, i, j);
+                destroyChessGame(cpyGame);
+                destroyGameMove(move);
+
+                if (capture && threat){
+                    printf("<%c,%c>*^\n", iChar, jChar); // <x,y>*^
+                } else if (capture){
+                    printf("<%c,%c>^\n", iChar, jChar); // <x,y>^
+                } else if (threat){
+                    printf("<%c, %c>*\n", iChar, jChar); // <x,y>*
+                } else{
+                    printf("<%c,%c>\n", iChar, jChar); // <x,y>
+                }
+
+            }
+        }
+    }
+    matDestroy(possibleMoves);
+}
+
 int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_STACK *stack) {
     CHESS_GAME *game = match->game;
     GAME_STATE_COMMAND_NAME name = cmd->command_name;
@@ -151,8 +184,10 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
         }
 
         case GET_MOVES : {
-            //TODO: Add extra threatened recognition functionality inside handleGetMoves function
-            if (x == -1 && y == -1){
+            if (match->level > 2) { // feature is not supported for level > 2
+                return 3; // should not print board
+            }
+            if (x == -1 || y == -1){
                 printf(INVALID_POSITION_MESSAGE);
                 return 3; // should not print board
             }
@@ -160,11 +195,7 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
                 printf(NO_PLAYER_PIECE_LOCATION_MESSAGE);
                 return 3;
             }
-            if (level <= 2){
-                handleGetMovesCommand(x, y, game, true);
-            } else{
-                handleGetMovesCommand(x, y, game, false);
-            }
+            handleGetMovesCommand(x, y, game);
             return 3;
         }
 
@@ -314,37 +345,3 @@ int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
     return status;
 }
 
-void handleGetMovesCommand(int sourceRow, int sourceCol, CHESS_GAME *game , bool withThreatAndCapture){
-    int x = sourceRow;
-    int y = sourceCol;
-    MATRIX *possibleMoves = getPossibleMoves(game, x, y);
-    for (int i = 0; i < nRows; ++i) {
-        for (int j = 0; j < nCols; ++j) {
-            if (matGet(possibleMoves, i, j) == 1) {
-                char iChar = i + '1';
-                char jChar = j + 'A';
-                if (withThreatAndCapture == false) { // just print don't check for threat or capture
-                    printf("<%c,%c>\n", iChar, jChar);
-                }
-                else{ // need to check threat and capture
-                    char destPiece = matGet(game->gameBoard, i, j);
-                    bool capture = (destPiece != '_') ? true : false;
-                    // if it is not a blank place than it must be an opponent piece because the move is legal
-
-                    //TODO: Complete is threatened logic
-                    bool threat = false;
-                    if (capture && threat){
-                        printf("<%c,%c>*^\n", iChar, jChar);
-                    } else if (capture &&! threat){
-                        printf("<%c,%c>^\n", iChar, jChar);
-                    } else if (!capture && threat){
-                        printf("<%c, %c>*\n", iChar, jChar);
-                    } else{
-                        printf("<%c,%c>\n", iChar, jChar);
-                    }
-                }
-            }
-        }
-    }
-    matDestroy(possibleMoves);
-}
