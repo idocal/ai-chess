@@ -97,7 +97,11 @@ void evaluateNode(MIN_MAX_NODE *node, int *maxDepth, bool isExpert) {
     }
 
     if (node->isLeaf){
-        node->value = score(nodeGame);
+        if (isExpert) {
+            node->value = expertScore(nodeGame);
+        } else {
+            node->value = score(nodeGame);
+        }
         return;
     }
 
