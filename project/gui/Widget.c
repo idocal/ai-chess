@@ -3,8 +3,8 @@
 //
 
 #include "Widget.h"
-Widget *createWidget(int(*createWidgetFunc)(Widget *, SDL_Renderer *), SDL_Renderer *renderer) {
-    Widget *widget = calloc(sizeof(Widget), sizeof(char));
+WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Renderer *renderer) {
+    WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
 
     int res = (*createWidgetFunc)(widget, renderer);
@@ -13,24 +13,25 @@ Widget *createWidget(int(*createWidgetFunc)(Widget *, SDL_Renderer *), SDL_Rende
     return widget;
 }
 
-void destroyWidget(Widget *widget) {
+void destroyWidget(WIDGET *widget) {
+    if (widget == NULL) return;
     SDL_DestroyTexture(widget->texture);
     free(widget);
 }
 
-int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, Widget *widget) {
+int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, WIDGET *widget) {
     SDL_Surface *loadingSurface = NULL;
     strcpy(widget->imgPath, imgPath);
 
-    // Widget rect
+    // WIDGET rect
     SDL_Rect rect = {.x = x, .y = y, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
     widget->rect = rect;
 
-    // Widget surface, used to create texture and then destroyed
+    // WIDGET surface, used to create texture and then destroyed
     loadingSurface = SDL_LoadBMP(imgPath);
     if (loadingSurface == NULL) return -1;
 
-    // Widget texture
+    // WIDGET texture
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
     if (texture == NULL) {
         SDL_FreeSurface(loadingSurface);

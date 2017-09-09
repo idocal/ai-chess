@@ -18,12 +18,12 @@ typedef struct widget {
     SDL_Texture *texture;
     int (*handleEvent) (SDL_Event *event);
     char imgPath[1024];
-} Widget;
+} WIDGET;
 
-Widget *createWidget(int(*createWidgetFunc)(Widget *widget, SDL_Renderer *renderer), SDL_Renderer *);
+WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *widget, SDL_Renderer *renderer), SDL_Renderer *);
 
-void destroyWidget(Widget *widget);
+void destroyWidget(WIDGET *widget);
 
-int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, Widget *widget);
+int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, WIDGET *widget);
 
 #endif //PROJECT_WIDGET_H

@@ -16,14 +16,14 @@
 typedef struct generic_window {
     SDL_Window *window;
     SDL_Renderer *renderer;
-    Widget **widgets;
+    WIDGET **widgets;
     int numWidgets;
-} GenericWindow;
+} GENERIC_WINDOW;
 
-GenericWindow *createGenericWindow(int(*drawFunc)(GenericWindow* window));
+GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* window));
+void destroyWindow(GENERIC_WINDOW *);
 
 // Common buttons event handlers
-
 int exitEventHandler(SDL_Event *event);
 int loadGameEventHandler(SDL_Event *event);
 

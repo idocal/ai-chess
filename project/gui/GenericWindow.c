@@ -4,12 +4,23 @@
 
 #include "GenericWindow.h"
 
-GenericWindow *createGenericWindow(int(*drawFunc)(GenericWindow*)) {
-    GenericWindow *genericWindow = calloc(sizeof(GenericWindow), sizeof(char));
+GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*)) {
+    GENERIC_WINDOW *genericWindow = (GENERIC_WINDOW *) calloc(sizeof(GENERIC_WINDOW), sizeof(char));
     if (genericWindow == NULL) return NULL;
 
     (*drawFunc)(genericWindow);
     return genericWindow;
+}
+
+void destroyWindow(GENERIC_WINDOW *genericWindow) {
+    if (genericWindow == NULL) return;
+
+    for (int i = 0; i < genericWindow->numWidgets; ++i) {
+        destroyWidget(genericWindow->widgets[i]);
+    }
+    SDL_DestroyRenderer(genericWindow->renderer);
+    SDL_DestroyWindow(genericWindow->window);
+    free(genericWindow);
 }
 
 int exitEventHandler(SDL_Event *event) {

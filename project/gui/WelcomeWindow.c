@@ -4,7 +4,7 @@
 
 #include "WelcomeWindow.h"
 
-int drawWelcomeWindow(GenericWindow *genericWindow) {
+int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
 
@@ -26,7 +26,7 @@ int drawWelcomeWindow(GenericWindow *genericWindow) {
     }
     genericWindow->renderer = renderer;
 
-    Widget **widgets = calloc(numWidgets, sizeof(Widget *));
+    WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
         SDL_DestroyRenderer(renderer);
         genericWindow->window = NULL;
@@ -77,20 +77,18 @@ int drawWelcomeWindow(GenericWindow *genericWindow) {
 
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(5000);
-
     return 1;
 }
 
-int createNewGameButton(Widget *widget, SDL_Renderer *renderer) {
+int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", newGameEventHandler, renderer, widget);
 }
 
-int createLoadGameButton(Widget *widget, SDL_Renderer *renderer) {
+int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", loadGameEventHandler, renderer, widget);
 }
 
-int createExitButton(Widget *widget, SDL_Renderer *renderer) {
+int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", loadGameEventHandler, renderer, widget);
 }
 
