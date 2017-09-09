@@ -9,13 +9,15 @@
 #include <SDL_video.h>
 #include "Widget.h"
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
+#define NARROW_WINDOW_WIDTH 550
+
 typedef struct generic_window {
     SDL_Window *window;
     SDL_Renderer *renderer;
     Widget **widgets;
     int numWidgets;
-    int height;
-    int width;
 } GenericWindow;
 
 GenericWindow *createGenericWindow(int(*drawFunc)(GenericWindow* window));
