@@ -55,7 +55,7 @@ int drawWelcomeWindow(GenericWindow *genericWindow) {
 int createNewGameButton(Widget *widget, SDL_Renderer *renderer) {
     SDL_Surface *loadingSurface = NULL;
     // Widget rect
-    SDL_Rect rect = {.x = SDL_WINDOWPOS_CENTERED, .y = 64, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
+    SDL_Rect rect = {.x = 125, .y = 64, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
     widget->rect = rect;
 
     // Widget surface, used to create texture and then destroyed
@@ -68,6 +68,7 @@ int createNewGameButton(Widget *widget, SDL_Renderer *renderer) {
         SDL_FreeSurface(loadingSurface);
         return -1;
     }
+    widget->texture = texture;
 
     SDL_FreeSurface(loadingSurface);
 
