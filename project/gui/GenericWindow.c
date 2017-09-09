@@ -8,6 +8,7 @@ GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*)) {
     GENERIC_WINDOW *genericWindow = (GENERIC_WINDOW *) calloc(sizeof(GENERIC_WINDOW), sizeof(char));
     if (genericWindow == NULL) return NULL;
 
+    genericWindow->handleWindowEvent = handleWindowEvent;
     (*drawFunc)(genericWindow);
     return genericWindow;
 }
@@ -29,4 +30,30 @@ int exitEventHandler(SDL_Event *event) {
 
 int loadGameEventHandler(SDL_Event *event) {
     return 0;
+}
+
+int detectWidgetByLocation(GENERIC_WINDOW *window ,int x, int y) {
+    int widgetNum = -1;
+
+    for (int i = 0; i < window->numWidgets; ++i) {
+        int widgetX = window->widgets[i]->rect.x;
+        int widgetY = window->widgets[i]->rect.y;
+        int widgetW = window->widgets[i]->rect.w;
+        int widgetH = window->widgets[i]->rect.h;
+
+        if (x >= widgetX && x <= widgetX + widgetW && y >= widgetY && y <= widgetY +widgetH) {
+            widgetNum = i;
+            break;
+        }
+    }
+
+    return widgetNum;
+}
+
+WIDGET* handleWindowEvent(GENERIC_WINDOW *window, SDL_Event *event) {
+    if (window == NULL || event == NULL) return NULL;
+    int widgetIndex = detectWidgetByLocation(window, event->button.x, event->button.y);
+    if (widgetIndex == -1) return NULL;
+
+    return window->widgets[widgetIndex];
 }

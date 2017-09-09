@@ -7,6 +7,7 @@
 int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
+    genericWindow->type = WELCOME_WINDOW;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
@@ -92,7 +93,11 @@ int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", loadGameEventHandler, renderer, widget);
 }
 
-int newGameEventHandler(SDL_Event *event) {
-    return 0;
-}
+GENERIC_WINDOW *newGameEventHandler(SDL_Event *event, GENERIC_WINDOW *window, CHESS_MATCH *match) {
+    if (event->type == SDL_MOUSEBUTTONUP) {
 
+    } else if (event->type == SDL_MOUSEBUTTONDOWN) {
+        destroyWindow(window);
+        return createGenericWindow(drawSettingsWindow); // OK if NULL
+    }
+}

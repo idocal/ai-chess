@@ -6,16 +6,22 @@
 #define PROJECT_WELCOMEWINDOW_H
 
 #include "GenericWindow.h"
-#define COLOR_WHITE 255, 255, 255, 1
+#include "SettingsWindow.h"
+
+typedef enum welcomeWidget {
+    WELCOME_NEW_GAME,
+    WELCOME_LOAD_GAME,
+    WELCOME_EXIT,
+    WELCOME_NONE
+} WELCOME_WIDGET;
 
 int drawWelcomeWindow(GENERIC_WINDOW *genericWindow);
 
 int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer);
-int newGameEventHandler(SDL_Event *event);
+GENERIC_WINDOW *newGameEventHandler(SDL_Event *event, GENERIC_WINDOW *window, CHESS_MATCH *match);
 
 int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer);
 
 int createExitButton(WIDGET *widget, SDL_Renderer *renderer);
-
 
 #endif //PROJECT_WELCOMEWINDOW_H

@@ -8,22 +8,38 @@ GUI_MANAGER *createManager() {
     GUI_MANAGER *manager = (GUI_MANAGER *) malloc(sizeof(GUI_MANAGER));
     if (manager == NULL) return NULL;
 
-    manager->activeWindow = WELCOME_WINDOW;
     manager->genericWindow = createGenericWindow(drawWelcomeWindow);
+    if (manager->genericWindow == NULL) {
+        free(manager);
+        return NULL;
+    }
+
+    manager->match = createNewChessMatch();
+    if (manager->match == NULL) {
+        destroyWindow(manager->genericWindow);
+        free(manager);
+        return NULL;
+    }
     return manager;
 }
 
 void destroyManager(GUI_MANAGER *manager) {
     if (manager == NULL) return;
+    destroyChessMatch(manager->match);
     destroyWindow(manager->genericWindow);
     free(manager);
 }
 
 MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     if (manager == NULL || event == NULL) return NULL;
+    GENERIC_WINDOW *window = manager->genericWindow;
+    CHESS_MATCH *match = manager->match;
 
-    switch (event->type) {
-        case SDL_WINDOWEVENT :
+        if (event->type == SDL_WINDOWEVENT) {
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
-    }
+        }
+        else if (event->type == SDL_MOUSEBUTTONUP || event->type == SDL_MOUSEBUTTONDOWN) {
+            WIDGET *eventWidget = (*window->handleWindowEvent)(window, event);
+            manager->genericWindow = (*eventWidget->handleEvent)(event, window, match);
+        }
 }

@@ -45,3 +45,28 @@ int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *ev
     widget->handleEvent = eventHandler;
     return 1;
 }
+
+int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
+    SDL_Surface *loadingSurface = NULL;
+    strcpy(widget->imgPath, imgPath);
+
+    // WIDGET rect
+    SDL_Rect rect = {.x = (WINDOW_WIDTH - TITLE_WIDTH) / 2, .y = PAGE_MARGIN, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
+    widget->rect = rect;
+
+    // WIDGET surface, used to create texture and then destroyed
+    loadingSurface = SDL_LoadBMP(imgPath);
+    if (loadingSurface == NULL) return -1;
+
+    // WIDGET texture
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+    if (texture == NULL) {
+        SDL_FreeSurface(loadingSurface);
+        return -1;
+    }
+    widget->texture = texture;
+
+    SDL_FreeSurface(loadingSurface);
+
+    return 1;
+}

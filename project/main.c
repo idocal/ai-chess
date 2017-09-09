@@ -17,6 +17,7 @@ int main() {
     // Create GUI manager
     GUI_MANAGER *manager = createManager();
     if (manager == NULL) {
+        SDL_Quit();
         return 0;
     }
 

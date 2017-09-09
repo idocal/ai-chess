@@ -4,18 +4,10 @@
 
 #include "GenericWindow.h"
 #include "WelcomeWindow.h"
+#include "../MatchManagement.h"
 
 #ifndef PROJECT_GUIMANAGER_H
 #define PROJECT_GUIMANAGER_H
-
-typedef enum {
-    WELCOME_WINDOW,
-    GAME_WINDOW,
-    LOAD_WINDOW,
-    SETTINGS_MODE_WINDOW,
-    SETTINGS_DIFFICULTY_WINDOW,
-    SETTINGS_COLOR_WINDOW
-} ACTIVE_WINDOW;
 
 typedef enum {
     MANAGER_NONE,
@@ -23,8 +15,8 @@ typedef enum {
 } MANAGER_EVENT;
 
 typedef struct guiManager {
-    ACTIVE_WINDOW activeWindow;
     GENERIC_WINDOW *genericWindow;
+    CHESS_MATCH *match;
 } GUI_MANAGER;
 
 GUI_MANAGER *createManager();
