@@ -11,3 +11,11 @@ GenericWindow *createGenericWindow(int(*drawFunc)(GenericWindow*)) {
     (*drawFunc)(genericWindow);
     return genericWindow;
 }
+
+int exitEventHandler(SDL_Event *event) {
+    return 0;
+}
+
+int loadGameEventHandler(SDL_Event *event) {
+    return 0;
+}

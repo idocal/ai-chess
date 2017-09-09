@@ -10,15 +10,20 @@
 
 #define BUTTON_WIDTH 300
 #define BUTTON_HEIGHT 100
+#define BUTTON_MARGIN 15
+#define PAGE_MARGIN 64
 
 typedef struct widget {
     SDL_Rect rect;
     SDL_Texture *texture;
     int (*handleEvent) (SDL_Event *event);
+    char imgPath[1024];
 } Widget;
 
 Widget *createWidget(int(*createWidgetFunc)(Widget *widget, SDL_Renderer *renderer), SDL_Renderer *);
 
 void destroyWidget(Widget *widget);
+
+int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, Widget *widget);
 
 #endif //PROJECT_WIDGET_H

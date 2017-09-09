@@ -22,4 +22,9 @@ typedef struct generic_window {
 
 GenericWindow *createGenericWindow(int(*drawFunc)(GenericWindow* window));
 
+// Common buttons event handlers
+
+int exitEventHandler(SDL_Event *event);
+int loadGameEventHandler(SDL_Event *event);
+
 #endif //PROJECT_GENERICWINDOW_H

@@ -5,7 +5,7 @@
 #include "WelcomeWindow.h"
 
 int drawWelcomeWindow(GenericWindow *genericWindow) {
-    int numWidgets = 1;
+    int numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
 
     // Create SDL Window
@@ -34,8 +34,38 @@ int drawWelcomeWindow(GenericWindow *genericWindow) {
         SDL_Quit();
         return -1;
     }
+    genericWindow->widgets = widgets;
 
+    // Load widgets into widgets array
     widgets[0] = createWidget(createNewGameButton, renderer);
+    if (widgets[0] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[1] = createWidget(createLoadGameButton, renderer);
+    if (widgets[1] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[2] = createWidget(createExitButton, renderer);
+    if (widgets[2] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
 
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE);
     SDL_RenderClear(renderer);
@@ -53,30 +83,18 @@ int drawWelcomeWindow(GenericWindow *genericWindow) {
 }
 
 int createNewGameButton(Widget *widget, SDL_Renderer *renderer) {
-    SDL_Surface *loadingSurface = NULL;
-    // Widget rect
-    SDL_Rect rect = {.x = 125, .y = 64, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
-    widget->rect = rect;
+    return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", newGameEventHandler, renderer, widget);
+}
 
-    // Widget surface, used to create texture and then destroyed
-    loadingSurface = SDL_LoadBMP("./img/new_game.bmp");
-    if (loadingSurface == NULL) return -1;
+int createLoadGameButton(Widget *widget, SDL_Renderer *renderer) {
+    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", loadGameEventHandler, renderer, widget);
+}
 
-    // Widget texture
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-    if (texture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        return -1;
-    }
-    widget->texture = texture;
-
-    SDL_FreeSurface(loadingSurface);
-
-    // Handle events
-    widget->handleEvent = newGameEventHandler;
-    return 1;
+int createExitButton(Widget *widget, SDL_Renderer *renderer) {
+    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", loadGameEventHandler, renderer, widget);
 }
 
 int newGameEventHandler(SDL_Event *event) {
-
+    return 0;
 }
+
