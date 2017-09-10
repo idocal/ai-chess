@@ -35,6 +35,7 @@ void destroyWidget(WIDGET *widget);
 
 int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
+int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer);
 void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
@@ -43,5 +44,7 @@ void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
+int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer);
+int createExitButton(WIDGET *widget, SDL_Renderer *renderer);
 
 #endif //PROJECT_WIDGET_H

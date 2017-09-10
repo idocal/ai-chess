@@ -5,10 +5,10 @@
 #include "ColorWindow.h"
 
 int drawColorWindow(GENERIC_WINDOW *genericWindow) {
-    int numWidgets = 5;
+    signed numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_COLOR_WINDOW;
-    genericWindow->handleWindowEvent = colorWindowEventHandler;
+    genericWindow->handleWindowEvent = (void *) colorWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Choose Color", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
@@ -139,7 +139,7 @@ EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event
     }
 
     if (widgetIndex == 4) { // Start button is clicked
-        nextWindow = createGenericWindow(drawColorWindow);
+        nextWindow = createGenericWindow(drawGameWindow);
         response->window = nextWindow;
         response->status = NEW_WINDOW;
     }

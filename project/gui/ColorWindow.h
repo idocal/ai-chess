@@ -7,6 +7,7 @@
 
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
+#include "GameWindow.h"
 
 int drawColorWindow(GENERIC_WINDOW *genericWindow);
 
