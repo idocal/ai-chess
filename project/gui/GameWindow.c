@@ -6,36 +6,24 @@
 
 void setPiecesOnBoard(GENERIC_WINDOW *window);
 
-int drawGameWindow(GENERIC_WINDOW *genericWindow) {
+int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+    SDL_SetWindowSize(sdlWindow, WINDOW_WIDTH, WINDOW_HEIGHT);
 //    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     unsigned numWidgets = 1;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = GAME_WINDOW;
     genericWindow->handleWindowEvent = (void *) gameWindowEventHandler;
 
-    // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-    if (window == NULL) {
-        SDL_Quit();
-        return -1;
-    }
-    genericWindow->window = window;
-
-    // Create renderer
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
-    }
+    // Assign the application window and renderer
+    genericWindow->window = sdlWindow;
     genericWindow->renderer = renderer;
+
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
         SDL_DestroyRenderer(renderer);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -46,7 +34,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }

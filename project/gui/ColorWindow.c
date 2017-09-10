@@ -4,35 +4,21 @@
 
 #include "ColorWindow.h"
 
-int drawColorWindow(GENERIC_WINDOW *genericWindow) {
+int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     signed numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_COLOR_WINDOW;
     genericWindow->handleWindowEvent = (void *) colorWindowEventHandler;
 
-    // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Choose Color", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-    if (window == NULL) {
-        SDL_Quit();
-        return -1;
-    }
-    genericWindow->window = window;
-
-    // Create renderer
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
-    }
+    // Assign the application window and renderer
+    genericWindow->window = sdlWindow;
     genericWindow->renderer = renderer;
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
         SDL_DestroyRenderer(renderer);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -44,7 +30,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -54,7 +40,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -64,7 +50,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -74,7 +60,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -84,7 +70,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -139,7 +125,7 @@ EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event
     }
 
     if (widgetIndex == 4) { // Start button is clicked
-        nextWindow = createGenericWindow(drawGameWindow);
+        nextWindow = createGenericWindow(drawGameWindow, nextWindow->window, renderer);
         response->window = nextWindow;
         response->status = NEW_WINDOW;
     }

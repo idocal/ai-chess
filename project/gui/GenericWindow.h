@@ -41,8 +41,11 @@ typedef struct eventResponse {
     RESPONSE_STATUS status;
 } EVENT_RESPONSE;
 
-GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* window));
+GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer),
+                                    SDL_Window *, SDL_Renderer *);
+
 void destroyWindow(GENERIC_WINDOW *);
+
 int detectWidgetByLocation(GENERIC_WINDOW *window, int x, int y);
 
 // Common buttons event handlers

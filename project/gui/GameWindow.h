@@ -8,7 +8,7 @@
 #include "GenericWindow.h"
 #include "../GameMoves.h"
 
-int drawGameWindow(GENERIC_WINDOW *genericWindow);
+int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
 
 int createBoard(WIDGET *widget, SDL_Renderer *renderer);
 int createRestartButton(WIDGET *widget, SDL_Renderer *renderer);

@@ -5,28 +5,14 @@
 #include "DifficultyWindow.h"
 
 
-int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
+int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     unsigned numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_DIFFICULTY_WINDOW;
     genericWindow->handleWindowEvent = (void *) difficultyWindowEventHandler;
 
-    // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Difficulty", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-    if (window == NULL) {
-        SDL_Quit();
-        return -1;
-    }
-    genericWindow->window = window;
-
-    // Create renderer
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
-    }
+    // Assign the application window and renderer
+    genericWindow->window = sdlWindow;
     genericWindow->renderer = renderer;
 
 
@@ -34,7 +20,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
     if (widgets == NULL) {
         SDL_DestroyRenderer(renderer);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -46,7 +32,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -56,7 +42,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -66,7 +52,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -75,7 +61,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -85,7 +71,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -95,7 +81,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -105,7 +91,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -115,7 +101,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -160,9 +146,7 @@ EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event 
     EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
 
     if (widgetIndex >= 1 && widgetIndex <= 5) { // if any difficulty is clicked
-        printf("Event widget: %d\n", widgetIndex);
         int activeButton = findActiveButton(window);
-        printf("Active Button: %d\n", activeButton);
         if (activeButton == -1) return NULL; // no active button found
         if (activeButton == widgetIndex) return response; // stay in same window if button is active
         else {
@@ -178,7 +162,7 @@ EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event 
     }
 
     if (widgetIndex == 7) { // Next button is clicked
-        nextWindow = createGenericWindow(drawColorWindow);
+        nextWindow = createGenericWindow(drawColorWindow, nextWindow->window, renderer);
         response->window = nextWindow;
         response->status = NEW_WINDOW;
     }

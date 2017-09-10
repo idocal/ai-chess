@@ -45,7 +45,5 @@ void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
-int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer);
-int createExitButton(WIDGET *widget, SDL_Renderer *renderer);
 
 #endif //PROJECT_WIDGET_H

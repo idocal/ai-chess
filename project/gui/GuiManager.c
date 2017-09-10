@@ -4,11 +4,11 @@
 
 #include "GuiManager.h"
 
-GUI_MANAGER *createManager() {
+GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     GUI_MANAGER *manager = (GUI_MANAGER *) malloc(sizeof(GUI_MANAGER));
     if (manager == NULL) return NULL;
 
-    manager->genericWindow = createGenericWindow(drawWelcomeWindow);
+    manager->genericWindow = createGenericWindow(drawWelcomeWindow, sdlWindow, renderer);
     if (manager->genericWindow == NULL) {
         free(manager);
         return NULL;
@@ -59,11 +59,9 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
         }
 
         if (response->status == NEW_WINDOW){
-//            SDL_HideWindow(manager->genericWindow->window); // Hide previous screen
             destroyWindow(manager->genericWindow);
             pushNewWindow(stack, response->window);
             manager->genericWindow = response->window;
-//            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
 
 
         } else if (response->status == SAME_WINDOW){ // same window but with different active buttons so need to update stack
@@ -79,11 +77,11 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
             GENERIC_WINDOW *nextWindow = NULL;
 
             if (prevWindowType == WELCOME_WINDOW){
-                nextWindow = createGenericWindow(drawWelcomeWindow);
+                nextWindow = createGenericWindow(drawWelcomeWindow, window->window, window->renderer);
             } else if (prevWindowType == SETTINGS_MODE_WINDOW){
-                nextWindow = createGenericWindow(drawSettingsWindow);
+                nextWindow = createGenericWindow(drawSettingsWindow, window->window, window->renderer);
             } else if (prevWindowType == SETTINGS_DIFFICULTY_WINDOW) {
-                nextWindow = createGenericWindow(drawDifficultyWindow);
+                nextWindow = createGenericWindow(drawDifficultyWindow, window->window, window->renderer);
                 toggleButton(nextWindow->widgets[2], nextWindow->renderer);
                 toggleButton(nextWindow->widgets[windowState], nextWindow->renderer);
                 reRenderWindow(nextWindow);

@@ -9,7 +9,7 @@
 #include "../MatchManagement.h"
 #include "GameWindow.h"
 
-int drawColorWindow(GENERIC_WINDOW *genericWindow);
+int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
 
 int createColorTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createWhiteButton(WIDGET *widget, SDL_Renderer *renderer);

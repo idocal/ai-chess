@@ -14,8 +14,23 @@ int main() {
         return 1;
     };
 
+    // Create SDL Window
+    SDL_Window *window = SDL_CreateWindow("chess game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    if (window == NULL) {
+        SDL_Quit();
+        return -1;
+    }
+
+    // Create renderer
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL) {
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
     // Create GUI manager
-    GUI_MANAGER *manager = createManager();
+    GUI_MANAGER *manager = createManager(window, renderer);
     if (manager == NULL) {
         SDL_Quit();
         return 0;
@@ -30,6 +45,8 @@ int main() {
 
     // GUI quit
     destroyManager(manager);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
 }

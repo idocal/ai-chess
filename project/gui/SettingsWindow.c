@@ -5,35 +5,22 @@
 #include "SettingsWindow.h"
 
 
-int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
+int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     unsigned numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_MODE_WINDOW;
     genericWindow->handleWindowEvent = (void *) settingsWindowEventHandler;
 
-    // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Game Mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-    if (window == NULL) {
-        SDL_Quit();
-        return -1;
-    }
-    genericWindow->window = window;
-
-    // Create renderer
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
-    }
+    // Assign application's window and renderer
+    genericWindow->window = sdlWindow;
     genericWindow->renderer = renderer;
+
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
         SDL_DestroyRenderer(renderer);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -45,7 +32,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -55,7 +42,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -65,7 +52,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -74,7 +61,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -84,7 +71,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
         genericWindow->window = NULL;
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
@@ -151,9 +138,9 @@ EVENT_RESPONSE * settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *e
 
     if (widgetIndex == 4) { // The button clicked is Next / Start
         if (match->gameMode == 1) { // One player mode -> go to Next
-            nextWindow = createGenericWindow(drawDifficultyWindow); // Go to Difficulty screen
+            nextWindow = createGenericWindow(drawDifficultyWindow, nextWindow->window, renderer); // Go to Difficulty screen
         } else { // Two players mode
-            nextWindow = createGenericWindow(drawDifficultyWindow); // TODO: Go to Game screen
+            nextWindow = createGenericWindow(drawGameWindow, nextWindow->window, renderer);
         }
 
         response->window = nextWindow;

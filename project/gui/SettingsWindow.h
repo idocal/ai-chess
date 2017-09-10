@@ -9,7 +9,7 @@
 #include "DifficultyWindow.h"
 #include "../MatchManagement.h"
 
-int drawSettingsWindow(GENERIC_WINDOW *genericWindow);
+int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer);
 
 int createGameModeTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createOnePlayerButton(WIDGET *widget, SDL_Renderer *renderer);

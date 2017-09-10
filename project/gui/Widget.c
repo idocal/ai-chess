@@ -233,11 +233,3 @@ int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
     int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
     return createButton(x, y, "./img/next.bmp", renderer, widget, false);
 }
-
-int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget, false);
-}
-
-int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
-}

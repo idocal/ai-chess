@@ -21,7 +21,7 @@ typedef struct guiManager {
     WINDOWS_STACK *stack;
 } GUI_MANAGER;
 
-GUI_MANAGER *createManager();
+GUI_MANAGER *createManager(SDL_Window *window, SDL_Renderer *renderer);
 void destroyManager(GUI_MANAGER *manager);
 
 MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event);

@@ -9,7 +9,7 @@
 #include "../MatchManagement.h"
 #include "ColorWindow.h"
 
-int drawDifficultyWindow(GENERIC_WINDOW *genericWindow);
+int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
 
 int createDifficultyTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createNoobButton(WIDGET *widget, SDL_Renderer *renderer);
