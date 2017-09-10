@@ -7,8 +7,7 @@
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     SDL_SetWindowSize(sdlWindow, WINDOW_WIDTH, WINDOW_HEIGHT);
-//    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
-    unsigned numWidgets = 33;
+    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = GAME_WINDOW;
     genericWindow->handleWindowEvent = (void *) gameWindowEventHandler;
@@ -39,6 +38,68 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     }
 
     setPiecesOnBoard(genericWindow);
+
+    widgets[33] = createWidget(createRestartButton, renderer);
+    if (widgets[33] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[34] = createWidget(createSaveButton, renderer);
+    if (widgets[34] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[35] = createWidget(createLoadButtonGame, renderer);
+    if (widgets[35] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[36] = createWidget(createUndoButton, renderer);
+    if (widgets[36] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+    widgets[36]->isEnable = false; // By default undo is disabled
+
+    widgets[37] = createWidget(createMenuButton, renderer);
+    if (widgets[37] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+
+    widgets[38] = createWidget(createExitButtonGame, renderer);
+    if (widgets[38] == NULL) {
+        SDL_DestroyRenderer(renderer);
+        free(widgets);
+        genericWindow->window = NULL;
+        SDL_DestroyWindow(sdlWindow);
+        SDL_Quit();
+        return -1;
+    }
+
     
     reRenderWindow(genericWindow);
 
@@ -46,8 +107,32 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
 }
 
 int createBoard(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = WINDOW_WIDTH - PAGE_MARGIN - BOARD_WIDTH;
+    int x = WINDOW_WIDTH - BUTTON_MARGIN - BOARD_WIDTH;
     return createBackground(x, PAGE_MARGIN, BOARD_WIDTH, BOARD_HEIGHT, "./img/board.bmp", renderer, widget);
+}
+
+int createRestartButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN, "./img/restart.bmp", renderer, widget, false);
+}
+
+int createSaveButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN + BUTTON_MARGIN/2 + BUTTON_HEIGHT, "./img/save.bmp", renderer, widget, false);
+}
+
+int createLoadButtonGame(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN + 2 * BUTTON_MARGIN/2 + 2 * BUTTON_HEIGHT, "./img/load.bmp", renderer, widget, false);
+}
+
+int createUndoButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN + 3 * BUTTON_MARGIN/2 + 3 * BUTTON_HEIGHT, "./img/undo_disabled.bmp", renderer, widget, false);
+}
+
+int createMenuButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN + 4 * BUTTON_MARGIN/2 + 4 * BUTTON_HEIGHT, "./img/main_menu.bmp", renderer, widget, false);
+}
+
+int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(BUTTON_MARGIN, PAGE_MARGIN + 5 * BUTTON_MARGIN/2 + 5 * BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
