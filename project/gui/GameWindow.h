@@ -16,7 +16,6 @@ int createSaveButton(WIDGET *widget, SDL_Renderer *renderer);
 int createLoadButton(WIDGET *widget, SDL_Renderer *renderer);
 int createUndoButton(WIDGET *widget, SDL_Renderer *renderer);
 int createMenuButton(WIDGET *widget, SDL_Renderer *renderer);
-int createPiece(WIDGET *widget, SDL_Renderer *renderer, char piece);
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 

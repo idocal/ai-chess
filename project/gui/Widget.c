@@ -65,7 +65,7 @@ int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *re
     return 1;
 }
 
-int createPiece(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget) {
+int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget) {
     char imgPath[1024];
     switch (piece) {
         case 'm' :
