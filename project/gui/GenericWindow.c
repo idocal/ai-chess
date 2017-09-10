@@ -50,9 +50,14 @@ int detectWidgetByLocation(GENERIC_WINDOW *window ,int x, int y) {
 }
 
 int getClickedWidget(GENERIC_WINDOW *window, SDL_Event *event) {
-    if (window == NULL || event == NULL) return NULL;
+    if (window == NULL || event == NULL) return -1;
     int widgetIndex = detectWidgetByLocation(window, event->button.x, event->button.y);
-    if (widgetIndex == -1) return NULL;
 
     return widgetIndex;
+}
+
+void renderWindowWidgets(GENERIC_WINDOW *window) {
+    for (int i = 0; i < window->numWidgets; ++i) {
+        SDL_RenderCopy(window->renderer, window->widgets[i]->texture, NULL, &(window->widgets[i]->rect));
+    }
 }

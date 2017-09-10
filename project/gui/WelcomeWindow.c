@@ -73,10 +73,7 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
     SDL_RenderClear(renderer);
 
     // Place images on screen
-    for (int i = 0; i < numWidgets; ++i) {
-        SDL_RenderCopy(renderer, widgets[i]->texture, NULL, &(widgets[i]->rect));
-    }
-
+    renderWindowWidgets(genericWindow);
     SDL_RenderPresent(renderer);
 
     return 1;
@@ -107,6 +104,16 @@ GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *ev
 
         if (widgetIndex == 1) {
             //TODO: Load game draw
+            if (!window->widgets[widgetIndex]->isActive) {
+                turnButtonOn(window->widgets[widgetIndex], window->renderer);
+            } else {
+                turnButtonOff(window->widgets[widgetIndex], window->renderer);
+            }
+            SDL_SetRenderDrawColor(window->renderer, COLOR_WHITE);
+            SDL_RenderClear(window->renderer);
+            // Place images on screen
+            renderWindowWidgets(window);
+            SDL_RenderPresent(window->renderer);
         }
 
         if (widgetIndex == 2) { // The button clicked is Exit
