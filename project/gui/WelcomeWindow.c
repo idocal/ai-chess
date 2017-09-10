@@ -8,6 +8,7 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = WELCOME_WINDOW;
+    genericWindow->handleWindowEvent = welcomeWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
@@ -82,22 +83,37 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
 }
 
 int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", newGameEventHandler, renderer, widget);
+    return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", renderer, widget);
 }
 
 int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", loadGameEventHandler, renderer, widget);
+    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget);
 }
 
 int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", loadGameEventHandler, renderer, widget);
+    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget);
 }
 
-GENERIC_WINDOW *newGameEventHandler(SDL_Event *event, GENERIC_WINDOW *window, CHESS_MATCH *match) {
-    if (event->type == SDL_MOUSEBUTTONUP) {
+GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+    GENERIC_WINDOW *nextWindow = window;
+    int widgetIndex = getClickedWidget(window, event);
+    if (widgetIndex >= 0) { // A widget is clicked
 
-    } else if (event->type == SDL_MOUSEBUTTONDOWN) {
-        destroyWindow(window);
-        return createGenericWindow(drawSettingsWindow); // OK if NULL
+        if (widgetIndex == 0) { // The button clicked is New Game
+            destroyWindow(window);
+            nextWindow = createGenericWindow(drawSettingsWindow); // OK if NULL
+
+        }
+
+        if (widgetIndex == 1) {
+            //TODO: Load game draw
+        }
+
+        if (widgetIndex == 2) { // The button clicked is Exit
+            return NULL;
+        }
+
     }
+    return nextWindow;
 }
+

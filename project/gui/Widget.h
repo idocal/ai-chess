@@ -7,8 +7,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
-#include "../MatchManagement.h"
-#include "GenericWindow.h"
+#include <stdbool.h>
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -25,15 +24,15 @@
 typedef struct widget {
     SDL_Rect rect;
     SDL_Texture *texture;
-    GENERIC_WINDOW * (*handleEvent) (SDL_Event *event, GENERIC_WINDOW *window, CHESS_MATCH *match);
     char imgPath[1024];
+    bool isActive;
 } WIDGET;
 
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *widget, SDL_Renderer *renderer), SDL_Renderer *);
 
 void destroyWidget(WIDGET *widget);
 
-int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, WIDGET *widget);
+int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 
 #endif //PROJECT_WIDGET_H

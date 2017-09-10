@@ -8,7 +8,6 @@ GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*)) {
     GENERIC_WINDOW *genericWindow = (GENERIC_WINDOW *) calloc(sizeof(GENERIC_WINDOW), sizeof(char));
     if (genericWindow == NULL) return NULL;
 
-    genericWindow->handleWindowEvent = handleWindowEvent;
     (*drawFunc)(genericWindow);
     return genericWindow;
 }
@@ -50,10 +49,10 @@ int detectWidgetByLocation(GENERIC_WINDOW *window ,int x, int y) {
     return widgetNum;
 }
 
-WIDGET* handleWindowEvent(GENERIC_WINDOW *window, SDL_Event *event) {
+int getClickedWidget(GENERIC_WINDOW *window, SDL_Event *event) {
     if (window == NULL || event == NULL) return NULL;
     int widgetIndex = detectWidgetByLocation(window, event->button.x, event->button.y);
     if (widgetIndex == -1) return NULL;
 
-    return window->widgets[widgetIndex];
+    return widgetIndex;
 }

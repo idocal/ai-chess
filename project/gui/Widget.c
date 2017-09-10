@@ -10,6 +10,7 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
     int res = (*createWidgetFunc)(widget, renderer);
     if (res == -1) return NULL;
 
+    widget->isActive = false;
     return widget;
 }
 
@@ -19,7 +20,7 @@ void destroyWidget(WIDGET *widget) {
     free(widget);
 }
 
-int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *event), SDL_Renderer *renderer, WIDGET *widget) {
+int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     SDL_Surface *loadingSurface = NULL;
     strcpy(widget->imgPath, imgPath);
 
@@ -41,8 +42,6 @@ int createButton(int x, int y, char *imgPath, int (*eventHandler) (SDL_Event *ev
 
     SDL_FreeSurface(loadingSurface);
 
-    // Handle events
-    widget->handleEvent = eventHandler;
     return 1;
 }
 
@@ -51,7 +50,7 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     strcpy(widget->imgPath, imgPath);
 
     // WIDGET rect
-    SDL_Rect rect = {.x = (WINDOW_WIDTH - TITLE_WIDTH) / 2, .y = PAGE_MARGIN, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
+    SDL_Rect rect = {.x = (WINDOW_WIDTH - TITLE_WIDTH) / 2, .y = PAGE_MARGIN, .w = TITLE_WIDTH, .h = TITLE_HEIGHT};
     widget->rect = rect;
 
     // WIDGET surface, used to create texture and then destroyed

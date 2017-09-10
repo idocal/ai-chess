@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
+#include "../MatchManagement.h"
 #include "Widget.h"
 
 typedef enum {
@@ -24,7 +25,7 @@ typedef struct generic_window {
     WIDGET **widgets;
     int numWidgets;
     WINDOW_TYPE type;
-    WIDGET *(*handleWindowEvent) (struct generic_window*, SDL_Event *event);
+    struct generic_window *(*handleWindowEvent) (struct generic_window*, SDL_Event *event, CHESS_MATCH *match);
 } GENERIC_WINDOW;
 
 GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* window));
@@ -36,6 +37,6 @@ int exitEventHandler(SDL_Event *event);
 
 int loadGameEventHandler(SDL_Event *event);
 
-WIDGET* handleWindowEvent(GENERIC_WINDOW *window, SDL_Event *event);
+int getClickedWidget(GENERIC_WINDOW *window, SDL_Event *event);
 
 #endif //PROJECT_GENERICWINDOW_H

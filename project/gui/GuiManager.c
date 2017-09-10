@@ -38,8 +38,11 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
         if (event->type == SDL_WINDOWEVENT) {
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
         }
-        else if (event->type == SDL_MOUSEBUTTONUP || event->type == SDL_MOUSEBUTTONDOWN) {
-            WIDGET *eventWidget = (*window->handleWindowEvent)(window, event);
-            manager->genericWindow = (*eventWidget->handleEvent)(event, window, match);
+
+        else if (event->type == SDL_MOUSEBUTTONDOWN) {
+            GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
+            manager->genericWindow = nextWindow;
+            if (nextWindow == NULL) return MANAGER_QUIT;
+            return MANAGER_NONE;
         }
 }

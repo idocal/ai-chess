@@ -107,30 +107,30 @@ int createGameModeTitle(WIDGET *widget, SDL_Renderer *renderer) {
 
 int createOnePlayerButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
-    return createButton(x, 180, "./img/one_player_on.bmp", onePlayerEventHandler, renderer, widget);
+    return createButton(x, 180, "./img/one_player_on.bmp", renderer, widget);
 }
 
 int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    return createButton(x, 180, "./img/two_players.bmp", twoPlayersEventHandler, renderer, widget);
+    return createButton(x, 180, "./img/two_players.bmp", renderer, widget);
 }
 
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
-    int y = WINDOW_HEIGHT - 180 - TITLE_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/back.bmp",backEventHandler, renderer, widget);
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/back.bmp", renderer, widget);
 }
 
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - 180 - TITLE_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/start.bmp",startEventHandler, renderer, widget);
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/start.bmp", renderer, widget);
 }
 
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - 180 - TITLE_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/next.bmp",nextEventHandler, renderer, widget);
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/next.bmp", renderer, widget);
 }
 
 int onePlayerEventHandler(SDL_Event *event, CHESS_MATCH *match) {
