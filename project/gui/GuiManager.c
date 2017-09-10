@@ -52,6 +52,7 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     }
 
     else if (event->type == SDL_MOUSEBUTTONDOWN) {
+        printf("EVENT\n");
         EVENT_RESPONSE *response = (EVENT_RESPONSE *)(*window->handleWindowEvent)(window, event, match);
 
         if (response == NULL || response->status == EXIT_WINDOW){

@@ -149,8 +149,13 @@ EVENT_RESPONSE * settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *e
         response->status = BACK_WINDOW;
     }
 
-    if (widgetIndex == 4) { // The button clicked is Next
-        nextWindow = createGenericWindow(drawDifficultyWindow); // OK if NULL
+    if (widgetIndex == 4) { // The button clicked is Next / Start
+        if (match->gameMode == 1) { // One player mode -> go to Next
+            nextWindow = createGenericWindow(drawDifficultyWindow); // Go to Difficulty screen
+        } else { // Two players mode
+            nextWindow = createGenericWindow(drawDifficultyWindow); // TODO: Go to Game screen
+        }
+
         response->window = nextWindow;
         response->status = NEW_WINDOW;
     }

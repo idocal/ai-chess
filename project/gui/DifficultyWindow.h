@@ -17,6 +17,6 @@ int createModerateButton(WIDGET *widget, SDL_Renderer *renderer);
 int createHardButton(WIDGET *widget, SDL_Renderer *renderer);
 int createExpertButton(WIDGET *widget, SDL_Renderer *renderer);
 
-GENERIC_WINDOW *difficultyWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 
 #endif //PROJECT_DIFFICULTYWINDOW_H

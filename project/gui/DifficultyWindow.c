@@ -4,6 +4,8 @@
 
 #include "DifficultyWindow.h"
 
+int findActiveButton(GENERIC_WINDOW *window);
+
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
@@ -150,6 +152,45 @@ int createExpertButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(x, 180 + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/expert.bmp", renderer, widget, false);
 }
 
-GENERIC_WINDOW *difficultyWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
-    return NULL;
+EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+    GENERIC_WINDOW *nextWindow = window;
+    int widgetIndex = getClickedWidget(window, event);
+    WIDGET *widget = window->widgets[widgetIndex];
+    SDL_Renderer *renderer = window->renderer;
+    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+
+    if (widgetIndex >= 1 && widgetIndex <= 5) { // if any difficulty is clicked
+        printf("Event widget: %d\n", widgetIndex);
+        int activeButton = findActiveButton(window);
+        printf("Active Button: %d\n", activeButton);
+        if (activeButton == -1) return NULL; // no active button found
+        if (activeButton == widgetIndex) return response; // stay in same window if button is active
+        else {
+            toggleButton(widget, renderer); // activate clicked button
+            toggleButton(window->widgets[activeButton], renderer); // deactivate active button
+            reRenderWindow(window);
+            match->level = widgetIndex;
+        }
+    }
+
+    if (widgetIndex == 6) { // Back button is clicked
+        response->status = BACK_WINDOW;
+    }
+
+    if (widgetIndex == 7) { // Next button is clicked
+        nextWindow = createGenericWindow(drawDifficultyWindow);
+        response->window = nextWindow;
+        response->status = NEW_WINDOW;
+    }
+
+    return response;
+}
+
+int findActiveButton(GENERIC_WINDOW *window) {
+    int activeButton = -1;
+    for (int i = 0; i < window->numWidgets; ++i) {
+        WIDGET *widget = window->widgets[i];
+        if (widget->isActive) return i;
+    }
+    return activeButton;
 }
