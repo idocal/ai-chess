@@ -36,6 +36,7 @@ void destroyWidget(WIDGET *widget);
 int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
+int createPiece(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget);
 
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer);
 void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);

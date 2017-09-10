@@ -65,6 +65,60 @@ int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *re
     return 1;
 }
 
+int createPiece(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget) {
+    char imgPath[1024];
+    switch (piece) {
+        case 'm' :
+            strcpy(imgPath, "./img/pawn_black.bmp");
+            break;
+        case 'M' :
+            strcpy(imgPath, "./img/pawn_white.bmp");
+            break;
+        case 'r' :
+            strcpy(imgPath, "./img/rook_white.bmp");
+            break;
+        case 'R' :
+            strcpy(imgPath, "./img/rook_black.bmp");
+            break;
+        case 'n' :
+            strcpy(imgPath, "./img/knight_white.bmp");
+            break;
+        case 'N' :
+            strcpy(imgPath, "./img/knight_black.bmp");
+            break;
+        case 'b' :
+            strcpy(imgPath, "./img/bishop_white.bmp");
+            break;
+        case 'B' :
+            strcpy(imgPath, "./img/bishop_black.bmp");
+            break;
+        case 'q' :
+            strcpy(imgPath, "./img/queen_white.bmp");
+            break;
+        case 'Q' :
+            strcpy(imgPath, "./img/queen_black.bmp");
+            break;
+        case 'k' :
+            strcpy(imgPath, "./img/king_white.bmp");
+            break;
+        case 'K' :
+            strcpy(imgPath, "./img/king_black.bmp");
+            break;
+    }
+
+    strcpy(widget->imgPath, imgPath);
+
+    // WIDGET rect
+    SDL_Rect rect = {.x = x, .y = y, .w = 80, .h = 80};
+    widget->rect = rect;
+    widget->isActive = false;
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
+
+    return 1;
+}
+
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer) {
     // Save previous img path to restore in case of failure
     char originalImgPath[1024];

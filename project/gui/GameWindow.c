@@ -3,6 +3,9 @@
 //
 
 #include "GameWindow.h"
+
+void setPiecesOnBoard(GENERIC_WINDOW *window);
+
 int drawGameWindow(GENERIC_WINDOW *genericWindow) {
 //    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     unsigned numWidgets = 1;
@@ -48,6 +51,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
 
+
     reRenderWindow(genericWindow);
 
     return 1;
@@ -66,8 +70,14 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
 
     if (widgetIndex >= 1 || widgetIndex <= 32) { // Piece handle
-        
+
     }
 
     return response;
+}
+
+void setPiecesOnBoard(GENERIC_WINDOW *window) {
+    WIDGET **widgets = window->widgets;
+
+
 }
