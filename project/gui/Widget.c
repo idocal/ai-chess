@@ -52,39 +52,27 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     return 1;
 }
 
-void turnButtonOn(WIDGET *widget, SDL_Renderer *renderer) {
-    if (!widget->isActive) {
-        // Save previous img path to restore in case of failure
-        char originalImgPath[1024];
-        strcpy(originalImgPath,widget->imgPath);
+void toggleButton(WIDGET *widget, SDL_Renderer *renderer) {
+    // Save previous img path to restore in case of failure
+    char originalImgPath[1024];
+    strcpy(originalImgPath,widget->imgPath);
 
+    if (!widget->isActive) {
         // Change image path to _on.bmp
         char *imgPath = widget->imgPath;
-        imgPath += 2; // increasing pointer by two to avoid previous folder prefix
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
         while (*imgPath != '.') {
             imgPath++;
         }
         *imgPath = '\0';
         char *imgNewSuffix = "_on.bmp";
         strcat(widget->imgPath, imgNewSuffix);
-
-        // Load new texture with imgPath updated
-        loadTexture(widget, originalImgPath, renderer);
-
-        // Widget is now active
-        widget->isActive = true;
     }
-}
 
-void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer) {
-    if (widget->isActive) {
-        // Save previous img path to restore in case of failure
-        char originalImgPath[1024];
-        strcpy(originalImgPath,widget->imgPath);
-
-        // Change image path to _on.bmp
+    else { // Widget is inactive
+        // Change image path to .bmp
         char *imgPath = widget->imgPath;
-        imgPath += 2; // increasing pointer by two to avoid previous folder prefix
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
         while (*imgPath != '.') {
             imgPath++;
         }
@@ -92,17 +80,49 @@ void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer) {
         *imgPath = '\0';
         char *imgNewSuffix = ".bmp";
         strcat(widget->imgPath, imgNewSuffix);
-
-        // Load new texture with imgPath updated
-        loadTexture(widget, originalImgPath, renderer);
-
-        // Widget is now inactive
-        widget->isActive = false;
     }
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, originalImgPath, renderer);
+
+    // Widget is now active
+    widget->isActive = !widget->isActive;
 }
 
-void disableButton(){
+void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer) {
+    // Save previous img path to restore in case of failure
+    char originalImgPath[1024];
+    strcpy(originalImgPath,widget->imgPath);
 
+    if (widget->isEnable) {
+        // Change image path to _disabled.bmp
+        char *imgPath = widget->imgPath;
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
+        while (*imgPath != '.') {
+            imgPath++;
+        }
+        *imgPath = '\0';
+        char *imgNewSuffix = "_disabled.bmp";
+        strcat(widget->imgPath, imgNewSuffix);
+    }
+    else { // Widget is disabled
+        // Change image path to .bmp
+        char *imgPath = widget->imgPath;
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
+        while (*imgPath != '.') {
+            imgPath++;
+        }
+        imgPath -= 9; // go backwards 9 chars to substitute the "_on" suffix
+        *imgPath = '\0';
+        char *imgNewSuffix = ".bmp";
+        strcat(widget->imgPath, imgNewSuffix);
+    }
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, originalImgPath, renderer);
+
+    // Widget is now disabled
+    widget->isEnable = !widget->isEnable;
 }
 
 int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {

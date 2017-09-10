@@ -99,11 +99,7 @@ GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *ev
 
         if (widgetIndex == 1) {
             //TODO: Load game draw
-            if (!window->widgets[widgetIndex]->isActive) {
-                turnButtonOn(window->widgets[widgetIndex], window->renderer);
-            } else {
-                turnButtonOff(window->widgets[widgetIndex], window->renderer);
-            }
+            toggleButton(window->widgets[widgetIndex], window->renderer);
             reRenderWindow(window);
         }
 

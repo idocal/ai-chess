@@ -36,7 +36,7 @@ void destroyWidget(WIDGET *widget);
 int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 
-void turnButtonOn(WIDGET *widget, SDL_Renderer *renderer);
-void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer);
+void toggleButton(WIDGET *widget, SDL_Renderer *renderer);
+void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 
 #endif //PROJECT_WIDGET_H
