@@ -10,7 +10,8 @@ WINDOW_NODE *createWindowNode(GENERIC_WINDOW *window){
     if (node == NULL){
         return NULL;
     }
-    node->window = window;
+    node->windowType = window->type;
+    node->windowState = findActiveButton(window);
     node->next = NULL;
     return node;
 }
@@ -19,6 +20,5 @@ void destroyWindowNode(WINDOW_NODE *node){
     if (node == NULL){
         return;
     }
-    destroyWindow(node->window);
     free(node);
 }

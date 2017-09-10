@@ -5,10 +5,10 @@
 #include "WelcomeWindow.h"
 
 int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
-    int numWidgets = 3;
+    unsigned numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = WELCOME_WINDOW;
-    genericWindow->handleWindowEvent = welcomeWindowEventHandler;
+    genericWindow->handleWindowEvent = (void *) welcomeWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
