@@ -59,10 +59,11 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
         }
 
         if (response->status == NEW_WINDOW){
-            SDL_HideWindow(manager->genericWindow->window); // Hide previous screen
+//            SDL_HideWindow(manager->genericWindow->window); // Hide previous screen
+            destroyWindow(manager->genericWindow);
             pushNewWindow(stack, response->window);
             manager->genericWindow = response->window;
-            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
+//            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
 
 
         } else if (response->status == SAME_WINDOW){ // same window but with different active buttons so need to update stack
