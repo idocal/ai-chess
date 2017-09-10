@@ -26,6 +26,7 @@ typedef struct widget {
     SDL_Texture *texture;
     char imgPath[1024];
     bool isActive;
+    bool isEnable;
 } WIDGET;
 
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *widget, SDL_Renderer *renderer), SDL_Renderer *);

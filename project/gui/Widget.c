@@ -3,6 +3,9 @@
 //
 
 #include "Widget.h"
+
+int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer);
+
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Renderer *renderer) {
     WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
@@ -11,6 +14,7 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
     if (res == -1) return NULL;
 
     widget->isActive = false;
+    widget->isEnable = true;
     return widget;
 }
 
@@ -28,19 +32,8 @@ int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *wi
     SDL_Rect rect = {.x = x, .y = y, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
     widget->rect = rect;
 
-    // WIDGET surface, used to create texture and then destroyed
-    loadingSurface = SDL_LoadBMP(imgPath);
-    if (loadingSurface == NULL) return -1;
-
-    // WIDGET texture
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-    if (texture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        return -1;
-    }
-    widget->texture = texture;
-
-    SDL_FreeSurface(loadingSurface);
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
 
     return 1;
 }
@@ -53,19 +46,8 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     SDL_Rect rect = {.x = (WINDOW_WIDTH - TITLE_WIDTH) / 2, .y = PAGE_MARGIN, .w = TITLE_WIDTH, .h = TITLE_HEIGHT};
     widget->rect = rect;
 
-    // WIDGET surface, used to create texture and then destroyed
-    loadingSurface = SDL_LoadBMP(imgPath);
-    if (loadingSurface == NULL) return -1;
-
-    // WIDGET texture
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-    if (texture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        return -1;
-    }
-    widget->texture = texture;
-
-    SDL_FreeSurface(loadingSurface);
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
 
     return 1;
 }
@@ -86,24 +68,8 @@ void turnButtonOn(WIDGET *widget, SDL_Renderer *renderer) {
         char *imgNewSuffix = "_on.bmp";
         strcat(widget->imgPath, imgNewSuffix);
 
-        // Reload texture
-        SDL_Surface *loadingSurface = SDL_LoadBMP(widget->imgPath);
-        if (loadingSurface == NULL) {
-            strcpy(widget->imgPath, originalImgPath); // revert to previous img path
-            return;
-        }
-
-        // Widget texture
-        SDL_Texture *prevTexture = widget->texture;
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-        if (texture == NULL) {
-            SDL_FreeSurface(loadingSurface);
-            strcpy(widget->imgPath, originalImgPath); // revert to previous img path
-            return;
-        }
-        widget->texture = texture;
-        SDL_DestroyTexture(prevTexture); // Destroy previous texture
-        SDL_FreeSurface(loadingSurface);
+        // Load new texture with imgPath updated
+        loadTexture(widget, originalImgPath, renderer);
 
         // Widget is now active
         widget->isActive = true;
@@ -127,26 +93,36 @@ void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer) {
         char *imgNewSuffix = ".bmp";
         strcat(widget->imgPath, imgNewSuffix);
 
-        // Reload texture
-        SDL_Surface *loadingSurface = SDL_LoadBMP(widget->imgPath);
-        if (loadingSurface == NULL) {
-            strcpy(widget->imgPath, originalImgPath); // revert to previous img path
-            return;
-        }
-
-        // Widget texture
-        SDL_Texture *prevTexture = widget->texture;
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-        if (texture == NULL) {
-            SDL_FreeSurface(loadingSurface);
-            strcpy(widget->imgPath, originalImgPath); // revert to previous img path
-            return;
-        }
-        widget->texture = texture;
-        SDL_DestroyTexture(prevTexture); // Destroy previous texture
-        SDL_FreeSurface(loadingSurface);
+        // Load new texture with imgPath updated
+        loadTexture(widget, originalImgPath, renderer);
 
         // Widget is now inactive
         widget->isActive = false;
     }
+}
+
+void disableButton(){
+
+}
+
+int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
+    // Reload texture
+    SDL_Surface *loadingSurface = SDL_LoadBMP(widget->imgPath);
+    if (loadingSurface == NULL) {
+        strcpy(widget->imgPath, originalImgPath); // revert to previous img path
+        return -1;
+    }
+
+    // Widget texture
+    SDL_Texture *prevTexture = widget->texture;
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+    if (texture == NULL) {
+        SDL_FreeSurface(loadingSurface);
+        strcpy(widget->imgPath, originalImgPath); // revert to previous img path
+        return -1;
+    }
+
+    widget->texture = texture;
+    SDL_DestroyTexture(prevTexture); // Destroy previous texture
+    SDL_FreeSurface(loadingSurface);
 }
