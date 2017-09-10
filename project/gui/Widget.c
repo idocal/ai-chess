@@ -69,10 +69,10 @@ int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *wid
     char imgPath[1024];
     switch (piece) {
         case 'm' :
-            strcpy(imgPath, "./img/pawn_black.bmp");
+            strcpy(imgPath, "./img/pawn_white.bmp");
             break;
         case 'M' :
-            strcpy(imgPath, "./img/pawn_white.bmp");
+            strcpy(imgPath, "./img/pawn_black.bmp");
             break;
         case 'r' :
             strcpy(imgPath, "./img/rook_white.bmp");
@@ -199,6 +199,10 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
         strcpy(widget->imgPath, originalImgPath); // revert to previous img path
         return -1;
     }
+
+    // Make white transparent
+    SDL_SetColorKey(loadingSurface, SDL_TRUE,
+                    SDL_MapRGB(loadingSurface->format, 255, 255, 255));
 
     // Widget texture
     SDL_Texture *prevTexture = widget->texture;

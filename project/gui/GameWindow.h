@@ -5,15 +5,8 @@
 #ifndef PROJECT_GAMEWINDOW_H
 #define PROJECT_GAMEWINDOW_H
 
-#include "GenericWindow.h"
+#include "PiecesWidget.h"
 #include "../GameMoves.h"
-
-#define BOARD_WIDTH 640
-#define BOARD_HEIGHT 640
-#define PIECE_SIZE 80
-#define initialX WINDOW_WIDTH - PAGE_MARGIN - BOARD_WIDTH
-#define initialBlackY PAGE_MARGIN
-#define initialWhiteY PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow);
 
