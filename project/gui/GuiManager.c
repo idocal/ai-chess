@@ -90,7 +90,6 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
             }
 
             manager->genericWindow = nextWindow;
-            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
         }
 
         destroyEventResponse(response);

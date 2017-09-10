@@ -6,6 +6,11 @@
 
 void setPiecesOnBoard(GENERIC_WINDOW *window);
 
+// Function for each one of the pieces
+int createWhiteRook1(WIDGET *widget, SDL_Renderer *renderer) {
+    return createPieceGUI(initialX, initialWhiteY, 'r', renderer, widget);
+}
+
 int drawGameWindow(GENERIC_WINDOW *genericWindow) {
 //    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     unsigned numWidgets = 1;
@@ -78,6 +83,12 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
 
 void setPiecesOnBoard(GENERIC_WINDOW *window) {
     WIDGET **widgets = window->widgets;
+    SDL_Renderer *renderer = window->renderer;
 
+    // Set white pieces on board
+    for (int i = 1; i < 17; i++) {
+        if (i == 1) {
 
+        }
+    }
 }
