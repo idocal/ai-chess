@@ -7,6 +7,7 @@
 
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
+#include "ColorWindow.h"
 
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow);
 
@@ -17,6 +18,6 @@ int createModerateButton(WIDGET *widget, SDL_Renderer *renderer);
 int createHardButton(WIDGET *widget, SDL_Renderer *renderer);
 int createExpertButton(WIDGET *widget, SDL_Renderer *renderer);
 
-EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE *difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 
 #endif //PROJECT_DIFFICULTYWINDOW_H

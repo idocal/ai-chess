@@ -9,7 +9,7 @@ int findActiveButton(GENERIC_WINDOW *window);
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
-    genericWindow->type = SETTINGS_MODE_WINDOW;
+    genericWindow->type = SETTINGS_DIFFICULTY_WINDOW;
     genericWindow->handleWindowEvent = difficultyWindowEventHandler;
 
     // Create SDL Window
@@ -178,7 +178,7 @@ EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event 
     }
 
     if (widgetIndex == 7) { // Next button is clicked
-        nextWindow = createGenericWindow(drawDifficultyWindow);
+        nextWindow = createGenericWindow(drawColorWindow);
         response->window = nextWindow;
         response->status = NEW_WINDOW;
     }
