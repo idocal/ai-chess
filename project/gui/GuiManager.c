@@ -47,21 +47,21 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     CHESS_MATCH *match = manager->match;
     WINDOWS_STACK *stack = manager->stack;
 
-        if (event->type == SDL_WINDOWEVENT) {
-            if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
-        }
+    if (event->type == SDL_WINDOWEVENT) {
+        if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
+    }
 
-        else if (event->type == SDL_MOUSEBUTTONDOWN) {
-            GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
-            if (nextWindow == NULL){
-                return MANAGER_QUIT;
-            }
-            if (manager->genericWindow != nextWindow){
-                pushNewWindow(manager->stack, nextWindow);
-            }
-            manager->genericWindow = nextWindow;
-            SDL_ShowWindow(manager->genericWindow->window);
-            return MANAGER_NONE;
+    else if (event->type == SDL_MOUSEBUTTONDOWN) {
+        GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
+        if (nextWindow == NULL){
+            return MANAGER_QUIT;
         }
+        if (manager->genericWindow != nextWindow){
+            pushNewWindow(manager->stack, nextWindow);
+        }
+        manager->genericWindow = nextWindow;
+        SDL_ShowWindow(manager->genericWindow->window);
+        return MANAGER_NONE;
+    }
     return MANAGER_NONE;
 }

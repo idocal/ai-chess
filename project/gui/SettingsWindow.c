@@ -9,9 +9,10 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
     int numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_MODE_WINDOW;
+    genericWindow->handleWindowEvent = settingsWindowEventHandler;
 
     // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("Game Mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
     if (window == NULL) {
         SDL_Quit();
         return -1;
@@ -78,7 +79,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
 
-    widgets[4] = createWidget(createStartButton, renderer);
+    widgets[4] = createWidget(createNextButton, renderer);
     if (widgets[4] == NULL) {
         SDL_DestroyRenderer(renderer);
         free(widgets);
@@ -88,15 +89,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
 
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE);
-    SDL_RenderClear(renderer);
-
-    // Place images on screen
-    for (int i = 0; i < numWidgets; ++i) {
-        SDL_RenderCopy(renderer, widgets[i]->texture, NULL, &(widgets[i]->rect));
-    }
-
-    SDL_RenderPresent(renderer);
+    reRenderWindow(genericWindow);
 
     return 1;
 }
@@ -107,32 +100,52 @@ int createGameModeTitle(WIDGET *widget, SDL_Renderer *renderer) {
 
 int createOnePlayerButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
-    return createButton(x, 180, "./img/one_player_on.bmp", renderer, widget);
+    return createButton(x, 180, "./img/one_player_on.bmp", renderer, widget, true);
 }
 
 int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    return createButton(x, 180, "./img/two_players.bmp", renderer, widget);
+    return createButton(x, 180, "./img/two_players.bmp", renderer, widget, false);
 }
 
-int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/back.bmp", renderer, widget);
-}
+GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+    GENERIC_WINDOW *nextWindow = window;
+    int widgetIndex = getClickedWidget(window, event);
+    WIDGET *widget = window->widgets[widgetIndex];
+    SDL_Renderer *renderer = window->renderer;
 
-int createStartButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/start.bmp", renderer, widget);
-}
+    if (widgetIndex == 1) { // The button clicked is One Player
+        if (!widget->isActive) { // If button is inactive - turn it on and toggle the active one
+            toggleButton(widget, renderer); // turn one player on
+            toggleButton(window->widgets[2], renderer); // turn two players off
+            match->gameMode = 1;
 
-int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/next.bmp", renderer, widget);
-}
+            // Swap Next with Start
+            WIDGET *removedWidget = window->widgets[4];
+            window->widgets[4] = createWidget(createNextButton, renderer);
+            destroyWidget(removedWidget);
+            reRenderWindow(window);
+        }
+    }
 
-int onePlayerEventHandler(SDL_Event *event, CHESS_MATCH *match) {
-    return 0;
+    if (widgetIndex == 2) { // The button clicked is Two Player
+        if (!widget->isActive) { // If button is inactive - turn it on and toggle the active one
+            toggleButton(widget, renderer); // turn two players on
+            toggleButton(window->widgets[1], renderer); // turn one players off
+            match->gameMode = 2;
+
+            // Swap Start with Next
+            WIDGET *removedWidget = window->widgets[4];
+            window->widgets[4] = createWidget(createStartButton, renderer);
+            destroyWidget(removedWidget);
+            reRenderWindow(window);
+        }
+    }
+
+    if (widgetIndex == 4) { // The button clicked is Next
+        destroyWindow(window);
+        nextWindow = createGenericWindow(drawDifficultyWindow); // OK if NULL
+    }
+
+    return nextWindow;
 }

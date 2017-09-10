@@ -10,11 +10,11 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
     WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
 
-    int res = (*createWidgetFunc)(widget, renderer);
-    if (res == -1) return NULL;
-
     widget->isActive = false;
     widget->isEnable = true;
+
+    int res = (*createWidgetFunc)(widget, renderer);
+    if (res == -1) return NULL;
     return widget;
 }
 
@@ -24,13 +24,13 @@ void destroyWidget(WIDGET *widget) {
     free(widget);
 }
 
-int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
-    SDL_Surface *loadingSurface = NULL;
+int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive) {
     strcpy(widget->imgPath, imgPath);
 
     // WIDGET rect
     SDL_Rect rect = {.x = x, .y = y, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
     widget->rect = rect;
+    widget->isActive = isActive;
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
@@ -39,7 +39,6 @@ int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *wi
 }
 
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
-    SDL_Surface *loadingSurface = NULL;
     strcpy(widget->imgPath, imgPath);
 
     // WIDGET rect
@@ -52,39 +51,27 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     return 1;
 }
 
-void turnButtonOn(WIDGET *widget, SDL_Renderer *renderer) {
-    if (!widget->isActive) {
-        // Save previous img path to restore in case of failure
-        char originalImgPath[1024];
-        strcpy(originalImgPath,widget->imgPath);
+void toggleButton(WIDGET *widget, SDL_Renderer *renderer) {
+    // Save previous img path to restore in case of failure
+    char originalImgPath[1024];
+    strcpy(originalImgPath,widget->imgPath);
 
+    if (!widget->isActive) {
         // Change image path to _on.bmp
         char *imgPath = widget->imgPath;
-        imgPath += 2; // increasing pointer by two to avoid previous folder prefix
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
         while (*imgPath != '.') {
             imgPath++;
         }
         *imgPath = '\0';
         char *imgNewSuffix = "_on.bmp";
         strcat(widget->imgPath, imgNewSuffix);
-
-        // Load new texture with imgPath updated
-        loadTexture(widget, originalImgPath, renderer);
-
-        // Widget is now active
-        widget->isActive = true;
     }
-}
 
-void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer) {
-    if (widget->isActive) {
-        // Save previous img path to restore in case of failure
-        char originalImgPath[1024];
-        strcpy(originalImgPath,widget->imgPath);
-
-        // Change image path to _on.bmp
+    else { // Widget is inactive
+        // Change image path to .bmp
         char *imgPath = widget->imgPath;
-        imgPath += 2; // increasing pointer by two to avoid previous folder prefix
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
         while (*imgPath != '.') {
             imgPath++;
         }
@@ -92,17 +79,49 @@ void turnButtonOff(WIDGET *widget, SDL_Renderer *renderer) {
         *imgPath = '\0';
         char *imgNewSuffix = ".bmp";
         strcat(widget->imgPath, imgNewSuffix);
-
-        // Load new texture with imgPath updated
-        loadTexture(widget, originalImgPath, renderer);
-
-        // Widget is now inactive
-        widget->isActive = false;
     }
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, originalImgPath, renderer);
+
+    // Widget is now active
+    widget->isActive = !widget->isActive;
 }
 
-void disableButton(){
+void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer) {
+    // Save previous img path to restore in case of failure
+    char originalImgPath[1024];
+    strcpy(originalImgPath,widget->imgPath);
 
+    if (widget->isEnable) {
+        // Change image path to _disabled.bmp
+        char *imgPath = widget->imgPath;
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
+        while (*imgPath != '.') {
+            imgPath++;
+        }
+        *imgPath = '\0';
+        char *imgNewSuffix = "_disabled.bmp";
+        strcat(widget->imgPath, imgNewSuffix);
+    }
+    else { // Widget is disabled
+        // Change image path to .bmp
+        char *imgPath = widget->imgPath;
+        imgPath += 2; // incrementing pointer by two to avoid previous folder prefix
+        while (*imgPath != '.') {
+            imgPath++;
+        }
+        imgPath -= 9; // go backwards 9 chars to substitute the "_on" suffix
+        *imgPath = '\0';
+        char *imgNewSuffix = ".bmp";
+        strcat(widget->imgPath, imgNewSuffix);
+    }
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, originalImgPath, renderer);
+
+    // Widget is now disabled
+    widget->isEnable = !widget->isEnable;
 }
 
 int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
@@ -125,4 +144,22 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
     widget->texture = texture;
     SDL_DestroyTexture(prevTexture); // Destroy previous texture
     SDL_FreeSurface(loadingSurface);
+}
+
+int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/back.bmp", renderer, widget, false);
+}
+
+int createStartButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/start.bmp", renderer, widget, false);
+}
+
+int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/next.bmp", renderer, widget, false);
 }
