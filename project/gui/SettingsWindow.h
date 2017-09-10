@@ -17,12 +17,6 @@ int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
 
-int onePlayerEventHandler(SDL_Event *event, CHESS_MATCH *match);
-int twoPlayersEventHandler(SDL_Event *event, CHESS_MATCH *match);
-int backEventHandler(SDL_Event *event, CHESS_MATCH *match);
-int startEventHandler(SDL_Event *event, CHESS_MATCH *match);
-int nextEventHandler(SDL_Event *event, CHESS_MATCH *match);
-
-
+GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 
 #endif //PROJECT_SETTINGSMODEWINDOW_H

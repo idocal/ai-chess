@@ -10,11 +10,11 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
     WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
 
-    int res = (*createWidgetFunc)(widget, renderer);
-    if (res == -1) return NULL;
-
     widget->isActive = false;
     widget->isEnable = true;
+
+    int res = (*createWidgetFunc)(widget, renderer);
+    if (res == -1) return NULL;
     return widget;
 }
 
@@ -24,13 +24,13 @@ void destroyWidget(WIDGET *widget) {
     free(widget);
 }
 
-int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
-    SDL_Surface *loadingSurface = NULL;
+int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive) {
     strcpy(widget->imgPath, imgPath);
 
     // WIDGET rect
     SDL_Rect rect = {.x = x, .y = y, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
     widget->rect = rect;
+    widget->isActive = isActive;
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
@@ -39,7 +39,6 @@ int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *wi
 }
 
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
-    SDL_Surface *loadingSurface = NULL;
     strcpy(widget->imgPath, imgPath);
 
     // WIDGET rect

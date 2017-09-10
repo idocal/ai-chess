@@ -75,39 +75,38 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
 }
 
 int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", renderer, widget);
+    return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", renderer, widget, false);
 }
 
 int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget);
+    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget, false);
 }
 
 int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget);
+    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }
 
 GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
-    if (widgetIndex >= 0) { // A widget is clicked
+    WIDGET *widget = window->widgets[widgetIndex];
+    SDL_Renderer *renderer = window->renderer;
 
-        if (widgetIndex == 0) { // The button clicked is New Game
-            destroyWindow(window);
-            nextWindow = createGenericWindow(drawSettingsWindow); // OK if NULL
-
-        }
-
-        if (widgetIndex == 1) {
-            //TODO: Load game draw
-            toggleButton(window->widgets[widgetIndex], window->renderer);
-            reRenderWindow(window);
-        }
-
-        if (widgetIndex == 2) { // The button clicked is Exit
-            return NULL;
-        }
-
+    if (widgetIndex == 0) { // The button clicked is New Game
+        destroyWindow(window);
+        nextWindow = createGenericWindow(drawSettingsWindow); // OK if NULL
     }
+
+    if (widgetIndex == 1) { // The button clicked is Load Game
+        //TODO: Load game draw
+        toggleButton(widget, renderer);
+        reRenderWindow(window);
+    }
+
+    if (widgetIndex == 2) { // The button clicked is Exit
+        return NULL; // NULL window determines exiting
+    }
+
     return nextWindow;
 }
 

@@ -35,14 +35,16 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     GENERIC_WINDOW *window = manager->genericWindow;
     CHESS_MATCH *match = manager->match;
 
-        if (event->type == SDL_WINDOWEVENT) {
-            if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
-        }
+    if (event->type == SDL_WINDOWEVENT) {
+        if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
+    }
 
-        else if (event->type == SDL_MOUSEBUTTONDOWN) {
-            GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
-            manager->genericWindow = nextWindow;
-            if (nextWindow == NULL) return MANAGER_QUIT;
-            return MANAGER_NONE;
-        }
+    else if (event->type == SDL_MOUSEBUTTONDOWN) {
+        printf("Event\n");
+        GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
+        printf("NEXT WINDOW\n");
+        manager->genericWindow = nextWindow;
+        if (nextWindow == NULL) return MANAGER_QUIT;
+        return MANAGER_NONE;
+    }
 }
