@@ -4,12 +4,11 @@
 
 #include "GameWindow.h"
 
-void setPiecesOnBoard(GENERIC_WINDOW *window);
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     SDL_SetWindowSize(sdlWindow, WINDOW_WIDTH, WINDOW_HEIGHT);
 //    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
-    unsigned numWidgets = 1;
+    unsigned numWidgets = 33;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = GAME_WINDOW;
     genericWindow->handleWindowEvent = (void *) gameWindowEventHandler;
@@ -39,15 +38,16 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
         return -1;
     }
 
-
+    setPiecesOnBoard(genericWindow);
+    
     reRenderWindow(genericWindow);
 
     return 1;
 }
 
 int createBoard(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = WINDOW_WIDTH - BUTTON_MARGIN - 640;
-    return createBackground(x, PAGE_MARGIN, 640, 640, "./img/board.bmp", renderer, widget);
+    int x = WINDOW_WIDTH - PAGE_MARGIN - BOARD_WIDTH;
+    return createBackground(x, PAGE_MARGIN, BOARD_WIDTH, BOARD_HEIGHT, "./img/board.bmp", renderer, widget);
 }
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
@@ -62,10 +62,4 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     }
 
     return response;
-}
-
-void setPiecesOnBoard(GENERIC_WINDOW *window) {
-    WIDGET **widgets = window->widgets;
-
-
 }

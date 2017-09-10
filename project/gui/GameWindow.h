@@ -5,7 +5,7 @@
 #ifndef PROJECT_GAMEWINDOW_H
 #define PROJECT_GAMEWINDOW_H
 
-#include "GenericWindow.h"
+#include "PiecesWidget.h"
 #include "../GameMoves.h"
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);

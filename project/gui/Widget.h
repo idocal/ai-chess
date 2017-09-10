@@ -21,6 +21,13 @@
 #define TITLE_WIDTH 530
 #define TITLE_HEIGHT 40
 
+#define BOARD_WIDTH 640
+#define BOARD_HEIGHT 640
+#define PIECE_SIZE 80
+#define initialX WINDOW_WIDTH - PAGE_MARGIN - BOARD_WIDTH
+#define initialBlackY PAGE_MARGIN
+#define initialWhiteY PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE
+
 typedef struct widget {
     SDL_Rect rect;
     SDL_Texture *texture;
