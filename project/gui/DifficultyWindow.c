@@ -4,7 +4,6 @@
 
 #include "DifficultyWindow.h"
 
-int findActiveButton(GENERIC_WINDOW *window);
 
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
     unsigned numWidgets = 8;
@@ -29,6 +28,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
     genericWindow->renderer = renderer;
+
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
@@ -186,11 +186,3 @@ EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event 
     return response;
 }
 
-int findActiveButton(GENERIC_WINDOW *window) {
-    int activeButton = -1;
-    for (int i = 0; i < window->numWidgets; ++i) {
-        WIDGET *widget = window->widgets[i];
-        if (widget->isActive) return i;
-    }
-    return activeButton;
-}

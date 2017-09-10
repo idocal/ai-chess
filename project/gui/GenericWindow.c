@@ -84,3 +84,12 @@ EVENT_RESPONSE *createEventResponse(GENERIC_WINDOW *window, RESPONSE_STATUS stat
 void destroyEventResponse(EVENT_RESPONSE *response) {
     free(response);
 }
+
+int findActiveButton(GENERIC_WINDOW *window) {
+    int activeButton = -1;
+    for (int i = 0; i < window->numWidgets; ++i) {
+        WIDGET *widget = window->widgets[i];
+        if (widget->isActive) return i;
+    }
+    return activeButton;
+}

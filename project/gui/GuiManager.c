@@ -63,14 +63,34 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
             pushNewWindow(stack, response->window);
             manager->genericWindow = response->window;
             SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
+
+
+        } else if (response->status == SAME_WINDOW){ // same window but with different active buttons so need to update stack
+            popHeadWindow(stack);
+            pushNewWindow(stack, response->window);
         }
 
         else if (response->status == BACK_WINDOW) {
-            popHeadWindow(stack); // Destroys the window (so no need to hide)
-            manager->genericWindow = stack->head->window; // Pull stack's head as window since it's the previous screen
-            manager->genericWindow->window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-            manager->genericWindow->renderer = SDL_CreateRenderer(manager->genericWindow->window, -1, SDL_RENDERER_ACCELERATED);
-            reRenderWindow(manager->genericWindow);
+            popHeadWindow(stack); // Pop window details from stack
+            destroyWindow(window); // Destroy the current window (so no need to hide)
+            WINDOW_TYPE prevWindowType = stack->head->windowType;
+            int windowState = stack->head->windowState;
+            GENERIC_WINDOW *nextWindow = NULL;
+
+            if (prevWindowType == WELCOME_WINDOW){
+                nextWindow = createGenericWindow(drawWelcomeWindow);
+            } else if (prevWindowType == SETTINGS_MODE_WINDOW){
+                nextWindow = createGenericWindow(drawSettingsWindow);
+            } else if (prevWindowType == SETTINGS_DIFFICULTY_WINDOW) {
+                nextWindow = createGenericWindow(drawDifficultyWindow);
+                toggleButton(nextWindow->widgets[2], nextWindow->renderer);
+                toggleButton(nextWindow->widgets[windowState], nextWindow->renderer);
+                reRenderWindow(nextWindow);
+                match->level = windowState;
+            }
+
+            manager->genericWindow = nextWindow;
+            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
         }
 
         destroyEventResponse(response);

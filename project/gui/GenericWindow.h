@@ -61,4 +61,6 @@ EVENT_RESPONSE *createEventResponse(GENERIC_WINDOW *window, RESPONSE_STATUS stat
 
 void destroyEventResponse(EVENT_RESPONSE *);
 
+int findActiveButton(GENERIC_WINDOW *window);
+
 #endif //PROJECT_GENERICWINDOW_H

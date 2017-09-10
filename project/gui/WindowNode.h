@@ -14,7 +14,8 @@
  */
 
 typedef struct window_node {
-    GENERIC_WINDOW *window;
+    WINDOW_TYPE windowType;
+    int windowState;
     struct window_node *next;
 } WINDOW_NODE;
 
