@@ -92,9 +92,8 @@ GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *ev
     if (widgetIndex >= 0) { // A widget is clicked
 
         if (widgetIndex == 0) { // The button clicked is New Game
-            destroyWindow(window);
+            SDL_HideWindow(window->window);
             nextWindow = createGenericWindow(drawSettingsWindow); // OK if NULL
-
         }
 
         if (widgetIndex == 1) {

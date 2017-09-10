@@ -5,6 +5,7 @@
 #include "GenericWindow.h"
 #include "WelcomeWindow.h"
 #include "../MatchManagement.h"
+#include "WindowsStack.h"
 
 #ifndef PROJECT_GUIMANAGER_H
 #define PROJECT_GUIMANAGER_H
@@ -17,6 +18,7 @@ typedef enum {
 typedef struct guiManager {
     GENERIC_WINDOW *genericWindow;
     CHESS_MATCH *match;
+    WINDOWS_STACK *stack;
 } GUI_MANAGER;
 
 GUI_MANAGER *createManager();
