@@ -25,13 +25,13 @@ void destroyWindowsStack(WINDOWS_STACK *stack) {
     free(stack);
 }
 
-GENERIC_WINDOW* popHeadWindow(WINDOWS_STACK *stack){
+void popHeadWindow(WINDOWS_STACK *stack){
     if (stack == NULL || stack->head == NULL){
-        return NULL;
+        return;
     }
     WINDOW_NODE *headWindow = stack->head;
     stack->head = stack->head->next;
-    return headWindow->window;
+    destroyWindowNode(headWindow);
 }
 
 void pushNewWindow(WINDOWS_STACK *stack, GENERIC_WINDOW* currentWindow){

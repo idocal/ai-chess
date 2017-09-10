@@ -108,11 +108,12 @@ int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(x, 180, "./img/two_players.bmp", renderer, widget, false);
 }
 
-GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+EVENT_RESPONSE * settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
+    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
 
     if (widgetIndex == 1) { // The button clicked is One Player
         if (!widget->isActive) { // If button is inactive - turn it on and toggle the active one
@@ -125,6 +126,7 @@ GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *e
             window->widgets[4] = createWidget(createNextButton, renderer);
             destroyWidget(removedWidget);
             reRenderWindow(window);
+
         }
     }
 
@@ -139,13 +141,19 @@ GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *e
             window->widgets[4] = createWidget(createStartButton, renderer);
             destroyWidget(removedWidget);
             reRenderWindow(window);
+
         }
     }
 
-    if (widgetIndex == 4) { // The button clicked is Next
-        destroyWindow(window);
-        nextWindow = createGenericWindow(drawDifficultyWindow); // OK if NULL
+    if (widgetIndex == 3) { // The button clicked is Back
+        response->status = BACK_WINDOW;
     }
 
-    return nextWindow;
+    if (widgetIndex == 4) { // The button clicked is Next
+        nextWindow = createGenericWindow(drawDifficultyWindow); // OK if NULL
+        response->window = nextWindow;
+        response->status = NEW_WINDOW;
+    }
+
+    return response;
 }

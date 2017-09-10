@@ -52,15 +52,26 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     }
 
     else if (event->type == SDL_MOUSEBUTTONDOWN) {
-        GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
-        if (nextWindow == NULL){
+        EVENT_RESPONSE *response = (EVENT_RESPONSE *)(*window->handleWindowEvent)(window, event, match);
+
+        if (response == NULL || response->status == EXIT_WINDOW){
             return MANAGER_QUIT;
         }
-        if (manager->genericWindow != nextWindow){
-            pushNewWindow(manager->stack, nextWindow);
+
+        if (response->status == NEW_WINDOW){
+            SDL_HideWindow(manager->genericWindow->window); // Hide previous screen
+            pushNewWindow(stack, response->window);
+            manager->genericWindow = response->window;
+            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
         }
-        manager->genericWindow = nextWindow;
-        SDL_ShowWindow(manager->genericWindow->window);
+
+        else if (response->status == BACK_WINDOW) {
+            popHeadWindow(stack); // Destroys the window (so no need to hide)
+            manager->genericWindow = stack->head->window; // Pull stack's head as window since it's the previous screen
+            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
+        }
+
+        destroyEventResponse(response);
         return MANAGER_NONE;
     }
     return MANAGER_NONE;

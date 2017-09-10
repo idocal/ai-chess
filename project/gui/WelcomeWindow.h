@@ -24,6 +24,6 @@ int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer);
 
 int createExitButton(WIDGET *widget, SDL_Renderer *renderer);
 
-GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE * welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 
 #endif //PROJECT_WELCOMEWINDOW_H

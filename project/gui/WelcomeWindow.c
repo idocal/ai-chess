@@ -86,27 +86,26 @@ int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }
 
-GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+EVENT_RESPONSE * welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
+    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
 
     if (widgetIndex == 0) { // The button clicked is New Game
-        SDL_HideWindow(window->window);
         nextWindow = createGenericWindow(drawSettingsWindow); // OK if NULL
+        response = createEventResponse(nextWindow, NEW_WINDOW);
     }
 
     if (widgetIndex == 1) { // The button clicked is Load Game
-        //TODO: Load game draw
-        toggleButton(widget, renderer);
-        reRenderWindow(window);
+        return NULL;
     }
 
     if (widgetIndex == 2) { // The button clicked is Exit
-        return NULL; // NULL window determines exiting
+        response->status = EXIT_WINDOW; // NULL window determines exiting
     }
 
-    return nextWindow;
+    return response;
 }
 

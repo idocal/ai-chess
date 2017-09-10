@@ -69,3 +69,18 @@ void reRenderWindow(GENERIC_WINDOW *window) {
     renderWindowWidgets(window);
     SDL_RenderPresent(window->renderer);
 }
+
+EVENT_RESPONSE *createEventResponse(GENERIC_WINDOW *window, RESPONSE_STATUS status) {
+    if (window == NULL) return NULL;
+
+    EVENT_RESPONSE *response = (EVENT_RESPONSE *) malloc(sizeof(EVENT_RESPONSE));
+    if (response == NULL) return NULL;
+
+    response->status = status;
+    response->window = window;
+    return response;
+}
+
+void destroyEventResponse(EVENT_RESPONSE *response) {
+    free(response);
+}

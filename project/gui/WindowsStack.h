@@ -49,7 +49,7 @@ void destroyWindowsStack(WINDOWS_STACK *stack);
  * @return a pointer to the generic window object itself rather than the window node object
  */
 
-GENERIC_WINDOW* popHeadWindow(WINDOWS_STACK *stack);
+void popHeadWindow(WINDOWS_STACK *stack);
 
 /**
  * add a new window node at the head of the given stack

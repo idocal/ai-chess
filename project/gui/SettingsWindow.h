@@ -18,6 +18,6 @@ int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
 
-GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE * settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
 
 #endif //PROJECT_SETTINGSMODEWINDOW_H
