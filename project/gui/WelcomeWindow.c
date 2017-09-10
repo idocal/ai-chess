@@ -69,12 +69,7 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
 
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE);
-    SDL_RenderClear(renderer);
-
-    // Place images on screen
-    renderWindowWidgets(genericWindow);
-    SDL_RenderPresent(renderer);
+    reRenderWindow(genericWindow);
 
     return 1;
 }
@@ -109,11 +104,7 @@ GENERIC_WINDOW *welcomeWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *ev
             } else {
                 turnButtonOff(window->widgets[widgetIndex], window->renderer);
             }
-            SDL_SetRenderDrawColor(window->renderer, COLOR_WHITE);
-            SDL_RenderClear(window->renderer);
-            // Place images on screen
-            renderWindowWidgets(window);
-            SDL_RenderPresent(window->renderer);
+            reRenderWindow(window);
         }
 
         if (widgetIndex == 2) { // The button clicked is Exit

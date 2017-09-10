@@ -41,4 +41,6 @@ int getClickedWidget(GENERIC_WINDOW *window, SDL_Event *event);
 
 void renderWindowWidgets(GENERIC_WINDOW *window);
 
+void reRenderWindow(GENERIC_WINDOW *window);
+
 #endif //PROJECT_GENERICWINDOW_H

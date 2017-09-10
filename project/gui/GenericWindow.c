@@ -61,3 +61,11 @@ void renderWindowWidgets(GENERIC_WINDOW *window) {
         SDL_RenderCopy(window->renderer, window->widgets[i]->texture, NULL, &(window->widgets[i]->rect));
     }
 }
+
+void reRenderWindow(GENERIC_WINDOW *window) {
+    SDL_SetRenderDrawColor(window->renderer, COLOR_WHITE);
+    SDL_RenderClear(window->renderer);
+    // Place images on screen
+    renderWindowWidgets(window);
+    SDL_RenderPresent(window->renderer);
+}
