@@ -12,7 +12,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
     genericWindow->handleWindowEvent = settingsWindowEventHandler;
 
     // Create SDL Window
-    SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("Game Mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
     if (window == NULL) {
         SDL_Quit();
         return -1;
@@ -89,15 +89,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
         return -1;
     }
 
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE);
-    SDL_RenderClear(renderer);
-
-    // Place images on screen
-    for (int i = 0; i < numWidgets; ++i) {
-        SDL_RenderCopy(renderer, widgets[i]->texture, NULL, &(widgets[i]->rect));
-    }
-
-    SDL_RenderPresent(renderer);
+    reRenderWindow(genericWindow);
 
     return 1;
 }
@@ -114,24 +106,6 @@ int createOnePlayerButton(WIDGET *widget, SDL_Renderer *renderer) {
 int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
     return createButton(x, 180, "./img/two_players.bmp", renderer, widget, false);
-}
-
-int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/back.bmp", renderer, widget, false);
-}
-
-int createStartButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/start.bmp", renderer, widget, false);
-}
-
-int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
-    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
-    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
-    return createButton(x, y, "./img/next.bmp", renderer, widget, false);
 }
 
 GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
@@ -166,6 +140,11 @@ GENERIC_WINDOW *settingsWindowEventHandler (GENERIC_WINDOW *window, SDL_Event *e
             destroyWidget(removedWidget);
             reRenderWindow(window);
         }
+    }
+
+    if (widgetIndex == 4) { // The button clicked is Next
+        destroyWindow(window);
+        nextWindow = createGenericWindow(drawDifficultyWindow); // OK if NULL
     }
 
     return nextWindow;

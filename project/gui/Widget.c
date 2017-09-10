@@ -145,3 +145,21 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
     SDL_DestroyTexture(prevTexture); // Destroy previous texture
     SDL_FreeSurface(loadingSurface);
 }
+
+int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/back.bmp", renderer, widget, false);
+}
+
+int createStartButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/start.bmp", renderer, widget, false);
+}
+
+int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
+    int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
+    int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
+    return createButton(x, y, "./img/next.bmp", renderer, widget, false);
+}

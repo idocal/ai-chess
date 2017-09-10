@@ -39,4 +39,9 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer);
 void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 
+// Common buttons
+int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
+int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
+int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
+
 #endif //PROJECT_WIDGET_H

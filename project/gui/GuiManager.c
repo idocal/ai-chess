@@ -40,9 +40,7 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     }
 
     else if (event->type == SDL_MOUSEBUTTONDOWN) {
-        printf("Event\n");
         GENERIC_WINDOW *nextWindow = (*window->handleWindowEvent)(window, event, match);
-        printf("NEXT WINDOW\n");
         manager->genericWindow = nextWindow;
         if (nextWindow == NULL) return MANAGER_QUIT;
         return MANAGER_NONE;
