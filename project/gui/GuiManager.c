@@ -68,7 +68,9 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
         else if (response->status == BACK_WINDOW) {
             popHeadWindow(stack); // Destroys the window (so no need to hide)
             manager->genericWindow = stack->head->window; // Pull stack's head as window since it's the previous screen
-            SDL_ShowWindow(manager->genericWindow->window); // Show previous screen
+            manager->genericWindow->window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+            manager->genericWindow->renderer = SDL_CreateRenderer(manager->genericWindow->window, -1, SDL_RENDERER_ACCELERATED);
+            reRenderWindow(manager->genericWindow);
         }
 
         destroyEventResponse(response);

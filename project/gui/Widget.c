@@ -51,6 +51,20 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     return 1;
 }
 
+int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
+    strcpy(widget->imgPath, imgPath);
+
+    // WIDGET rect
+    SDL_Rect rect = {.x = x, .y = y, .w = w, .h = h};
+    widget->rect = rect;
+    widget->isActive = false;
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
+
+    return 1;
+}
+
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer) {
     // Save previous img path to restore in case of failure
     char originalImgPath[1024];
@@ -146,6 +160,8 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
     SDL_FreeSurface(loadingSurface);
 }
 
+// Common buttons
+
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2;
     int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
@@ -162,4 +178,12 @@ int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
     int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
     return createButton(x, y, "./img/next.bmp", renderer, widget, false);
+}
+
+int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget, false);
+}
+
+int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
+    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }

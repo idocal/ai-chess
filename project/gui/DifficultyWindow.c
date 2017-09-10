@@ -7,10 +7,10 @@
 int findActiveButton(GENERIC_WINDOW *window);
 
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow) {
-    int numWidgets = 8;
+    unsigned numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_DIFFICULTY_WINDOW;
-    genericWindow->handleWindowEvent = difficultyWindowEventHandler;
+    genericWindow->handleWindowEvent = (void *) difficultyWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Difficulty", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);

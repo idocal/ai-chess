@@ -5,10 +5,10 @@
 #include "WelcomeWindow.h"
 
 int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
-    int numWidgets = 3;
+    unsigned numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = WELCOME_WINDOW;
-    genericWindow->handleWindowEvent = welcomeWindowEventHandler;
+    genericWindow->handleWindowEvent = (void *) welcomeWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, NARROW_WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
@@ -76,14 +76,6 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow) {
 
 int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(125, PAGE_MARGIN, "./img/new_game.bmp", renderer, widget, false);
-}
-
-int createLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, PAGE_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/load.bmp", renderer, widget, false);
-}
-
-int createExitButton(WIDGET *widget, SDL_Renderer *renderer) {
-    return createButton(125, WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }
 
 EVENT_RESPONSE * welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {

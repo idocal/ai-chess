@@ -6,10 +6,10 @@
 
 
 int drawSettingsWindow(GENERIC_WINDOW *genericWindow) {
-    int numWidgets = 5;
+    unsigned numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     genericWindow->type = SETTINGS_MODE_WINDOW;
-    genericWindow->handleWindowEvent = settingsWindowEventHandler;
+    genericWindow->handleWindowEvent = (void *) settingsWindowEventHandler;
 
     // Create SDL Window
     SDL_Window *window = SDL_CreateWindow("Game Mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
