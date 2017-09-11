@@ -15,6 +15,6 @@ int createColorTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createWhiteButton(WIDGET *widget, SDL_Renderer *renderer);
 int createBlackButton(WIDGET *widget, SDL_Renderer *renderer);
 
-EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 
 #endif //PROJECT_COLORWINDOW_H

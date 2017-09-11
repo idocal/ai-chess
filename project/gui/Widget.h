@@ -8,33 +8,27 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdbool.h>
+#include "config.h"
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
-#define NARROW_WINDOW_WIDTH 550
-#define COLOR_WHITE 255, 255, 255, 1
 
-#define BUTTON_WIDTH 300
-#define BUTTON_HEIGHT 100
-#define BUTTON_MARGIN 15
-#define PAGE_MARGIN 64
-#define TITLE_WIDTH 530
-#define TITLE_HEIGHT 40
-
-#define BOARD_WIDTH 640
-#define BOARD_HEIGHT 640
-#define PIECE_SIZE 80
-#define initialX WINDOW_WIDTH - BUTTON_MARGIN - BOARD_WIDTH
-#define initialBlackY PAGE_MARGIN
-#define initialWhiteY PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE
+typedef struct boardPosition {
+    int row;
+    int col;
+} BOARD_POSITION;
 
 typedef struct widget {
     SDL_Rect rect;
     SDL_Texture *texture;
+    BOARD_POSITION *position;
     char imgPath[1024];
     bool isActive;
     bool isEnable;
+    char color; // 0 is black, 1 is white
+    char piece;
+    bool isClickable;
 } WIDGET;
+
+BOARD_POSITION *createBoardPosition(int row, int col); // destroy unnecessary - use free().
 
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *widget, SDL_Renderer *renderer), SDL_Renderer *);
 
@@ -52,5 +46,7 @@ void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
+
+BOARD_POSITION *calculateBoardPosition(int x, int y);
 
 #endif //PROJECT_WIDGET_H

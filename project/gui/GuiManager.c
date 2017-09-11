@@ -20,9 +20,19 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
         free(manager);
         return NULL;
     }
+    initGameBoard(manager->match->game); // Initiate the game board;
 
     manager->stack = createEmptyWindowsStack();
     if (manager->stack == NULL){
+        destroyChessMatch(manager->match);
+        destroyWindow(manager->genericWindow);
+        free(manager);
+        return NULL;
+    }
+
+    manager->movesStack = createEmptyStack(UNDO_CAPACITY);
+    if (manager->movesStack == NULL){
+        destroyWindowsStack(manager->stack);
         destroyChessMatch(manager->match);
         destroyWindow(manager->genericWindow);
         free(manager);
@@ -38,6 +48,7 @@ void destroyManager(GUI_MANAGER *manager) {
     if (manager == NULL) return;
     destroyChessMatch(manager->match);
     destroyWindowsStack(manager->stack);
+    destroyStack(manager->movesStack);
     free(manager);
 }
 
@@ -46,13 +57,14 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
     GENERIC_WINDOW *window = manager->genericWindow;
     CHESS_MATCH *match = manager->match;
     WINDOWS_STACK *stack = manager->stack;
+    MOVES_STACK *movesStack = manager->movesStack;
 
     if (event->type == SDL_WINDOWEVENT) {
         if (event->window.event == SDL_WINDOWEVENT_CLOSE) return MANAGER_QUIT;
     }
 
     else if (event->type == SDL_MOUSEBUTTONDOWN) {
-        EVENT_RESPONSE *response = (EVENT_RESPONSE *)(*window->handleWindowEvent)(window, event, match);
+        EVENT_RESPONSE *response = (EVENT_RESPONSE *)(*window->handleWindowEvent)(window, event, match, movesStack);
 
         if (response == NULL || response->status == EXIT_WINDOW){
             return MANAGER_QUIT;

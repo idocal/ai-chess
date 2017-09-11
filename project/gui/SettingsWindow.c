@@ -95,7 +95,7 @@ int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(x, 180, "./img/two_players.bmp", renderer, widget, false);
 }
 
-EVENT_RESPONSE * settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];

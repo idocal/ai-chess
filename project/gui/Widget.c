@@ -6,12 +6,23 @@
 
 int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer);
 
+BOARD_POSITION *createBoardPosition(int row, int col) {
+    BOARD_POSITION *position = (BOARD_POSITION *) malloc(sizeof(BOARD_POSITION));
+    position->row = row;
+    position->col = col;
+    return position;
+}
+
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Renderer *renderer) {
     WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
 
     widget->isActive = false;
     widget->isEnable = true;
+    widget->piece = -1;
+    widget->color = -1;
+    widget->position = NULL;
+    widget->isClickable = true;
 
     int res = (*createWidgetFunc)(widget, renderer);
     if (res == -1) return NULL;
@@ -20,6 +31,7 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
 
 void destroyWidget(WIDGET *widget) {
     if (widget == NULL) return;
+    if (widget->position != NULL) free(widget->position);
     SDL_DestroyTexture(widget->texture);
     free(widget);
 }
@@ -44,6 +56,7 @@ int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     // WIDGET rect
     SDL_Rect rect = {.x = (WINDOW_WIDTH - TITLE_WIDTH) / 2, .y = PAGE_MARGIN, .w = TITLE_WIDTH, .h = TITLE_HEIGHT};
     widget->rect = rect;
+    widget->isActive = false;
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
@@ -58,6 +71,7 @@ int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *re
     SDL_Rect rect = {.x = x, .y = y, .w = w, .h = h};
     widget->rect = rect;
     widget->isActive = false;
+    widget->isClickable = false;
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
@@ -112,6 +126,12 @@ int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *wid
     SDL_Rect rect = {.x = x, .y = y, .w = 80, .h = 80};
     widget->rect = rect;
     widget->isActive = false;
+    widget->piece = piece;
+
+    if (piece >= 'a' && piece <= 'z') widget->color = 1;
+    else if (piece >= 'A' && piece <= 'Z') widget->color = 0;
+
+    widget->position = calculateBoardPosition(x, y); // Calculate board position according to <x,y>
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
@@ -236,4 +256,11 @@ int createNextButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
     int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
     return createButton(x, y, "./img/next.bmp", renderer, widget, false);
+}
+
+BOARD_POSITION *calculateBoardPosition(int x, int y) {
+    int row = 7 - ((y - initialBlackY) / 80);
+    int col = (x - initialX) / 80;
+    BOARD_POSITION *position = createBoardPosition(row, col);
+    return position;
 }

@@ -73,7 +73,7 @@ int createExitWelcomeButton(WIDGET *widget, SDL_Renderer *renderer) {
 
 
 
-EVENT_RESPONSE * welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
     SDL_Renderer *renderer = window->renderer;

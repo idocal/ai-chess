@@ -138,7 +138,7 @@ int createExpertButton(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(x, 180 + BUTTON_HEIGHT + BUTTON_MARGIN, "./img/expert.bmp", renderer, widget, false);
 }
 
-EVENT_RESPONSE * difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match) {
+EVENT_RESPONSE *difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
     GENERIC_WINDOW *nextWindow = window;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];

@@ -7,7 +7,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
-#include "../MatchManagement.h"
+#include "../GameAux.h"
 #include "Widget.h"
 
 typedef enum {
@@ -25,7 +25,7 @@ typedef struct generic_window {
     WIDGET **widgets;
     int numWidgets;
     WINDOW_TYPE type;
-    void *(*handleWindowEvent) (struct generic_window*, SDL_Event *event, CHESS_MATCH *match);
+    void *(*handleWindowEvent)(struct generic_window *, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 } GENERIC_WINDOW;
 
 typedef enum {

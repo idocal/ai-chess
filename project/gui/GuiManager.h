@@ -4,7 +4,6 @@
 
 #include "GenericWindow.h"
 #include "WelcomeWindow.h"
-#include "../MatchManagement.h"
 #include "WindowsStack.h"
 
 #ifndef PROJECT_GUIMANAGER_H
@@ -19,6 +18,7 @@ typedef struct guiManager {
     GENERIC_WINDOW *genericWindow;
     CHESS_MATCH *match;
     WINDOWS_STACK *stack;
+    MOVES_STACK *movesStack;
 } GUI_MANAGER;
 
 GUI_MANAGER *createManager(SDL_Window *window, SDL_Renderer *renderer);

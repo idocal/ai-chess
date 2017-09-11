@@ -25,6 +25,6 @@ int createLoadWelcomeButton(WIDGET *widget, SDL_Renderer *renderer);
 
 int createExitWelcomeButton(WIDGET *widget, SDL_Renderer *renderer);
 
-EVENT_RESPONSE * welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match);
+EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 
 #endif //PROJECT_WELCOMEWINDOW_H

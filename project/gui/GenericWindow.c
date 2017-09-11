@@ -34,14 +34,18 @@ int detectWidgetByLocation(GENERIC_WINDOW *window ,int x, int y) {
     int widgetNum = -1;
 
     for (int i = 0; i < window->numWidgets; ++i) {
+        if (window->widgets[i] == NULL) continue; // If a widget is NULL, it cannot be a detected one.
+
         int widgetX = window->widgets[i]->rect.x;
         int widgetY = window->widgets[i]->rect.y;
         int widgetW = window->widgets[i]->rect.w;
         int widgetH = window->widgets[i]->rect.h;
 
-        if (x >= widgetX && x <= widgetX + widgetW && y >= widgetY && y <= widgetY +widgetH) {
-            widgetNum = i;
-            break;
+        if (window->widgets[i]->isClickable) { // Only clickable widgets can be detected
+            if (x >= widgetX && x <= widgetX + widgetW && y >= widgetY && y <= widgetY +widgetH) {
+                widgetNum = i;
+                break;
+            }
         }
     }
 
