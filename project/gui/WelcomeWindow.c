@@ -85,7 +85,8 @@ EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *eve
     }
 
     if (widgetIndex == 1) { // The button clicked is Load Game
-        return NULL;
+        int res = getNumSavedFilesInGameDir();
+        printf("the result is: %d", res);
     }
 
     if (widgetIndex == 2) { // The button clicked is Exit
