@@ -108,11 +108,51 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         response->status = NEW_WINDOW;
     }
 
+    if (widgetIndex == 34) { // The button clicked is Save
+        writeMatchObjectToXmlFile(match, SAVE_FILEPATH);
+        //TODO: save this game to game slot 1
+    }
+
+    if (widgetIndex == 35) { // The button clicked is Load
+        response->windowType = LOAD_WINDOW;
+        response->status = NEW_WINDOW;
+    }
+
+    if (widgetIndex == 36) { // The button clicked is Undo
+        if (mode == 2) return response;
+        else if (stack->currentSize == 0) return response;
+        else {
+            switchPlayers(match->game);
+            handleUndo(match->game, stack, window);
+            switchPlayers(match->game);
+            handleUndo(match->game, stack, window);
+            if (stack->currentSize == 0) { // Turn off undo button if reached empty stack
+                toggleButtonAbility(window->widgets[widgetIndex], renderer);
+                reRenderWindow(window);
+            }
+
+        }
+    }
+
+    if (widgetIndex == 37) { // The button clicked is Main Menu
+        CHESS_GAME *newGame = createEmptyGame();
+        initGameBoard(newGame);
+        destroyChessGame(match->game);
+        match->game = newGame;
+        response->windowType = WELCOME_WINDOW;
+        response->status = NEW_WINDOW;
+    }
+
+    if (widgetIndex == 38) { // The button clicked is Exit
+        response->status = EXIT_WINDOW;
+    }
+
     return response;
 }
 
 void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
     WIDGET *widget = window->widgets[widgetIndex];
+    WIDGET *undoButton = window->widgets[36];
 
     if (widget->position != NULL) {
         int initialRow = widget->position->row;
@@ -142,7 +182,14 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
 
             if (dropEvent.type == SDL_MOUSEBUTTONUP) { // mouse is up - drop widget
                 int successMove = moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack); // move piece to desired position
-                if (successMove == 1) swapTurns(match, stack, window);
+                if (successMove == 1) {
+                    swapTurns(match, stack, window);
+                    if (!undoButton->isEnable && match->gameMode == 1) { // Enable undo button
+                        toggleButtonAbility(undoButton, window->renderer);
+                        reRenderWindow(window);
+                    }
+                }
+
                 break;
             }
         }

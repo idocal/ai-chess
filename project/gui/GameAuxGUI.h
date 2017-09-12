@@ -26,4 +26,8 @@ void handleTie();
 
 void hidePiece(WIDGET *widget);
 
+void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window);
+void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack);
+int gameMoveToBoardMove(GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack, CHESS_GAME *game);
+
 #endif //PROJECT_GAMEAUXGUI_H

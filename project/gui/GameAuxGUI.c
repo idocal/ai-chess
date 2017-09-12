@@ -41,7 +41,6 @@ int moveToPosition(CHESS_GAME *game, GENERIC_WINDOW *window, WIDGET *widget, int
         widget->position->row = newPosition->row;
         widget->position->col = newPosition->col;
 
-
         // Move widget to screen position
         widget->rect.x = screenPositionX(newPosition->col);
         widget->rect.y = screenPositionY(newPosition->row);
@@ -89,14 +88,7 @@ int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window)
     }
     if (AIMove == NULL) return -1;
 
-    int widgetX = screenPositionX(AIMove->sourceColIndex);
-    int widgetY = screenPositionY(AIMove->sourceRowIndex);
-    WIDGET *widget = findWidget(window, widgetX, widgetY);
-
-    int x = screenPositionX(AIMove->destColIndex);
-    int y = screenPositionY(AIMove->destRowIndex);
-
-    moveToPosition(game, window, widget, x, y, stack);
+    gameMoveToBoardMove(AIMove, window, stack, game);
     switchPlayers(game); // switch back to player
 
     return 1;
@@ -125,4 +117,44 @@ void hidePiece(WIDGET *widget) {
     widget->position->col = -1;
     widget->isEnable = false;
     widget->isClickable = false;
+}
+
+void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window) {
+    GAME_MOVE *prevMove = pop(stack);
+    revertMoveGUI(game, prevMove, window, stack);
+    destroyGameMove(prevMove);
+}
+
+void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack) {
+    GAME_MOVE *inverseMove = createGameMove(game, move->destRowIndex, move->destColIndex, move->sourceRowIndex, move->sourceColIndex);
+    matSet(game->gameBoard, move->destRowIndex, move->destColIndex, move->sourceOriginalSymbol); // assign the original piece on original destination
+    performMove(game, inverseMove);
+
+    int widgetX = screenPositionX(inverseMove->sourceColIndex);
+    int widgetY = screenPositionY(inverseMove->sourceRowIndex);
+    WIDGET *widget = findWidget(window, widgetX, widgetY);
+    int x = screenPositionX(inverseMove->destColIndex);
+    int y = screenPositionY(inverseMove->destRowIndex);
+
+    // Update widget with new position
+    widget->position->row = inverseMove->destRowIndex;
+    widget->position->col = inverseMove->destColIndex;
+
+    // Move widget to screen position
+    widget->rect.x = x;
+    widget->rect.y = y;
+    reRenderWindow(window);
+
+    destroyGameMove(inverseMove);
+}
+
+int gameMoveToBoardMove(GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack, CHESS_GAME *game) {
+    int widgetX = screenPositionX(move->sourceColIndex);
+    int widgetY = screenPositionY(move->sourceRowIndex);
+    WIDGET *widget = findWidget(window, widgetX, widgetY);
+
+    int x = screenPositionX(move->destColIndex);
+    int y = screenPositionY(move->destRowIndex);
+
+    return moveToPosition(game, window, widget, x, y, stack);
 }

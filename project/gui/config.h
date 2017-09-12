@@ -24,4 +24,6 @@
 #define initialBlackY PAGE_MARGIN
 #define initialWhiteY (PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE)
 
+#define SAVE_FILEPATH "game_saved.xml"
+
 #endif //PROJECT_CONFIG_H
