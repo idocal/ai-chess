@@ -60,11 +60,11 @@ int createBlackButton(WIDGET *widget, SDL_Renderer *renderer) {
 }
 
 EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    GENERIC_WINDOW *nextWindow = window;
+    WINDOW_TYPE nextWindow = SETTINGS_COLOR_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
-    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+    EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex == 1) { // White button is clicked
         if (!widget->isActive) {
@@ -89,8 +89,7 @@ EVENT_RESPONSE *colorWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event
     }
 
     if (widgetIndex == 4) { // Start button is clicked
-        nextWindow = createGenericWindow(drawGameWindow, nextWindow->window, renderer);
-        response->window = nextWindow;
+        response->windowType = GAME_WINDOW;
         response->status = NEW_WINDOW;
     }
 

@@ -7,7 +7,6 @@
 
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
-#include "ColorWindow.h"
 
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
 

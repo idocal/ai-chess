@@ -6,7 +6,6 @@
 #define PROJECT_SETTINGSMODEWINDOW_H
 
 #include "GenericWindow.h"
-#include "DifficultyWindow.h"
 #include "../MatchManagement.h"
 
 int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer);

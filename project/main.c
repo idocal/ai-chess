@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "MatchManagement.h"
-#include "GameAux.h"
 #include "gui/WelcomeWindow.h"
-#include "gui/GenericWindow.h"
 #include "gui/GuiManager.h"
 
 #define SDL_ERROR_PREFIX "ERROR: unable to init SDL: %s\n"

@@ -37,7 +37,7 @@ typedef enum {
 } RESPONSE_STATUS;
 
 typedef struct eventResponse {
-    GENERIC_WINDOW *window;
+    WINDOW_TYPE windowType;
     RESPONSE_STATUS status;
 } EVENT_RESPONSE;
 
@@ -62,7 +62,7 @@ void renderWindowWidgets(GENERIC_WINDOW *window);
 void reRenderWindow(GENERIC_WINDOW *window);
 
 // Event handler response to GUI Manager
-EVENT_RESPONSE *createEventResponse(GENERIC_WINDOW *window, RESPONSE_STATUS status);
+EVENT_RESPONSE *createEventResponse(WINDOW_TYPE windowType, RESPONSE_STATUS status);
 
 void destroyEventResponse(EVENT_RESPONSE *);
 

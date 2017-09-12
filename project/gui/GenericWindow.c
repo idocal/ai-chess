@@ -85,14 +85,12 @@ void reRenderWindow(GENERIC_WINDOW *window) {
     SDL_RenderPresent(window->renderer);
 }
 
-EVENT_RESPONSE *createEventResponse(GENERIC_WINDOW *window, RESPONSE_STATUS status) {
-    if (window == NULL) return NULL;
-
+EVENT_RESPONSE *createEventResponse(WINDOW_TYPE windowType, RESPONSE_STATUS status) {
     EVENT_RESPONSE *response = (EVENT_RESPONSE *) malloc(sizeof(EVENT_RESPONSE));
     if (response == NULL) return NULL;
 
     response->status = status;
-    response->window = window;
+    response->windowType = windowType;
     return response;
 }
 

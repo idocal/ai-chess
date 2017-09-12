@@ -70,15 +70,16 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
             return MANAGER_QUIT;
         }
 
-        if (response->status == NEW_WINDOW){
+        if (response->status == NEW_WINDOW) {
             destroyWindow(manager->genericWindow);
-            pushNewWindow(stack, response->window);
-            manager->genericWindow = response->window;
+            manager->genericWindow = createWindowFromType(response->windowType, manager);
+            if (manager->genericWindow == NULL) return MANAGER_QUIT;
+            pushNewWindow(stack, manager->genericWindow);
 
 
         } else if (response->status == SAME_WINDOW){ // same window but with different active buttons so need to update stack
             popHeadWindow(stack);
-            pushNewWindow(stack, response->window);
+            pushNewWindow(stack, manager->genericWindow); // pushing the current window since action is SAME_WINDOW
         }
 
         else if (response->status == BACK_WINDOW) {
@@ -107,4 +108,39 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
         return MANAGER_NONE;
     }
     return MANAGER_NONE;
+}
+
+GENERIC_WINDOW *createWindowFromType(WINDOW_TYPE type, GUI_MANAGER *manager) {
+    GENERIC_WINDOW *nextWindow = manager->genericWindow;
+
+    switch (type) {
+        case WELCOME_WINDOW :
+            nextWindow = createGenericWindow(drawWelcomeWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        case SETTINGS_MODE_WINDOW :
+            nextWindow = createGenericWindow(drawSettingsWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        case SETTINGS_DIFFICULTY_WINDOW :
+            nextWindow = createGenericWindow(drawDifficultyWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        case SETTINGS_COLOR_WINDOW :
+            nextWindow = createGenericWindow(drawColorWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        case GAME_WINDOW :
+            nextWindow = createGenericWindow(drawGameWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        case LOAD_WINDOW :
+            nextWindow = createGenericWindow(drawLoadGameWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            break;
+
+        default :
+            return nextWindow;
+    }
+
+    return nextWindow;
 }

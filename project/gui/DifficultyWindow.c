@@ -87,11 +87,11 @@ int createExpertButton(WIDGET *widget, SDL_Renderer *renderer) {
 }
 
 EVENT_RESPONSE *difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    GENERIC_WINDOW *nextWindow = window;
+    WINDOW_TYPE nextWindow = SETTINGS_DIFFICULTY_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
-    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+    EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex >= 1 && widgetIndex <= 5) { // if any difficulty is clicked
         int activeButton = findActiveButton(window);
@@ -110,8 +110,7 @@ EVENT_RESPONSE *difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *
     }
 
     if (widgetIndex == 7) { // Next button is clicked
-        nextWindow = createGenericWindow(drawColorWindow, nextWindow->window, renderer);
-        response->window = nextWindow;
+        response->windowType = SETTINGS_COLOR_WINDOW;
         response->status = NEW_WINDOW;
     }
 

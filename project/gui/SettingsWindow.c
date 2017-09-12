@@ -61,11 +61,11 @@ int createTwoPlayersButton(WIDGET *widget, SDL_Renderer *renderer) {
 }
 
 EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    GENERIC_WINDOW *nextWindow = window;
+    WINDOW_TYPE nextWindow = SETTINGS_MODE_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
-    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+    EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex == 1) { // The button clicked is One Player
         if (!widget->isActive) { // If button is inactive - turn it on and toggle the active one
@@ -78,7 +78,6 @@ EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *ev
             window->widgets[4] = createWidget(createNextButton, renderer);
             destroyWidget(removedWidget);
             reRenderWindow(window);
-
         }
     }
 
@@ -93,7 +92,6 @@ EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *ev
             window->widgets[4] = createWidget(createStartButton, renderer);
             destroyWidget(removedWidget);
             reRenderWindow(window);
-
         }
     }
 
@@ -103,12 +101,10 @@ EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *ev
 
     if (widgetIndex == 4) { // The button clicked is Next / Start
         if (match->gameMode == 1) { // One player mode -> go to Next
-            nextWindow = createGenericWindow(drawDifficultyWindow, nextWindow->window, renderer); // Go to Difficulty screen
-        } else { // Two players mode
-            nextWindow = createGenericWindow(drawGameWindow, nextWindow->window, renderer); // Go to game screen
+            response->windowType = SETTINGS_DIFFICULTY_WINDOW;
+        } else { // Two players mode -> go to Game
+            response->windowType = GAME_WINDOW;
         }
-
-        response->window = nextWindow;
         response->status = NEW_WINDOW;
     }
 

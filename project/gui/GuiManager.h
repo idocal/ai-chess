@@ -2,8 +2,12 @@
 // Created by Ido on 9/9/17.
 //
 
-#include "GenericWindow.h"
 #include "WelcomeWindow.h"
+#include "SettingsWindow.h"
+#include "DifficultyWindow.h"
+#include "ColorWindow.h"
+#include "GameWindow.h"
+#include "LoadGamesWindow.h"
 #include "WindowsStack.h"
 
 #ifndef PROJECT_GUIMANAGER_H
@@ -25,5 +29,7 @@ GUI_MANAGER *createManager(SDL_Window *window, SDL_Renderer *renderer);
 void destroyManager(GUI_MANAGER *manager);
 
 MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event);
+
+GENERIC_WINDOW *createWindowFromType(WINDOW_TYPE type, GUI_MANAGER *manager);
 
 #endif //PROJECT_GUIMANAGER_H

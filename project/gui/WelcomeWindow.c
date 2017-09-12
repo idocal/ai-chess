@@ -52,19 +52,18 @@ int createExitWelcomeButton(WIDGET *widget, SDL_Renderer *renderer) {
 
 
 EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    GENERIC_WINDOW *nextWindow = window;
+    WINDOW_TYPE nextWindow = WELCOME_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
-    SDL_Renderer *renderer = window->renderer;
-    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+    EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex == 0) { // The button clicked is New Game
-        nextWindow = createGenericWindow(drawSettingsWindow, nextWindow->window, renderer); // OK if NULL
-        response = createEventResponse(nextWindow, NEW_WINDOW);
+        response->windowType = SETTINGS_MODE_WINDOW;
+        response->status = NEW_WINDOW;
     }
 
     if (widgetIndex == 1) { // The button clicked is Load Game
-        nextWindow = createGenericWindow(drawLoadGameWindow, nextWindow->window, renderer);
-        response = createEventResponse(nextWindow, NEW_WINDOW);
+        response->windowType = LOAD_WINDOW;
+        response->status = NEW_WINDOW;
     }
 
     if (widgetIndex == 2) { // The button clicked is Exit

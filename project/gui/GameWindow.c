@@ -6,7 +6,6 @@
 
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
-    SDL_SetWindowSize(sdlWindow, WINDOW_WIDTH, WINDOW_HEIGHT);
     unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     int numWidgetsCreated = 0;
     genericWindow->numWidgets = numWidgets;
@@ -93,6 +92,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
+    int mode = match->gameMode;
     EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
 
     if (widgetIndex >= 1 && widgetIndex <= 32) { // Piece handle
@@ -132,7 +132,7 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
             reRenderWindow(window);
 
             if (dropEvent.type == SDL_MOUSEBUTTONUP) { // mouse is up - drop widget
-                moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack);
+                moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack); // move piece to desired position
                 break;
             }
         }
