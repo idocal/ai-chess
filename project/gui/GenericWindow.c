@@ -22,6 +22,18 @@ void destroyWindow(GENERIC_WINDOW *genericWindow) {
     free(genericWindow);
 }
 
+int destroyWindowOnFailure(GENERIC_WINDOW *window, int numWidgetsCreated) {
+    SDL_DestroyRenderer(window->renderer);
+    for (int i = 0; i < numWidgetsCreated; i++) {
+        destroyWindow(window->widgets[i]);
+    }
+    free(window->widgets);
+    window->window = NULL;
+    SDL_DestroyWindow(window->window);
+    SDL_Quit();
+    return -1;
+}
+
 int exitEventHandler(SDL_Event *event) {
     return 0;
 }

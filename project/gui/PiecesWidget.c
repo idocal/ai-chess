@@ -140,45 +140,140 @@ int createBlackPawn8(WIDGET *widget, SDL_Renderer *renderer) {
     return createPieceGUI(initialX + 7 * PIECE_SIZE , initialBlackY + PIECE_SIZE, 'M', renderer, widget);
 }
 
-void setPiecesOnBoard(GENERIC_WINDOW *window) {
+int setPiecesOnBoard(GENERIC_WINDOW *window) {
     WIDGET **widgets = window->widgets;
     SDL_Renderer *renderer = window->renderer;
+    int createdWidgets = 0;
 
     // Set white pieces on board
     widgets[1] = createWidget(createWhiteRook1, renderer);
+    if (widgets[1] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[2] = createWidget(createWhiteKnight1, renderer);
+    if (widgets[2] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[3] = createWidget(createWhiteBishop1, renderer);
+    if (widgets[3] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[4] = createWidget(createWhiteQueen, renderer);
+    if (widgets[4] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[5] = createWidget(createWhiteKing, renderer);
+    if (widgets[5] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[6] = createWidget(createWhiteBishop2, renderer);
+    if (widgets[6] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[7] = createWidget(createWhiteKnight2, renderer);
+    if (widgets[7] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[8] = createWidget(createWhiteRook2, renderer);
+    if (widgets[8] == NULL) return createdWidgets;
+    createdWidgets++;
 
     widgets[9] = createWidget(createWhitePawn1, renderer);
+    if (widgets[9] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[10] = createWidget(createWhitePawn2, renderer);
+    if (widgets[10] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[11] = createWidget(createWhitePawn3, renderer);
+    if (widgets[11] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[12] = createWidget(createWhitePawn4, renderer);
+    if (widgets[12] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[13] = createWidget(createWhitePawn5, renderer);
+    if (widgets[13] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[14] = createWidget(createWhitePawn6, renderer);
+    if (widgets[14] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[15] = createWidget(createWhitePawn7, renderer);
+    if (widgets[15] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[16] = createWidget(createWhitePawn8, renderer);
+    if (widgets[16] == NULL) return createdWidgets;
+    createdWidgets++;
 
     // Set black piece on board
     widgets[17] = createWidget(createBlackRook1, renderer);
+    if (widgets[17] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[18] = createWidget(createBlackKnight1, renderer);
+    if (widgets[18] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[19] = createWidget(createBlackBishop1, renderer);
+    if (widgets[19] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[20] = createWidget(createBlackQueen, renderer);
+    if (widgets[20] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[21] = createWidget(createBlackKing, renderer);
+    if (widgets[21] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[22] = createWidget(createBlackBishop2, renderer);
+    if (widgets[22] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[23] = createWidget(createBlackKnight2, renderer);
+    if (widgets[23] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[24] = createWidget(createBlackRook2, renderer);
+    if (widgets[24] == NULL) return createdWidgets;
+    createdWidgets++;
 
     widgets[25] = createWidget(createBlackPawn1, renderer);
+    if (widgets[25] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[26] = createWidget(createBlackPawn2, renderer);
+    if (widgets[26] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[27] = createWidget(createBlackPawn3, renderer);
+    if (widgets[27] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[28] = createWidget(createBlackPawn4, renderer);
+    if (widgets[28] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[29] = createWidget(createBlackPawn5, renderer);
+    if (widgets[29] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[30] = createWidget(createBlackPawn6, renderer);
+    if (widgets[30] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[31] = createWidget(createBlackPawn7, renderer);
+    if (widgets[31] == NULL) return createdWidgets;
+    createdWidgets++;
+
     widgets[32] = createWidget(createBlackPawn8, renderer);
+    if (widgets[32] == NULL) return createdWidgets;
+    createdWidgets++;
+
+    return createdWidgets;
 }

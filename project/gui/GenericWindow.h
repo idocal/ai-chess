@@ -46,6 +46,8 @@ GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* genericWindow
 
 void destroyWindow(GENERIC_WINDOW *);
 
+int destroyWindowOnFailure(GENERIC_WINDOW *window, int numWidgetsCreated);
+
 int detectWidgetByLocation(GENERIC_WINDOW *window, int x, int y);
 
 // Common buttons event handlers

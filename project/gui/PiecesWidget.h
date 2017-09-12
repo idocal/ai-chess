@@ -51,6 +51,6 @@ int createBlackPawn6(WIDGET *widget, SDL_Renderer *renderer);
 int createBlackPawn7(WIDGET *widget, SDL_Renderer *renderer);
 int createBlackPawn8(WIDGET *widget, SDL_Renderer *renderer);
 
-void setPiecesOnBoard(GENERIC_WINDOW *window);
+int setPiecesOnBoard(GENERIC_WINDOW *window);
 
 #endif //PROJECT_PIECESWIDGET_H
