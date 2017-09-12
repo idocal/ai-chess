@@ -8,11 +8,22 @@
 #define screenPositionX(col) (initialX + 80 * col)
 #define screenPositionY(row) (initialBlackY + 80 * (7 - row))
 
+#define playerColor(player) ((player == 1) ? "Black player won" : "White player won")
+
 #include "../GameMoves.h"
 #include "../GameAux.h"
 #include "PiecesWidget.h"
 #include "Widget.h"
 
-void moveToPosition(CHESS_GAME *game, GENERIC_WINDOW *window, WIDGET *widget, int x, int y, MOVES_STACK *stack);
+int moveToPosition(CHESS_GAME *game, GENERIC_WINDOW *window, WIDGET *widget, int x, int y, MOVES_STACK *stack);
+
+void swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window);
+int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window);
+WIDGET *findWidget(GENERIC_WINDOW *window, int x, int y);
+
+void handleWin(char playerWon);
+void handleTie();
+
+void hidePiece(WIDGET *widget);
 
 #endif //PROJECT_GAMEAUXGUI_H

@@ -88,12 +88,12 @@ int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer) {
 }
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    GENERIC_WINDOW *nextWindow = window;
+    WINDOW_TYPE nextWindow = GAME_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
     SDL_Renderer *renderer = window->renderer;
     int mode = match->gameMode;
-    EVENT_RESPONSE *response = createEventResponse(window, SAME_WINDOW);
+    EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex >= 1 && widgetIndex <= 32) { // Piece handle
         handlePieceEvent(window, event, match, stack, widgetIndex);
@@ -132,7 +132,8 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
             reRenderWindow(window);
 
             if (dropEvent.type == SDL_MOUSEBUTTONUP) { // mouse is up - drop widget
-                moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack); // move piece to desired position
+                int successMove = moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack); // move piece to desired position
+                if (successMove == 1) swapTurns(match, stack, window);
                 break;
             }
         }

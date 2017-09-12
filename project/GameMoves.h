@@ -6,6 +6,7 @@
 #define PROJECT_GAMEMOVES_H
 
 #include "GameRepresenation.h"
+#include <stdbool.h>
 
 
 /**
@@ -53,7 +54,6 @@ GAME_MOVE* createGameMove(CHESS_GAME *, int sourceRow, int sourceCol, int destRo
  * Otherwise, a pointer to a the new game move instance.
  */
 
-
 GAME_MOVE* createGameMoveWithoutGame(int sourceRow, int sourceCol, int destRow, int destCol);
 
 /**
@@ -97,5 +97,13 @@ void performMove(CHESS_GAME *game, GAME_MOVE *move);
  * @param move
  */
 void revertMove(CHESS_GAME *game, GAME_MOVE *move);
+
+/**
+ * Conquer move is a move that captures opponent's piece
+ *
+ * @param move
+ * @return true iff move is a conquering one
+ */
+bool isConquer(GAME_MOVE *move);
 
 #endif //PROJECT_GAMEMOVES_H

@@ -69,3 +69,9 @@ void revertMove(CHESS_GAME *game, GAME_MOVE *move) {
     performMove(game, inverseMove);
     destroyGameMove(inverseMove);
 }
+
+bool isConquer(GAME_MOVE *move) {
+    if (move == NULL) return false;
+    if (move->destOriginalSymbol != '_') return true;
+    return false;
+}
