@@ -16,8 +16,8 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
+        destroyWindow(genericWindow);
         SDL_DestroyRenderer(renderer);
-        genericWindow->window = NULL;
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -27,9 +27,9 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
     // Load widgets into widgets array
     widgets[0] = createWidget(createColorTitle, renderer);
     if (widgets[0] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -37,9 +37,9 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
 
     widgets[1] = createWidget(createWhiteButton, renderer);
     if (widgets[1] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -47,9 +47,9 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
 
     widgets[2] = createWidget(createBlackButton, renderer);
     if (widgets[2] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -57,9 +57,9 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
 
     widgets[3] = createWidget(createBackButton, renderer);
     if (widgets[3] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -67,9 +67,9 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
 
     widgets[4] = createWidget(createStartButton, renderer);
     if (widgets[4] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;

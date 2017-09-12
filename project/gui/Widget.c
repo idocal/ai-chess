@@ -29,6 +29,22 @@ WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *), SDL_Rende
     return widget;
 }
 
+WIDGET *createGameSlotWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *, int), SDL_Renderer *renderer, int slotNum) {
+    WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
+    if (widget == NULL) return NULL;
+
+    widget->isActive = false;
+    widget->isEnable = true;
+    widget->piece = -1;
+    widget->color = -1;
+    widget->position = NULL;
+    widget->isClickable = true;
+
+    int res = (*createWidgetFunc)(widget, renderer, slotNum);
+    if (res == -1) return NULL;
+    return widget;
+}
+
 void destroyWidget(WIDGET *widget) {
     if (widget == NULL) return;
     if (widget->position != NULL) free(widget->position);

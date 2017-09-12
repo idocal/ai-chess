@@ -7,6 +7,7 @@
 
 #include "GenericWindow.h"
 #include "SettingsWindow.h"
+#include "LoadGamesWindow.h"
 
 #define WELCOME_WINDOW_MIDDLE_X_POS (WINDOW_WIDTH - BUTTON_WIDTH) / 2
 

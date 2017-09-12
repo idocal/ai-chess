@@ -16,8 +16,8 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
+        destroyWindow(genericWindow);
         SDL_DestroyRenderer(renderer);
-        genericWindow->window = NULL;
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -27,9 +27,9 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
     // Load widgets into widgets array
     widgets[0] = createWidget(createNewGameButton, renderer);
     if (widgets[0] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -37,18 +37,18 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
 
     widgets[1] = createWidget(createLoadWelcomeButton, renderer);
     if (widgets[1] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
     widgets[2] = createWidget(createExitWelcomeButton, renderer);
     if (widgets[2] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -85,7 +85,8 @@ EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *eve
     }
 
     if (widgetIndex == 1) { // The button clicked is Load Game
-        return NULL;
+        nextWindow = createGenericWindow(drawLoadGameWindow, nextWindow->window, renderer);
+        response = createEventResponse(nextWindow, NEW_WINDOW);
     }
 
     if (widgetIndex == 2) { // The button clicked is Exit

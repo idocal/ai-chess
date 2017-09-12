@@ -29,9 +29,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
     // Load widgets into widgets array
     widgets[0] = createWidget(createDifficultyTitle, renderer);
     if (widgets[0] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -39,9 +39,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[1] = createWidget(createNoobButton, renderer);
     if (widgets[1] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -49,18 +49,18 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[2] = createWidget(createEasyButton, renderer);
     if (widgets[2] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
     widgets[3] = createWidget(createModerateButton, renderer);
     if (widgets[3] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -68,9 +68,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[4] = createWidget(createHardButton, renderer);
     if (widgets[4] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -78,9 +78,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[5] = createWidget(createExpertButton, renderer);
     if (widgets[5] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -88,9 +88,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[6] = createWidget(createBackButton, renderer);
     if (widgets[6] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -98,9 +98,9 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     widgets[7] = createWidget(createNextButton, renderer);
     if (widgets[7] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;

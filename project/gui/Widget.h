@@ -32,6 +32,8 @@ BOARD_POSITION *createBoardPosition(int row, int col); // destroy unnecessary - 
 
 WIDGET *createWidget(int(*createWidgetFunc)(WIDGET *widget, SDL_Renderer *renderer), SDL_Renderer *);
 
+WIDGET *createGameSlotWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *, int), SDL_Renderer *renderer, int slotNum);
+
 void destroyWidget(WIDGET *widget);
 
 int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);

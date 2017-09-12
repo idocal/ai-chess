@@ -18,8 +18,8 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
     if (widgets == NULL) {
+        destroyWindow(genericWindow);
         SDL_DestroyRenderer(renderer);
-        genericWindow->window = NULL;
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -29,9 +29,9 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
     // Load widgets into widgets array
     widgets[0] = createWidget(createGameModeTitle, renderer);
     if (widgets[0] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -39,9 +39,9 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
     widgets[1] = createWidget(createOnePlayerButton, renderer);
     if (widgets[1] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -49,18 +49,18 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
     widgets[2] = createWidget(createTwoPlayersButton, renderer);
     if (widgets[2] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
     }
     widgets[3] = createWidget(createBackButton, renderer);
     if (widgets[3] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
@@ -68,9 +68,9 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
     widgets[4] = createWidget(createNextButton, renderer);
     if (widgets[4] == NULL) {
-        SDL_DestroyRenderer(renderer);
+        destroyWindow(genericWindow);
         free(widgets);
-        genericWindow->window = NULL;
+        SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         return -1;
