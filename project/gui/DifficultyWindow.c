@@ -8,6 +8,7 @@
 int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     unsigned numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
+    int numWidgetsCreated = 0;
     genericWindow->type = SETTINGS_DIFFICULTY_WINDOW;
     genericWindow->handleWindowEvent = (void *) difficultyWindowEventHandler;
 
@@ -16,95 +17,42 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
     genericWindow->renderer = renderer;
 
 
-    WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
-    if (widgets == NULL) {
-        SDL_DestroyRenderer(renderer);
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(void *));
+    if (widgets == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
     genericWindow->widgets = widgets;
 
     // Load widgets into widgets array
     widgets[0] = createWidget(createDifficultyTitle, renderer);
-    if (widgets[0] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[1] = createWidget(createNoobButton, renderer);
-    if (widgets[1] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[1] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[2] = createWidget(createEasyButton, renderer);
-    if (widgets[2] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[2] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
+
     widgets[3] = createWidget(createModerateButton, renderer);
-    if (widgets[3] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[3] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[4] = createWidget(createHardButton, renderer);
-    if (widgets[4] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[4] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[5] = createWidget(createExpertButton, renderer);
-    if (widgets[5] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[5] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[6] = createWidget(createBackButton, renderer);
-    if (widgets[6] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[6] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[7] = createWidget(createNextButton, renderer);
-    if (widgets[7] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[7] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     reRenderWindow(genericWindow);
 

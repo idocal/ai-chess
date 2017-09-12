@@ -11,6 +11,7 @@ int drawLoadGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
     }
     int numWidgets = numFiles + 2; // extra back and load buttons
     genericWindow->numWidgets = numWidgets;
+    int numWidgetsCreated = 0;
     genericWindow->type = SETTINGS_MODE_WINDOW;
     genericWindow->handleWindowEvent = (void *) loadGameEventHandler;
 
@@ -20,51 +21,26 @@ int drawLoadGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
-    if (widgets == NULL) {
-        SDL_DestroyRenderer(renderer);
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
-
+    if (widgets == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
     genericWindow->widgets = widgets;
 
     // Load widgets into widgets array
     // back and load buttons always exist. we'll denote them widget 0 and 1 respectively
     widgets[0] = createWidget(createBackButton, renderer);
-    if (widgets[0] == NULL) {
-        SDL_DestroyRenderer(renderer);
-        free(widgets);
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[1] = createWidget(createLoadGameButton, renderer);
-    if (widgets[1] == NULL) {
-        SDL_DestroyRenderer(renderer);
-        free(widgets);
-        genericWindow->window = NULL;
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[1] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     //now load saved files widgets depending on number of files
     for (int i = 0; i < numFiles; ++i){
         int widgetIndex = i+2;
         int slotNum = i+1;
         widgets[widgetIndex] = createGameSlotWidget(createGameSlotButton, renderer, slotNum);
-        if (widgets[widgetIndex] == NULL) {
-            destroyWindow(genericWindow);
-            free(widgets);
-            SDL_DestroyRenderer(renderer);
-            SDL_DestroyWindow(sdlWindow);
-            SDL_Quit();
-            return -1;
-        }
+        if (widgets[widgetIndex] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+        numWidgetsCreated++;
     }
 
     reRenderWindow(genericWindow);

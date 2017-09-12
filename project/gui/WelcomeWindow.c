@@ -7,6 +7,7 @@
 int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     unsigned numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
+    int numWidgetsCreated = 0;
     genericWindow->type = WELCOME_WINDOW;
     genericWindow->handleWindowEvent = (void *) welcomeWindowEventHandler;
 
@@ -15,44 +16,21 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
     genericWindow->renderer = renderer;
 
     WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
-    if (widgets == NULL) {
-        destroyWindow(genericWindow);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
     genericWindow->widgets = widgets;
 
     // Load widgets into widgets array
     widgets[0] = createWidget(createNewGameButton, renderer);
-    if (widgets[0] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     widgets[1] = createWidget(createLoadWelcomeButton, renderer);
-    if (widgets[1] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[1] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
+
     widgets[2] = createWidget(createExitWelcomeButton, renderer);
-    if (widgets[2] == NULL) {
-        destroyWindow(genericWindow);
-        free(widgets);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return -1;
-    }
+    if (widgets[2] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    numWidgetsCreated++;
 
     reRenderWindow(genericWindow);
 
