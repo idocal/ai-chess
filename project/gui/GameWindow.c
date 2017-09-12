@@ -99,6 +99,15 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         handlePieceEvent(window, event, match, stack, widgetIndex);
     }
 
+    if (widgetIndex == 33) { // The button clicked is Restart
+        CHESS_GAME *newGame = createEmptyGame();
+        initGameBoard(newGame);
+        destroyChessGame(match->game);
+        match->game = newGame;
+        response->windowType = GAME_WINDOW;
+        response->status = NEW_WINDOW;
+    }
+
     return response;
 }
 
