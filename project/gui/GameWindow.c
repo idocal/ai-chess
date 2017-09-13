@@ -139,6 +139,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         initGameBoard(newGame);
         destroyChessGame(match->game);
         match->game = newGame;
+        resetMatchSettings(match);
         response->windowType = WELCOME_WINDOW;
         response->status = NEW_WINDOW;
     }
