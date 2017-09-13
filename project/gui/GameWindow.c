@@ -6,6 +6,7 @@
 
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
+    printChessGameBoard(match->game); // for debugging only
     unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     int numWidgetsCreated = 0;
     genericWindow->numWidgets = numWidgets;
@@ -52,7 +53,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     widgets[38] = createWidget(createExitButtonGame, renderer);
     if (widgets[38] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
     numWidgetsCreated++;
-    
+
     reRenderWindow(genericWindow);
 
     if (match->gameMode == 1 && match->userColor == 0) { // Single player mode and user color is black
@@ -114,8 +115,21 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     }
 
     if (widgetIndex == 34) { // The button clicked is Save
-        writeMatchObjectToXmlFile(match, SAVE_FILEPATH);
-        //TODO: save this game to game slot 1
+        int numSavedFiles = getNumSavedFilesInGameDir();
+        if (numSavedFiles == -1){  // memory error occurred prompt a messages that the games wasn't saved
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
+            return response;
+        }
+        int i = (numSavedFiles == MAXIMUM_NUMBER_OF_SAVED_GAMES_SLOTS) ? numSavedFiles -1 : numSavedFiles;
+        for (; i > 0; --i) {
+            int swapRes = swapBetweenAdjacentSavedGames(i, i + 1);
+            if (swapRes == -1) { // an error occurred. show message and return to game
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
+                return response;
+            }
+        }
+        writeMatchObjectToXmlFile(match, SAVE_FILE_PATH);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_SUCCESSFUL_TITLE, SAVE_GAME_BODY_MESSAGE, NULL);
     }
 
     if (widgetIndex == 35) { // The button clicked is Load
@@ -200,4 +214,18 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
             }
         }
     }
+}
+
+int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadToIndex){
+    char filePathLoad[100];
+    generateAddressToChosenGame(filePathLoad, loadFromIndex);
+    CHESS_MATCH *loadedMatch = parseXMLGameFile(filePathLoad);
+    if (loadedMatch == NULL){
+        return -1; // memory error occurred
+    }
+    char filePathSave[100];
+    generateAddressToChosenGame(filePathSave, loadToIndex);
+    writeMatchObjectToXmlFile(loadedMatch, filePathSave);
+    destroyChessMatch(loadedMatch);
+    return 0;
 }

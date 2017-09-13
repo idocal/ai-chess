@@ -10,7 +10,6 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
 
     manager->match = createNewChessMatch();
     if (manager->match == NULL) {
-        destroyWindow(manager->genericWindow);
         free(manager);
         return NULL;
     }
@@ -19,7 +18,6 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     manager->stack = createEmptyWindowsStack();
     if (manager->stack == NULL){
         destroyChessMatch(manager->match);
-        destroyWindow(manager->genericWindow);
         free(manager);
         return NULL;
     }
@@ -28,13 +26,15 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     if (manager->movesStack == NULL){
         destroyWindowsStack(manager->stack);
         destroyChessMatch(manager->match);
-        destroyWindow(manager->genericWindow);
         free(manager);
         return NULL;
     }
 
     manager->genericWindow = createGenericWindow(drawWelcomeWindow, sdlWindow, renderer, manager->match);
     if (manager->genericWindow == NULL) {
+        destroyChessMatch(manager->match);
+        destroyWindowsStack(manager->stack);
+        destroyStack(manager->movesStack);
         free(manager);
         return NULL;
     }
@@ -49,6 +49,7 @@ void destroyManager(GUI_MANAGER *manager) {
     destroyChessMatch(manager->match);
     destroyWindowsStack(manager->stack);
     destroyStack(manager->movesStack);
+    destroyWindow(manager->genericWindow);
     free(manager);
 }
 
@@ -91,15 +92,21 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
 
             if (prevWindowType == WELCOME_WINDOW){
                 nextWindow = createGenericWindow(drawWelcomeWindow, window->window, window->renderer, match);
+
             } else if (prevWindowType == SETTINGS_MODE_WINDOW){
                 nextWindow = createGenericWindow(drawSettingsWindow, window->window, window->renderer, match);
+
             } else if (prevWindowType == SETTINGS_DIFFICULTY_WINDOW) {
                 nextWindow = createGenericWindow(drawDifficultyWindow, window->window, window->renderer, match);
                 toggleButton(nextWindow->widgets[2], nextWindow->renderer);
                 toggleButton(nextWindow->widgets[windowState], nextWindow->renderer);
                 reRenderWindow(nextWindow);
                 match->level = windowState;
+
+            } else if (prevWindowType == GAME_WINDOW) {
+                nextWindow = createGenericWindow(drawGameWindow, window->window, window->renderer, match);
             }
+
 
             manager->genericWindow = nextWindow;
         }

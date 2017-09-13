@@ -106,3 +106,31 @@ int findActiveButton(GENERIC_WINDOW *window) {
     }
     return activeButton;
 }
+
+
+int getNumSavedFilesInGameDir(){
+    struct dirent *dirEntry; // Pointer to the directory entry
+    DIR *directory = opendir("saved_games"); // Pointer to a directory object
+    if (directory == NULL){
+        return -1;
+    }
+    int filesCounter = 0;
+    while ((dirEntry = readdir(directory)) != NULL){ // more files in the directory
+        filesCounter++;
+    }
+    closedir(directory);
+    filesCounter -= 2; // a subdirectory is also an entry so the functions counts also "./" and '../" as entries
+    return filesCounter;
+}
+
+void generateAddressToChosenGame(char *allocStr, int activeButtonIndex){
+    char gameIndex = activeButtonIndex + '0';
+    strcpy(allocStr, "./saved_games/game_slot");
+    while (*allocStr != '\0'){
+        allocStr++;
+    }
+    *allocStr = gameIndex;
+    allocStr++;
+    *allocStr = '\0';
+    strcat(allocStr, ".xml");
+}

@@ -20,4 +20,10 @@ int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer);
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex);
 
+// handle save game option
+
+int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadTwoIndex);
+
+void generateAddressToChosenGame(char *allocStr, int activeButtonIndex);
+
 #endif //PROJECT_GAMEWINDOW_H

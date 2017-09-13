@@ -19,10 +19,10 @@ typedef enum {
 } MANAGER_EVENT;
 
 typedef struct guiManager {
-    GENERIC_WINDOW *genericWindow;
     CHESS_MATCH *match;
     WINDOWS_STACK *stack;
     MOVES_STACK *movesStack;
+    GENERIC_WINDOW *genericWindow;
 } GUI_MANAGER;
 
 GUI_MANAGER *createManager(SDL_Window *window, SDL_Renderer *renderer);

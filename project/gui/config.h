@@ -24,6 +24,12 @@
 #define initialBlackY PAGE_MARGIN
 #define initialWhiteY (PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE)
 
-#define SAVE_FILEPATH "game_saved.xml"
+#define SAVE_FILE_PATH "./saved_games/game_slot1.xml"
+#define MAXIMUM_NUMBER_OF_SAVED_GAMES_SLOTS 5
+#define SAVE_ERROR_TITLE "some unxpected error occurred"
+#define SAVE_GAME_ERROR_MESSAGE "your current game wasn't saved and it might be that some of your saved games were damaged"
+#define SAVE_SUCCESSFUL_TITLE "game saved successfuly"
+#define SAVE_GAME_BODY_MESSAGE "your current game was saved to game slot number 1"
+
 
 #endif //PROJECT_CONFIG_H

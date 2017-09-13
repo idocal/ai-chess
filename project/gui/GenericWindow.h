@@ -9,6 +9,9 @@
 #include <SDL_video.h>
 #include "../GameAux.h"
 #include "Widget.h"
+#include <dirent.h>
+#include "../XMLLoadParser.h"
+#include "../XMLSaveParser.h"
 
 typedef enum {
     WELCOME_WINDOW,
@@ -67,5 +70,9 @@ EVENT_RESPONSE *createEventResponse(WINDOW_TYPE windowType, RESPONSE_STATUS stat
 void destroyEventResponse(EVENT_RESPONSE *);
 
 int findActiveButton(GENERIC_WINDOW *window);
+
+// utils functions needed by more than 1 window
+
+int getNumSavedFilesInGameDir();
 
 #endif //PROJECT_GENERICWINDOW_H

@@ -37,6 +37,7 @@ WIDGET *createGameSlotWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *, in
 void destroyWidget(WIDGET *widget);
 
 int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);
+int createDisabledButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget);
@@ -48,6 +49,7 @@ void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);
 int createBackButton(WIDGET *widget, SDL_Renderer *renderer);
 int createStartButton(WIDGET *widget, SDL_Renderer *renderer);
 int createNextButton(WIDGET *widget, SDL_Renderer *renderer);
+
 
 BOARD_POSITION *calculateBoardPosition(int x, int y);
 

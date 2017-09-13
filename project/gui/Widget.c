@@ -66,6 +66,24 @@ int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *wi
     return 1;
 }
 
+int createDisabledButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive) {
+    strcpy(widget->imgPath, imgPath);
+
+    // WIDGET rect
+    SDL_Rect rect = {.x = x, .y = y, .w = BUTTON_WIDTH, .h = BUTTON_HEIGHT};
+    widget->rect = rect;
+    widget->isActive = isActive;
+    widget->isEnable = false;
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
+
+    return 1;
+}
+
+
+
+
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     strcpy(widget->imgPath, imgPath);
 

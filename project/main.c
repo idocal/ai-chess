@@ -30,6 +30,8 @@ int main() {
     // Create GUI manager
     GUI_MANAGER *manager = createManager(window, renderer);
     if (manager == NULL) {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
         SDL_Quit();
         return 0;
     }
