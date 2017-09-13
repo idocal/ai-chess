@@ -94,6 +94,41 @@ int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window)
     return 1;
 }
 
+int handleAIFirstMove(CHESS_MATCH *match, GENERIC_WINDOW *window) {
+    CHESS_GAME *game = match->game;
+    switchPlayers(game); // switch to opponent for computer move
+    int maxDepth;
+    GAME_MOVE *AIMove = NULL;
+
+    if (match->level == 5) {
+        maxDepth = 4;
+        AIMove = AINextMove(game, &(maxDepth), true);
+    } else {
+        maxDepth = match->level;
+        AIMove = AINextMove(game, &(maxDepth), false);
+    }
+    if (AIMove == NULL) return -1;
+
+    performMove(game, AIMove);
+    int widgetX = screenPositionX(AIMove->sourceColIndex);
+    int widgetY = screenPositionY(AIMove->sourceRowIndex);
+    WIDGET *widget = findWidget(window, widgetX, widgetY);
+    int x = screenPositionX(AIMove->destColIndex);
+    int y = screenPositionY(AIMove->destRowIndex);
+
+    // Update widget with new position
+    widget->position->row = AIMove->destRowIndex;
+    widget->position->col = AIMove->destColIndex;
+
+    // Move widget to screen position
+    widget->rect.x = x;
+    widget->rect.y = y;
+
+    switchPlayers(game); // switch back to player
+
+    return 1;
+}
+
 WIDGET *findWidget(GENERIC_WINDOW *window, int x, int y) {
     for (int i = 0; i < window->numWidgets; i++) {
         WIDGET *widget = window->widgets[i];

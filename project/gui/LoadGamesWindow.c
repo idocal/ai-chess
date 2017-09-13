@@ -4,7 +4,7 @@
 
 #include "LoadGamesWindow.h"
 
-int drawLoadGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer){
+int drawLoadGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     int numFiles = getNumSavedFilesInGameDir();
     if (numFiles == -1){
         return -1;

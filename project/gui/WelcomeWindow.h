@@ -16,7 +16,7 @@ typedef enum welcomeWidget {
     WELCOME_NONE
 } WELCOME_WIDGET;
 
-int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer);
+int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match);
 
 int createNewGameButton(WIDGET *widget, SDL_Renderer *renderer);
 

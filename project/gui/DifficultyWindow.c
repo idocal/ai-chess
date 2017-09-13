@@ -5,7 +5,7 @@
 #include "DifficultyWindow.h"
 
 
-int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     unsigned numWidgets = 8;
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;

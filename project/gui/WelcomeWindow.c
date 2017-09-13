@@ -4,7 +4,7 @@
 
 #include "WelcomeWindow.h"
 
-int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     unsigned numWidgets = 3;
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;

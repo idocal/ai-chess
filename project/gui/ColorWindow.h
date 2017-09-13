@@ -8,7 +8,7 @@
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
 
-int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
+int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *, CHESS_MATCH *match);
 
 int createColorTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createWhiteButton(WIDGET *widget, SDL_Renderer *renderer);

@@ -5,7 +5,7 @@
 #include "GameWindow.h"
 
 
-int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     int numWidgetsCreated = 0;
     genericWindow->numWidgets = numWidgets;
@@ -54,6 +54,11 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     numWidgetsCreated++;
     
     reRenderWindow(genericWindow);
+
+    if (match->gameMode == 1 && match->userColor == 0) { // Single player mode and user color is black
+        handleAIFirstMove(match, genericWindow);
+        reRenderWindow(genericWindow);
+    }
 
     return 1;
 }

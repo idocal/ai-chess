@@ -8,7 +8,8 @@
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
 
-int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer);
+int
+drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match);
 
 int createGameModeTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createOnePlayerButton(WIDGET *widget, SDL_Renderer *renderer);

@@ -8,12 +8,6 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
     GUI_MANAGER *manager = (GUI_MANAGER *) malloc(sizeof(GUI_MANAGER));
     if (manager == NULL) return NULL;
 
-    manager->genericWindow = createGenericWindow(drawWelcomeWindow, sdlWindow, renderer);
-    if (manager->genericWindow == NULL) {
-        free(manager);
-        return NULL;
-    }
-
     manager->match = createNewChessMatch();
     if (manager->match == NULL) {
         destroyWindow(manager->genericWindow);
@@ -35,6 +29,12 @@ GUI_MANAGER *createManager(SDL_Window *sdlWindow, SDL_Renderer *renderer) {
         destroyWindowsStack(manager->stack);
         destroyChessMatch(manager->match);
         destroyWindow(manager->genericWindow);
+        free(manager);
+        return NULL;
+    }
+
+    manager->genericWindow = createGenericWindow(drawWelcomeWindow, sdlWindow, renderer, manager->match);
+    if (manager->genericWindow == NULL) {
         free(manager);
         return NULL;
     }
@@ -90,11 +90,11 @@ MANAGER_EVENT managerEventHandler(GUI_MANAGER *manager, SDL_Event *event) {
             GENERIC_WINDOW *nextWindow = NULL;
 
             if (prevWindowType == WELCOME_WINDOW){
-                nextWindow = createGenericWindow(drawWelcomeWindow, window->window, window->renderer);
+                nextWindow = createGenericWindow(drawWelcomeWindow, window->window, window->renderer, match);
             } else if (prevWindowType == SETTINGS_MODE_WINDOW){
-                nextWindow = createGenericWindow(drawSettingsWindow, window->window, window->renderer);
+                nextWindow = createGenericWindow(drawSettingsWindow, window->window, window->renderer, match);
             } else if (prevWindowType == SETTINGS_DIFFICULTY_WINDOW) {
-                nextWindow = createGenericWindow(drawDifficultyWindow, window->window, window->renderer);
+                nextWindow = createGenericWindow(drawDifficultyWindow, window->window, window->renderer, match);
                 toggleButton(nextWindow->widgets[2], nextWindow->renderer);
                 toggleButton(nextWindow->widgets[windowState], nextWindow->renderer);
                 reRenderWindow(nextWindow);
@@ -115,27 +115,33 @@ GENERIC_WINDOW *createWindowFromType(WINDOW_TYPE type, GUI_MANAGER *manager) {
 
     switch (type) {
         case WELCOME_WINDOW :
-            nextWindow = createGenericWindow(drawWelcomeWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawWelcomeWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         case SETTINGS_MODE_WINDOW :
-            nextWindow = createGenericWindow(drawSettingsWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawSettingsWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         case SETTINGS_DIFFICULTY_WINDOW :
-            nextWindow = createGenericWindow(drawDifficultyWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawDifficultyWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         case SETTINGS_COLOR_WINDOW :
-            nextWindow = createGenericWindow(drawColorWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawColorWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         case GAME_WINDOW :
-            nextWindow = createGenericWindow(drawGameWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawGameWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         case LOAD_WINDOW :
-            nextWindow = createGenericWindow(drawLoadGameWindow, manager->genericWindow->window, manager->genericWindow->renderer);
+            nextWindow = createGenericWindow(drawLoadGameWindow, manager->genericWindow->window,
+                                             manager->genericWindow->renderer, manager->match);
             break;
 
         default :

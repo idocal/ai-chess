@@ -8,7 +8,7 @@
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
 
-int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
+int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *, CHESS_MATCH *match);
 
 int createDifficultyTitle(WIDGET *widget, SDL_Renderer *renderer);
 int createNoobButton(WIDGET *widget, SDL_Renderer *renderer);

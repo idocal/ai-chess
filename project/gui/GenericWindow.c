@@ -4,11 +4,11 @@
 
 #include "GenericWindow.h"
 
-GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*, SDL_Window *, SDL_Renderer *renderer), SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*, SDL_Window *, SDL_Renderer *, CHESS_MATCH *), SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     GENERIC_WINDOW *genericWindow = (GENERIC_WINDOW *) calloc(sizeof(GENERIC_WINDOW), sizeof(char));
     if (genericWindow == NULL) return NULL;
 
-    (*drawFunc)(genericWindow, sdlWindow, renderer);
+    (*drawFunc)(genericWindow, sdlWindow, renderer, match);
     return genericWindow;
 }
 

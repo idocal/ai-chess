@@ -4,7 +4,7 @@
 
 #include "ColorWindow.h"
 
-int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     signed numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;

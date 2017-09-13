@@ -7,7 +7,7 @@
 
 #include "GameAuxGUI.h"
 
-int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *);
+int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *, CHESS_MATCH *match);
 
 int createBoard(WIDGET *widget, SDL_Renderer *renderer);
 int createRestartButton(WIDGET *widget, SDL_Renderer *renderer);

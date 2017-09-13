@@ -5,7 +5,7 @@
 #include "SettingsWindow.h"
 
 
-int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer) {
+int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     unsigned numWidgets = 5;
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;

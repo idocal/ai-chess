@@ -41,8 +41,8 @@ typedef struct eventResponse {
     RESPONSE_STATUS status;
 } EVENT_RESPONSE;
 
-GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer),
-                                    SDL_Window *, SDL_Renderer *);
+GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW* genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match),
+                                    SDL_Window *, SDL_Renderer *, CHESS_MATCH *);
 
 void destroyWindow(GENERIC_WINDOW *);
 
