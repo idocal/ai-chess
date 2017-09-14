@@ -75,4 +75,6 @@ int findActiveButton(GENERIC_WINDOW *window);
 
 int getNumSavedFilesInGameDir();
 
+void generateAddressToChosenGame(char *allocStr, int activeButtonIndex);
+
 #endif //PROJECT_GENERICWINDOW_H

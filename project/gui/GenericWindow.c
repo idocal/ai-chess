@@ -124,7 +124,7 @@ int getNumSavedFilesInGameDir(){
 }
 
 void generateAddressToChosenGame(char *allocStr, int activeButtonIndex){
-    char gameIndex = activeButtonIndex + '0';
+    char gameIndex = (char ) (activeButtonIndex + '0');
     strcpy(allocStr, "./saved_games/game_slot");
     while (*allocStr != '\0'){
         allocStr++;

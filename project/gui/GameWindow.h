@@ -24,6 +24,5 @@ bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
 
 int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadTwoIndex);
 
-void generateAddressToChosenGame(char *allocStr, int activeButtonIndex);
 
 #endif //PROJECT_GAMEWINDOW_H
