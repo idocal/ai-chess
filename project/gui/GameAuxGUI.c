@@ -55,27 +55,36 @@ int moveToPosition(CHESS_GAME *game, GENERIC_WINDOW *window, WIDGET *widget, int
     return 1;
 }
 
-void swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window) {
+bool swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window) {
     CHESS_GAME *game = match->game;
     int mode = match->gameMode;
     char player = game->currentPlayer;
+
+    switchPlayers(game);
     updateGameState(game); // This will change game->state to the correct one
 
-    if (game->status == MATE) handleWin(opponent(player));
-    else if (game->status == TIE) handleTie();
+    if (game->status == MATE) {
+        handleWin(opponent(player));
+        return false; // quit
+    }
+
+    else if (game->status == TIE) {
+        handleTie();
+        return false; // quit
+    }
     else {
-        if (mode == 2) switchPlayers(game); // If two players mode, change current player.
-        else { // one player, perform AI move
-            if (handleAIMove(match, stack, window) == -1) return; // An error occurred while trying to perform AI move
+        if (mode == 1) {
+            if (handleAIMove(match, stack, window) == -1) return false; // if an error occurred with AI - quit
         }
     }
 
     if (game->pruningThreshold > 0) game->pruningThreshold -= 0.01; // Tweak for expert level pruning
+
+    return true;
 }
 
 int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window) {
     CHESS_GAME *game = match->game;
-    switchPlayers(game); // switch to opponent for computer move
     int maxDepth;
     GAME_MOVE *AIMove = NULL;
 

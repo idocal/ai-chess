@@ -17,7 +17,7 @@
 
 int moveToPosition(CHESS_GAME *game, GENERIC_WINDOW *window, WIDGET *widget, int x, int y, MOVES_STACK *stack);
 
-void swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window);
+bool swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window);
 int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window);
 int handleAIFirstMove(CHESS_MATCH *match, GENERIC_WINDOW *window);
 WIDGET *findWidget(GENERIC_WINDOW *window, int x, int y);

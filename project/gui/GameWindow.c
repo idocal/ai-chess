@@ -6,7 +6,6 @@
 
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
-    printChessGameBoard(match->game); // for debugging only
     unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
     int numWidgetsCreated = 0;
     genericWindow->numWidgets = numWidgets;
@@ -102,7 +101,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
 
     if (widgetIndex >= 1 && widgetIndex <= 32) { // Piece handle
-        handlePieceEvent(window, event, match, stack, widgetIndex);
+        if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
     }
 
     if (widgetIndex == 33) { // The button clicked is Restart
@@ -170,7 +169,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     return response;
 }
 
-void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
+bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
     WIDGET *widget = window->widgets[widgetIndex];
     WIDGET *undoButton = window->widgets[36];
 
@@ -203,7 +202,7 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
             if (dropEvent.type == SDL_MOUSEBUTTONUP) { // mouse is up - drop widget
                 int successMove = moveToPosition(match->game, window, widget, dropEvent.button.x, dropEvent.button.y, stack); // move piece to desired position
                 if (successMove == 1) {
-                    swapTurns(match, stack, window);
+                    if (!swapTurns(match, stack, window)) return false; // if swapTurns returned false then game is over
                     if (!undoButton->isEnable && match->gameMode == 1) { // Enable undo button
                         toggleButtonAbility(undoButton, window->renderer);
                         reRenderWindow(window);
@@ -214,6 +213,8 @@ void handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *mat
             }
         }
     }
+
+    return true;
 }
 
 int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadToIndex){
