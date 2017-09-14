@@ -25,7 +25,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
     numWidgetsCreated++;
 
-    numWidgetsCreated += setPiecesOnBoard(genericWindow); // function returns number of pieces created
+    numWidgetsCreated += setPiecesOnBoard(genericWindow, match); // function returns number of pieces created
     if (numWidgetsCreated < 33) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // if setPieces failed (did not create 32 pieces)
 
     widgets[33] = createWidget(createRestartButton, renderer);

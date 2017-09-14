@@ -7,7 +7,6 @@
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
-#define NARROW_WINDOW_WIDTH 550
 #define COLOR_WHITE 255, 255, 255, 1
 
 #define BUTTON_WIDTH 300
@@ -23,12 +22,14 @@
 #define initialX (WINDOW_WIDTH - BUTTON_MARGIN - BOARD_WIDTH)
 #define initialBlackY PAGE_MARGIN
 #define initialWhiteY (PAGE_MARGIN + BOARD_WIDTH - PIECE_SIZE)
+#define screenPositionX(col) (initialX + 80 * col)
+#define screenPositionY(row) (initialBlackY + 80 * (7 - row))
 
 #define SAVE_FILE_PATH "./saved_games/game_slot1.xml"
 #define MAXIMUM_NUMBER_OF_SAVED_GAMES_SLOTS 5
 #define SAVE_ERROR_TITLE "some unxpected error occurred"
 #define SAVE_GAME_ERROR_MESSAGE "your current game wasn't saved and it might be that some of your saved games were damaged"
-#define SAVE_SUCCESSFUL_TITLE "game saved successfuly"
+#define SAVE_SUCCESSFUL_TITLE "game saved successfully"
 #define SAVE_GAME_BODY_MESSAGE "your current game was saved to game slot number 1"
 
 

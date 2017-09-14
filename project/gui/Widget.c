@@ -113,8 +113,17 @@ int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *re
     return 1;
 }
 
-int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *widget) {
+WIDGET * createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer) {
+
+    WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
+    if (widget == NULL) return NULL;
+
+    widget->isActive = true;
+    widget->isEnable = true;
+    widget->position = NULL;
+    widget->isClickable = true;
     char imgPath[1024];
+
     switch (piece) {
         case 'm' :
             strcpy(imgPath, "./img/pawn_white.bmp");
@@ -152,6 +161,8 @@ int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *wid
         case 'K' :
             strcpy(imgPath, "./img/king_black.bmp");
             break;
+        default :
+            break;
     }
 
     strcpy(widget->imgPath, imgPath);
@@ -162,15 +173,15 @@ int createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer, WIDGET *wid
     widget->isActive = false;
     widget->piece = piece;
 
+    // Widget characteristics
     if (piece >= 'a' && piece <= 'z') widget->color = 1;
     else if (piece >= 'A' && piece <= 'Z') widget->color = 0;
-
     widget->position = calculateBoardPosition(x, y); // Calculate board position according to <x,y>
 
     // Load new texture with imgPath updated
     loadTexture(widget, widget->imgPath, renderer);
 
-    return 1;
+    return widget;
 }
 
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer) {

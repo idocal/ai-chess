@@ -5,9 +5,6 @@
 #ifndef PROJECT_GAMEAUXGUI_H
 #define PROJECT_GAMEAUXGUI_H
 
-#define screenPositionX(col) (initialX + 80 * col)
-#define screenPositionY(row) (initialBlackY + 80 * (7 - row))
-
 #define playerColor(player) ((player == 1) ? "Black player won" : "White player won")
 
 #include "../GameMoves.h"

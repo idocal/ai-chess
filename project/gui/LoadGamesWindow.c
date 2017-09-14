@@ -48,7 +48,6 @@ int drawLoadGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
     return 1;
 }
 
-
 EVENT_RESPONSE *loadGameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack){
     WINDOW_TYPE nextWindow = LOAD_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
@@ -103,8 +102,6 @@ EVENT_RESPONSE *loadGameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *ev
 
 }
 
-
-
 int createDisabledLoadGameButton(WIDGET *widget, SDL_Renderer *renderer) {
     int x = (WINDOW_WIDTH - (2 * BUTTON_WIDTH + BUTTON_MARGIN)) / 2 + BUTTON_WIDTH + BUTTON_MARGIN;
     int y = WINDOW_HEIGHT - PAGE_MARGIN - BUTTON_HEIGHT;
@@ -119,11 +116,8 @@ int createGameSlotButton(WIDGET *widget, SDL_Renderer *renderer, int slotNum) {
     return createButton(WINDOW_MIDDLE_X_POS, yPosition, imgPath, renderer, widget, false);
 }
 
-
-
-
 void getGameSlotButtonPath(char *allocStr, int slotNum){
-    char slotNumChar = slotNum + '0';
+    char slotNumChar = (char) (slotNum + '0');
     strcpy(allocStr, "./img/slot");
     while (*allocStr != '\0'){
         allocStr++;
@@ -150,8 +144,6 @@ int getGameSlotButtonYposition(int slotNum){
         return -1;
     }
 }
-
-
 
 void deepCopyFromLoadedMatch(CHESS_MATCH *existingMatch, CHESS_MATCH *loadedMatch){
     existingMatch->gameMode = loadedMatch->gameMode;
