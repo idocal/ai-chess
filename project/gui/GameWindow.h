@@ -19,10 +19,9 @@ int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer);
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex);
+void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, int difficulty);
 
 // handle save game option
-
 int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadTwoIndex);
-
 
 #endif //PROJECT_GAMEWINDOW_H

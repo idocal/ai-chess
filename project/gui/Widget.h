@@ -40,7 +40,9 @@ int createButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *wi
 int createDisabledButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WIDGET *widget, bool isActive);
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
 int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *renderer, WIDGET *widget);
+
 WIDGET * createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer);
+WIDGET *createMoveCell(int x, int y, SDL_Renderer *renderer, char moveType);
 
 void toggleButton(WIDGET *widget, SDL_Renderer *renderer);
 void toggleButtonAbility(WIDGET *widget, SDL_Renderer *renderer);

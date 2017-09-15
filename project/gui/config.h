@@ -32,5 +32,10 @@
 #define SAVE_SUCCESSFUL_TITLE "game saved successfully"
 #define SAVE_GAME_BODY_MESSAGE "your current game was saved to game slot number 1"
 
+#define MOVE_REGULAR 0
+#define MOVE_CAPTURE 1
+#define MOVE_THREAT 2
+#define MOVE_CAPTURE_THREAT 3
+
 
 #endif //PROJECT_CONFIG_H

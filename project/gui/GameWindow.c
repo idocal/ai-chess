@@ -98,73 +98,86 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     int mode = match->gameMode;
     EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
     int numWidgets = window->numWidgets;
+    char player = match->game->currentPlayer;
 
-    if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
-        if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
-    }
-
-    if (widgetIndex == numWidgets - 6) { // The button clicked is Restart
-        CHESS_GAME *newGame = createEmptyGame();
-        initGameBoard(newGame);
-        destroyChessGame(match->game);
-        match->game = newGame;
-        response->windowType = GAME_WINDOW;
-        response->status = NEW_WINDOW;
-    }
-
-    if (widgetIndex == numWidgets - 5) { // The button clicked is Save
-        int numSavedFiles = getNumSavedFilesInGameDir();
-        if (numSavedFiles == -1){  // memory error occurred prompt a messages that the games wasn't saved
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
-            return response;
+    if (event->button.button == SDL_BUTTON_LEFT) {
+        if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
+            if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
         }
-        int i = (numSavedFiles == MAXIMUM_NUMBER_OF_SAVED_GAMES_SLOTS) ? numSavedFiles -1 : numSavedFiles;
-        for (; i > 0; --i) {
-            int swapRes = swapBetweenAdjacentSavedGames(i, i + 1);
-            if (swapRes == -1) { // an error occurred. show message and return to game
+
+        if (widgetIndex == numWidgets - 6) { // The button clicked is Restart
+            CHESS_GAME *newGame = createEmptyGame();
+            initGameBoard(newGame);
+            destroyChessGame(match->game);
+            match->game = newGame;
+            response->windowType = GAME_WINDOW;
+            response->status = NEW_WINDOW;
+        }
+
+        if (widgetIndex == numWidgets - 5) { // The button clicked is Save
+            int numSavedFiles = getNumSavedFilesInGameDir();
+            if (numSavedFiles == -1){  // memory error occurred prompt a messages that the games wasn't saved
                 SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
                 return response;
             }
-        }
-        writeMatchObjectToXmlFile(match, SAVE_FILE_PATH);
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_SUCCESSFUL_TITLE, SAVE_GAME_BODY_MESSAGE, NULL);
-    }
-
-    if (widgetIndex == numWidgets - 4) { // The button clicked is Load
-        response->windowType = LOAD_WINDOW;
-        response->status = NEW_WINDOW;
-    }
-
-    if (widgetIndex == numWidgets - 3) { // The button clicked is Undo
-        if (mode == 2) return response;
-        else if (stack->currentSize == 0) return response;
-        else {
-            switchPlayers(match->game);
-            handleUndo(match->game, stack, window);
-            switchPlayers(match->game);
-            handleUndo(match->game, stack, window);
-            if (stack->currentSize == 0) { // Turn off undo button if reached empty stack
-                toggleButtonAbility(window->widgets[widgetIndex], renderer);
-                reRenderWindow(window);
+            int i = (numSavedFiles == MAXIMUM_NUMBER_OF_SAVED_GAMES_SLOTS) ? numSavedFiles -1 : numSavedFiles;
+            for (; i > 0; --i) {
+                int swapRes = swapBetweenAdjacentSavedGames(i, i + 1);
+                if (swapRes == -1) { // an error occurred. show message and return to game
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
+                    return response;
+                }
             }
+            writeMatchObjectToXmlFile(match, SAVE_FILE_PATH);
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_SUCCESSFUL_TITLE, SAVE_GAME_BODY_MESSAGE, NULL);
+        }
 
+        if (widgetIndex == numWidgets - 4) { // The button clicked is Load
+            response->windowType = LOAD_WINDOW;
+            response->status = NEW_WINDOW;
+        }
+
+        if (widgetIndex == numWidgets - 3) { // The button clicked is Undo
+            if (mode == 2) return response;
+            else if (stack->currentSize == 0) return response;
+            else {
+                switchPlayers(match->game);
+                handleUndo(match->game, stack, window);
+                switchPlayers(match->game);
+                handleUndo(match->game, stack, window);
+                if (stack->currentSize == 0) { // Turn off undo button if reached empty stack
+                    toggleButtonAbility(window->widgets[widgetIndex], renderer);
+                    reRenderWindow(window);
+                }
+
+            }
+        }
+
+        if (widgetIndex == numWidgets - 2) { // The button clicked is Main Menu
+            CHESS_GAME *newGame = createEmptyGame();
+            initGameBoard(newGame);
+            destroyChessGame(match->game);
+            match->game = newGame;
+            resetMatchSettings(match);
+            response->windowType = WELCOME_WINDOW;
+            response->status = NEW_WINDOW;
+        }
+
+        if (widgetIndex == numWidgets - 1) { // The button clicked is Exit
+            response->status = EXIT_WINDOW;
         }
     }
 
-    if (widgetIndex == numWidgets - 2) { // The button clicked is Main Menu
-        CHESS_GAME *newGame = createEmptyGame();
-        initGameBoard(newGame);
-        destroyChessGame(match->game);
-        match->game = newGame;
-        resetMatchSettings(match);
-        response->windowType = WELCOME_WINDOW;
-        response->status = NEW_WINDOW;
+    if (event->button.button == SDL_BUTTON_RIGHT) {
+        if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
+            char piece = widget->piece;
+            if (pieceOwner(piece, player)) {
+                int x = screenPositionX(widget->position->col);
+                int y = screenPositionY(widget->position->row);
+                handleGetMoves(match->game, widget->position->row, widget->position->col, window, match->level);
+            }
+        }
     }
-
-    if (widgetIndex == numWidgets - 1) { // The button clicked is Exit
-        response->status = EXIT_WINDOW;
-    }
-
     return response;
 }
 
@@ -229,3 +242,49 @@ int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadToIndex){
     destroyChessMatch(loadedMatch);
     return 0;
 }
+
+void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, int difficulty) {
+    if (difficulty > 2) return; // This feature is only supported in Noob and Easy difficulties
+    reRenderWindow(window);
+    MATRIX *possibleMoves = getPossibleMoves(game, row, col);
+    for (int i = 0; i < nRows; ++i) {
+        for (int j = 0; j < nCols; ++j) {
+            if (matGet(possibleMoves, i, j) == 1) { // if move is a possible one
+
+                char destPiece = matGet(game->gameBoard, i, j);
+                bool capture = (destPiece != '_') ? true : false; // since cell can not be player's
+                CHESS_GAME *cpyGame = copyChessGame(game);
+                GAME_MOVE *move = createGameMove(game, row, col, i, j); // move <x,y> -> <i,j>
+                performMove(cpyGame, move);
+                bool threat = isThreatened(cpyGame, i, j);
+                destroyChessGame(cpyGame);
+                destroyGameMove(move);
+
+                int x = screenPositionX(j);
+                int y = screenPositionY(i);
+
+                WIDGET *moveCell;
+
+                if (capture && threat){
+                    moveCell = createMoveCell(x, y, window->renderer, MOVE_CAPTURE_THREAT);
+                } else if (capture){
+                    moveCell = createMoveCell(x, y, window->renderer, MOVE_CAPTURE);
+                } else if (threat){
+                    moveCell = createMoveCell(x, y, window->renderer, MOVE_THREAT);
+                } else{
+                    moveCell = createMoveCell(x, y, window->renderer, MOVE_REGULAR);
+                }
+
+                reRenderWindow(window);
+                SDL_RenderCopy(window->renderer, moveCell->texture, NULL, &(moveCell->rect));
+                SDL_RenderPresent(window->renderer);
+
+                destroyWidget(moveCell);
+
+            }
+        }
+    }
+    matDestroy(possibleMoves);
+}
+
+

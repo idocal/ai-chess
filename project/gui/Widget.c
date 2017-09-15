@@ -81,9 +81,6 @@ int createDisabledButton(int x, int y, char *imgPath, SDL_Renderer *renderer, WI
     return 1;
 }
 
-
-
-
 int createTitle(char *imgPath, SDL_Renderer *renderer, WIDGET *widget) {
     strcpy(widget->imgPath, imgPath);
 
@@ -113,7 +110,49 @@ int createBackground(int x, int y, int w, int h, char *imgPath, SDL_Renderer *re
     return 1;
 }
 
-WIDGET * createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer) {
+WIDGET *createMoveCell(int x, int y, SDL_Renderer *renderer, char moveType) {
+    WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
+    if (widget == NULL) return NULL;
+
+    widget->isActive = true;
+    widget->isEnable = true;
+    widget->position = NULL;
+    widget->isClickable = true;
+    char imgPath[1024];
+
+    switch (moveType) {
+        case MOVE_REGULAR :
+            strcpy(imgPath, "./img/move_regular.bmp");
+            break;
+        case MOVE_CAPTURE :
+            strcpy(imgPath, "./img/move_capture.bmp");
+            break;
+        case MOVE_THREAT :
+            strcpy(imgPath, "./img/move_threat.bmp");
+            break;
+        case MOVE_CAPTURE_THREAT :
+            strcpy(imgPath, "./img/move_capture_threat.bmp");
+            break;
+        default :
+            break;
+    }
+
+    strcpy(widget->imgPath, imgPath);
+
+    // WIDGET rect
+    SDL_Rect rect = {.x = x, .y = y, .w = 80, .h = 80};
+    widget->rect = rect;
+    widget->isActive = false;
+
+    widget->position = calculateBoardPosition(x, y); // Calculate board position according to <x,y>
+
+    // Load new texture with imgPath updated
+    loadTexture(widget, widget->imgPath, renderer);
+
+    return widget;
+}
+
+WIDGET *createPieceGUI(int x, int y, char piece, SDL_Renderer *renderer) {
 
     WIDGET *widget = (WIDGET *) calloc(sizeof(WIDGET), sizeof(char));
     if (widget == NULL) return NULL;
