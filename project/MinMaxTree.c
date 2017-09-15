@@ -160,13 +160,15 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                                 int randomInt = rand(); // create a random integer between 0 and RAND_MAX value
                                 double randomProb = (double) randomInt / RAND_MAX; // convert into probability dividing by RAND_MAX
 
-//                                if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold)
-                                if (node->beta <= node->alpha);
-                                {
+                                if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold){
                                     // if alpha-beta pruning condition applies or the random probability is small enough
                                     matDestroy(possibleMoves);
-                                    printf("---------- Pruned !!!! -----------\n");
-                                    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+                                    if (node->beta <= node->alpha){
+                                        printf("---------- Pruned !!!! -----------\n");
+                                        printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+                                    } else{
+                                        printf("-------- pruned due to random value ----- \n");
+                                    }
                                     printf("\n");
                                     return;
                                 }
@@ -196,6 +198,8 @@ GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth, bool isExpert) {
     if (root == NULL) return NULL;
 
     GAME_MOVE *AINextMove = NULL;
+    srand(time(NULL)); // set random seed for expert algorithm
+
     minMaxAlphaBetaAlgorithm(root, maxDepth, isExpert, &AINextMove, true);
 
     destroyNode(root);
