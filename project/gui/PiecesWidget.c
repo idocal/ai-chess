@@ -18,6 +18,7 @@ int setPiecesOnBoard(GENERIC_WINDOW *window, CHESS_MATCH *match) {
                 int x = screenPositionX(col);
                 int y = screenPositionY(row);
                 widgets[createdWidgets+1] = createPieceGUI(x, y, piece, renderer);
+                if (widgets[createdWidgets+1] == NULL) destroyWindowOnFailure(window, createdWidgets);
                 createdWidgets++;
             }
         }

@@ -6,9 +6,7 @@
 
 
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
-    unsigned numWidgets = 16 + 16 + 1 + 6; // pieces + board + buttons
-    int numWidgetsCreated = 0;
-    genericWindow->numWidgets = numWidgets;
+    genericWindow->numWidgets = 0;
     genericWindow->type = GAME_WINDOW;
     genericWindow->handleWindowEvent = (void *) gameWindowEventHandler;
 
@@ -17,41 +15,41 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     genericWindow->renderer = renderer;
 
 
-    WIDGET **widgets = (WIDGET **) calloc(numWidgets, sizeof(WIDGET *));
-    if (widgets == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
+    WIDGET **widgets = (WIDGET **) calloc(39, sizeof(WIDGET *)); // 39 is 16 + 16 + 6 + 1 (pieces + buttons + board)
+    if (widgets == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
     genericWindow->widgets = widgets;
 
     widgets[0] = createWidget(createBoard, renderer);
-    if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    if (widgets[0] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
-    numWidgetsCreated += setPiecesOnBoard(genericWindow, match); // function returns number of pieces created
-    if (numWidgetsCreated < 33) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // if setPieces failed (did not create 32 pieces)
+    // Set pieces on board according to match game board
+    genericWindow->numWidgets += setPiecesOnBoard(genericWindow, match); // function returns number of pieces created
 
-    widgets[33] = createWidget(createRestartButton, renderer);
-    if (widgets[33] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    widgets[genericWindow->numWidgets] = createWidget(createRestartButton, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
-    widgets[34] = createWidget(createSaveButton, renderer);
-    if (widgets[34] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    widgets[genericWindow->numWidgets] = createWidget(createSaveButton, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
-    widgets[35] = createWidget(createLoadButtonGame, renderer);
-    if (widgets[35] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    widgets[genericWindow->numWidgets] = createWidget(createLoadButtonGame, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
-    widgets[36] = createWidget(createUndoButton, renderer);
-    if (widgets[36] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
-    widgets[36]->isEnable = false; // By default undo is disabled
+    widgets[genericWindow->numWidgets] = createWidget(createUndoButton, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    (widgets[genericWindow->numWidgets])->isEnable = false; // By default undo is disabled
+    genericWindow->numWidgets++;
 
-    widgets[37] = createWidget(createMenuButton, renderer);
-    if (widgets[37] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    widgets[genericWindow->numWidgets] = createWidget(createMenuButton, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
-    widgets[38] = createWidget(createExitButtonGame, renderer);
-    if (widgets[38] == NULL) return destroyWindowOnFailure(genericWindow, numWidgetsCreated); // On failure
-    numWidgetsCreated++;
+    widgets[genericWindow->numWidgets] = createWidget(createExitButtonGame, renderer);
+    if (widgets[genericWindow->numWidgets] == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
+    genericWindow->numWidgets++;
 
     reRenderWindow(genericWindow);
 
@@ -99,12 +97,13 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     SDL_Renderer *renderer = window->renderer;
     int mode = match->gameMode;
     EVENT_RESPONSE *response = createEventResponse(nextWindow, SAME_WINDOW);
+    int numWidgets = window->numWidgets;
 
-    if (widgetIndex >= 1 && widgetIndex <= 32) { // Piece handle
+    if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
         if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
     }
 
-    if (widgetIndex == 33) { // The button clicked is Restart
+    if (widgetIndex == numWidgets - 6) { // The button clicked is Restart
         CHESS_GAME *newGame = createEmptyGame();
         initGameBoard(newGame);
         destroyChessGame(match->game);
@@ -113,7 +112,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         response->status = NEW_WINDOW;
     }
 
-    if (widgetIndex == 34) { // The button clicked is Save
+    if (widgetIndex == numWidgets - 5) { // The button clicked is Save
         int numSavedFiles = getNumSavedFilesInGameDir();
         if (numSavedFiles == -1){  // memory error occurred prompt a messages that the games wasn't saved
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_ERROR_TITLE, SAVE_GAME_ERROR_MESSAGE, NULL);
@@ -131,12 +130,12 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_SUCCESSFUL_TITLE, SAVE_GAME_BODY_MESSAGE, NULL);
     }
 
-    if (widgetIndex == 35) { // The button clicked is Load
+    if (widgetIndex == numWidgets - 4) { // The button clicked is Load
         response->windowType = LOAD_WINDOW;
         response->status = NEW_WINDOW;
     }
 
-    if (widgetIndex == 36) { // The button clicked is Undo
+    if (widgetIndex == numWidgets - 3) { // The button clicked is Undo
         if (mode == 2) return response;
         else if (stack->currentSize == 0) return response;
         else {
@@ -152,7 +151,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         }
     }
 
-    if (widgetIndex == 37) { // The button clicked is Main Menu
+    if (widgetIndex == numWidgets - 2) { // The button clicked is Main Menu
         CHESS_GAME *newGame = createEmptyGame();
         initGameBoard(newGame);
         destroyChessGame(match->game);
@@ -162,7 +161,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         response->status = NEW_WINDOW;
     }
 
-    if (widgetIndex == 38) { // The button clicked is Exit
+    if (widgetIndex == numWidgets - 1) { // The button clicked is Exit
         response->status = EXIT_WINDOW;
     }
 
@@ -171,7 +170,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
 
 bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
     WIDGET *widget = window->widgets[widgetIndex];
-    WIDGET *undoButton = window->widgets[36];
+    WIDGET *undoButton = window->widgets[window->numWidgets - 3]; // Undo is 3rd from last button
 
     if (widget->position != NULL) {
         int initialRow = widget->position->row;
