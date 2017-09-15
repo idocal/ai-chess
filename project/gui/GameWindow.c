@@ -286,5 +286,3 @@ void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, 
     }
     matDestroy(possibleMoves);
 }
-
-

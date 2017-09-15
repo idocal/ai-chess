@@ -141,7 +141,7 @@ int handleAIFirstMove(CHESS_MATCH *match, GENERIC_WINDOW *window) {
 WIDGET *findWidget(GENERIC_WINDOW *window, int x, int y) {
     for (int i = 0; i < window->numWidgets; i++) {
         WIDGET *widget = window->widgets[i];
-        if (widget->rect.x == x && widget->rect.y == y) return widget;
+        if (widget->rect.x == x && widget->rect.y == y && widget->isClickable) return widget;
     }
     return NULL; // this should never happen unless location <x,y> is invalid
 }
