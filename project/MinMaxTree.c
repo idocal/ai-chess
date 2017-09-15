@@ -38,12 +38,11 @@ TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node){
 
 void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION stopReason, bool isExpert){
     CHESS_GAME *nodeGame = node->game;
-    srand(time(NULL)); // set seed for random number generation
 
     if (stopReason == GAME_OVER_CHECK_MATE){
         // the winner is the opponent of the current player
         // if the current player is player 0 then the winner is player 1 which scores in negative values
-        node->value = (nodeGame->currentPlayer == 0) ? INT_MIN : INT_MAX;
+        node->value = (nodeGame->currentPlayer == 1) ? INT_MAX : INT_MIN;
 
 
     } else if (stopReason == GAME_OVER_TIE){
@@ -185,7 +184,7 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
 
 GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth, bool isExpert) {
     char player = game->currentPlayer;
-    NODE_TYPE type = (opponent(player) == 0) ? MAX_NODE : MIN_NODE;
+    NODE_TYPE type = (player == 1) ? MAX_NODE : MIN_NODE;
     MIN_MAX_NODE *root = createTreeRoot(type, game, maxDepth);
 
     if (root == NULL) return NULL;

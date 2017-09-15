@@ -30,9 +30,9 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
 
     CHESS_GAME *nodeGame = node->game;
 
-    nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
+    performMove(nodeGame, node->move); // update move on the board. the move is done by the current player
 
-    performMove(nodeGame, node->move); // update move on the board
+    nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
 
     return node;
 }
