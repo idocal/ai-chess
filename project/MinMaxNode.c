@@ -34,6 +34,12 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
 
     nodeGame->currentPlayer = opponent(nodeGame->currentPlayer); // switch turns
 
+    printChessGameBoard(nodeGame);
+
+//    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+    printf("-------- node depth is %d\n", node->depth);
+
+
     return node;
 }
 

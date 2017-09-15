@@ -160,15 +160,23 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                                 int randomInt = rand(); // create a random integer between 0 and RAND_MAX value
                                 double randomProb = (double) randomInt / RAND_MAX; // convert into probability dividing by RAND_MAX
 
-                                if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold){
+//                                if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold)
+                                if (node->beta <= node->alpha);
+                                {
                                     // if alpha-beta pruning condition applies or the random probability is small enough
                                     matDestroy(possibleMoves);
+                                    printf("---------- Pruned !!!! -----------\n");
+                                    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+                                    printf("\n");
                                     return;
                                 }
 
                             } else {
                                 if (node->beta <= node->alpha) { // alpha-beta pruning terminates the call
                                     matDestroy(possibleMoves);
+                                    printf("---------- Pruned !!!! -----------\n");
+                                    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+                                    printf("\n");
                                     return;
                                 }
                             }
