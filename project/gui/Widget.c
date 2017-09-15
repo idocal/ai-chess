@@ -8,6 +8,7 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer);
 
 BOARD_POSITION *createBoardPosition(int row, int col) {
     BOARD_POSITION *position = (BOARD_POSITION *) malloc(sizeof(BOARD_POSITION));
+    if (position == NULL) return NULL;
     position->row = row;
     position->col = col;
     return position;
@@ -47,7 +48,7 @@ WIDGET *createGameSlotWidget(int(*createWidgetFunc)(WIDGET *, SDL_Renderer *, in
 
 void destroyWidget(WIDGET *widget) {
     if (widget == NULL) return;
-    if (widget->position != NULL) free(widget->position);
+    if (NULL != widget->position) free(widget->position);
     SDL_DestroyTexture(widget->texture);
     free(widget);
 }

@@ -146,6 +146,14 @@ WIDGET *findWidget(GENERIC_WINDOW *window, int x, int y) {
     return NULL; // this should never happen unless location <x,y> is invalid
 }
 
+int findWidgetIndex(GENERIC_WINDOW *window, int x, int y) {
+    for (int i = 0; i < window->numWidgets; i++) {
+        WIDGET *widget = window->widgets[i];
+        if (widget->rect.x == x && widget->rect.y == y && widget->isClickable) return i;
+    }
+    return -1; // this should never happen unless location <x,y> is invalid
+}
+
 void handleWin(char playerWon) {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Game over!", playerColor(playerWon), NULL);
 }
@@ -160,7 +168,6 @@ void hidePiece(WIDGET *widget) {
     widget->position->row = -1;
     widget->position->col = -1;
     widget->isEnable = false;
-    widget->isClickable = false;
 }
 
 void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window) {
@@ -171,9 +178,10 @@ void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window) {
 
 void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack) {
     GAME_MOVE *inverseMove = createGameMove(game, move->destRowIndex, move->destColIndex, move->sourceRowIndex, move->sourceColIndex);
-    matSet(game->gameBoard, move->destRowIndex, move->destColIndex, move->sourceOriginalSymbol); // assign the original piece on original destination
     performMove(game, inverseMove);
+    matSet(game->gameBoard, move->destRowIndex, move->destColIndex, move->destOriginalSymbol); // assign the original piece on original destination
 
+    // Perform the inverse move on GUI
     int widgetX = screenPositionX(inverseMove->sourceColIndex);
     int widgetY = screenPositionY(inverseMove->sourceRowIndex);
     WIDGET *widget = findWidget(window, widgetX, widgetY);
@@ -187,6 +195,20 @@ void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MO
     // Move widget to screen position
     widget->rect.x = x;
     widget->rect.y = y;
+
+    // Create widget with the original piece and replace it with a hidden piece
+    char capturedPiece = move->destOriginalSymbol;
+    if (capturedPiece != '_') {
+        int capturedX = screenPositionX(move->destColIndex);
+        int capturedY = screenPositionY(move->destRowIndex);
+        WIDGET *capturedPieceWidget = createPieceGUI(capturedX, capturedY, capturedPiece, window->renderer);
+        int hiddenWidgetIndex = findWidgetIndex(window, -80, -80); // hidden pieces are in <-80,-80>
+
+        // Copy captured piece into hidden widget
+        destroyWidget(window->widgets[hiddenWidgetIndex]);
+        window->widgets[hiddenWidgetIndex] = capturedPieceWidget;
+    }
+
     reRenderWindow(window);
 
     destroyGameMove(inverseMove);
