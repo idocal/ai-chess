@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
+
 typedef enum {
     GAME_OVER_CHECK_MATE,
     GAME_OVER_TIE,

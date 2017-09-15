@@ -7,27 +7,33 @@
 TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node){
     CHESS_GAME *nodeGame = node->game;
 
+    TERMINATING_CONDITION condition;
+
+    switchPlayers(nodeGame); // isCheckMate and isTie functions work on the "new" game state after the turn moved from the player who performed the move
+
     // Halting terms:
 
     // Game is not over but node is a leaf
-    if (node->isLeaf){
-        return NODE_IS_LEAF;
+    if (node->isLeaf) {
+        condition = NODE_IS_LEAF;
     }
-
     // Game is over due to a tie
-    if (isTie(nodeGame)) {
-        node->value = 0;
-        return GAME_OVER_TIE;
+    else if (isTie(nodeGame)) {
+        condition = GAME_OVER_TIE;
     }
 
     // Game is over due to a victory
-    if (isCheckMate(nodeGame)){
-        return GAME_OVER_CHECK_MATE;
+    else if (isCheckMate(nodeGame)){
+        condition = GAME_OVER_CHECK_MATE;
     }
 
-
     // otherwise no terminating condition
-    return NOT_TERMINATING;
+    else{
+        condition = NOT_TERMINATING;
+    }
+
+    switchPlayers(nodeGame);
+    return condition;
 }
 
 void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION stopReason, bool isExpert){
