@@ -9,7 +9,6 @@ TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node){
 
     TERMINATING_CONDITION condition;
 
-    switchPlayers(nodeGame); // isCheckMate and isTie functions work on the "new" game state after the turn moved from the player who performed the move
 
     // Halting terms:
 
@@ -32,7 +31,6 @@ TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node){
         condition = NOT_TERMINATING;
     }
 
-    switchPlayers(nodeGame);
     return condition;
 }
 
@@ -41,7 +39,7 @@ void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION sto
 
     if (stopReason == GAME_OVER_CHECK_MATE){
         // the winner is the opponent of the current player
-        // if the current player is player 0 then the winner is player 1 which scores in negative values
+        // if the current player is player 1 then the winner is player 0 which scores in positive values
         node->value = (nodeGame->currentPlayer == 1) ? INT_MAX : INT_MIN;
 
 
@@ -125,14 +123,14 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                                     }
                                 }
 
-                                if (node->alpha < node->value){
-                                    node->alpha = node->value;
+                                if (node->alpha < childNode->value){
+                                    node->alpha = childNode->value;
                                 }
                             }
 
                             if (node->type == MIN_NODE) {
 
-                                if(childNode->value < node->value){
+                                if(node->value > childNode->value){
                                     node->value = childNode->value;
 
                                     // need to also update the nextAIMove Object if we are in root
@@ -150,8 +148,8 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                                     }
                                 }
 
-                                if (node->beta > node->value){
-                                    node->beta = node->value;
+                                if (node->beta > childNode->value){
+                                    node->beta = childNode->value;
                                 }
                             }
 
