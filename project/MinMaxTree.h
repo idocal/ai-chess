@@ -10,6 +10,7 @@
 #include "Scoring.h"
 #include "GameStates.h"
 #include <stdlib.h>
+#include <time.h>
 
 typedef enum {
     GAME_OVER_CHECK_MATE,

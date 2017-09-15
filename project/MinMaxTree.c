@@ -32,6 +32,7 @@ TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node){
 
 void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION stopReason, bool isExpert){
     CHESS_GAME *nodeGame = node->game;
+    srand(time(NULL)); // set seed for random number generation
 
     if (stopReason == GAME_OVER_CHECK_MATE){
         // the winner is the opponent of the current player
@@ -152,9 +153,21 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                             destroyNode(childNode);
                             destroyGameMove(nextMove);
 
-                            if (node->beta <= node->alpha) { // alpha-beta pruning terminates the call
-                                matDestroy(possibleMoves);
-                                return;
+                            if (isExpert){
+                                int randomInt = rand(); // create a random integer between 0 and RAND_MAX value
+                                double randomProb = (double) randomInt / RAND_MAX; // convert into probability dividing by RAND_MAX
+
+                                if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold){
+                                    // if alpha-beta pruning condition applies or the random probability is small enough
+                                    matDestroy(possibleMoves);
+                                    return;
+                                }
+
+                            } else {
+                                if (node->beta <= node->alpha) { // alpha-beta pruning terminates the call
+                                    matDestroy(possibleMoves);
+                                    return;
+                                }
                             }
                         }
                     }
