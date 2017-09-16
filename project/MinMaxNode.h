@@ -32,6 +32,6 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
 
 void destroyNode(MIN_MAX_NODE *node);
 
-MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth);
+MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game);
 
 #endif //PROJECT_MINMAXNODE_H

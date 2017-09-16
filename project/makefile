@@ -1,5 +1,5 @@
 CC = gcc
-CC_COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
+COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
 OUT_DIR = $(PWD)/bin
 EXEC = $(OUT_DIR)/chessprog
 OBJS = main.o CommandParsing.o GameAux.o GameMoves.o GameRepresentation.o \
@@ -9,7 +9,7 @@ PieceRules.o Scoring.o XMLLoadParser.o XMLSaveParser.o
 all: $(EXEC)
 	mv *.o $(OUT_DIR)
 $(EXEC): $(OBJS)
-	$(CC) $(COMP_FLAG)-o $@ $(OBJS)
+	$(CC) $(COMP_FLAG) -o $@ $(OBJS)
 main.o: MatchManagement.h GameAux.h
 	$(CC) $(COMP_FLAG) -c $*.c
 GameAux.o: GameAux.h MatchManagement.h MovesStack.h CommandParsing.h PieceRules.h GameStates.h XMLLoadParser.h XMLSaveParser.h MinMaxTree.h

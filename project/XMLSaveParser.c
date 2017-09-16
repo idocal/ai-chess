@@ -95,8 +95,10 @@ char getSettingParameterValue(char *paramDescription, CHESS_MATCH *match){
         valueChar = transformDigitIntToChar(match->gameMode);
     } else if (strcmp(paramDescription, "difficulty") == 0){
         valueChar = transformDigitIntToChar(match->level);
-    } else (strcmp(paramDescription, "user_color") == 0){
+    } else if (strcmp(paramDescription, "user_color") == 0){
         valueChar = transformDigitIntToChar(match->userColor);
+    } else{
+        valueChar = -1;
     }
     return valueChar;
 }

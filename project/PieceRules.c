@@ -217,6 +217,7 @@ char *pieceName(char piece) {
     if (piece == 'r' || piece == 'R') return "rook";
     if (piece == 'q' || piece == 'Q') return "queen";
     if (piece == 'k' || piece == 'K') return "king";
+    return NULL; // have to add this in order to compile the code with warnings as error
 }
 
 MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool includeCheck) {

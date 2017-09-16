@@ -11,7 +11,9 @@ MATRIX *matNew(int rows, int cols) {
     }
 
     // Create all cells of matrix
-    char *matCells = (char *) calloc(rows * cols, sizeof(char));
+    size_t size_t_rows = (size_t ) rows;
+    size_t size_t_cols = (size_t) cols;
+    char *matCells = (char *) calloc(size_t_rows * size_t_cols, sizeof(char));
     if (matCells == NULL) {
         free(mat);
         return NULL;

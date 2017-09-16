@@ -114,7 +114,7 @@ void evaluateNode(MIN_MAX_NODE *node, int *maxDepth, bool isExpert) {
 GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth, bool isExpert) {
     char player = game->currentPlayer;
     NODE_TYPE type = (player == 1) ? MAX : MIN;
-    MIN_MAX_NODE *root = createTreeRoot(type, game, maxDepth);
+    MIN_MAX_NODE *root = createTreeRoot(type, game);
 
     if (root == NULL) return NULL;
 

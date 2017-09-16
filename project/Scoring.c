@@ -52,6 +52,7 @@ int expertPieceLegend(char piece) {
     if (piece == 'n' || piece == 'N' || piece == 'b' || piece == 'B') return 5;
     if (piece == 'q' || piece == 'Q') return 9;
     if (piece == 'k' || piece == 'K') return 15;
+    return 0; // have to add this in order to compile the code under Werror flag
 }
 
 int threatenedScore(CHESS_GAME *game, char player) {

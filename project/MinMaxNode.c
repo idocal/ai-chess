@@ -30,7 +30,7 @@ MIN_MAX_NODE *createMinMaxNode(NODE_TYPE type, CHESS_GAME *game, GAME_MOVE *move
     return node;
 }
 
-MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth) {
+MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game) {
     MIN_MAX_NODE *node = (MIN_MAX_NODE *) malloc(sizeof(MIN_MAX_NODE));
     if (node == NULL) return NULL;
     node->type = type;
