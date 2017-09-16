@@ -118,26 +118,34 @@ void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char playe
     MATRIX *board = game->gameBoard;
 
     int i = 1;
+    bool freeNeeded = true;
     CHESS_GAME *cpyGame = copyChessGame(game);
     GAME_MOVE *newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
 
     while (!isOutOfBounds(x + right * i, y + up * i)) { // stop going when a move is out of bounds
         // if slot is a conquering one or player's, stop going
         char piece = matGet(board, x + right * i, y + up * i);
-        if (pieceOwner(piece, player) == 1) break;
+        if (pieceOwner(piece, player) == 1) {
+            freeNeeded = false;
+            break;
+        }
 
         if (isMovePossible(cpyGame, newMove, player, includeCheck)) {
             matSet(movesMatrix, x + right * i, y + up * i, 1);
-            if (pieceOwner(piece, player) == 0) break;
+            if (pieceOwner(piece, player) == 0){
+                freeNeeded = false;
+                break;
+            }
         }
 
         i++;
         cpyGame = copyChessGame(game);
         newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
     }
-
-//    destroyChessGame(cpyGame);
-//    destroyGameMove(newMove);
+    if (freeNeeded){
+    destroyGameMove(newMove);
+    destroyChessGame(cpyGame);
+    }
 }
 
 void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
