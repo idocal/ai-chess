@@ -32,10 +32,18 @@ void matDestroy(MATRIX *mat) {
 }
 
 void matSet(MATRIX *mat, int x, int y, char val) {
-    mat->p[x * mat->rows + y] = val;
+    if (x >=0 && x <= 7 && y >= 0 && y <= 7) {
+        mat->p[x * mat->rows + y] = val;
+    }
 }
 
+
 char matGet(MATRIX *mat, int x, int y) {
-    return mat->p[x * mat->rows + y];
+    if (x >=0 && x <= 7 && y >= 0 && y <= 7) {
+        return mat->p[x * mat->rows + y];
+    }
+    else {
+        return '\0';
+    }
 }
 

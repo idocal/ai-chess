@@ -136,6 +136,8 @@ void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char playe
         newMove = createGameMove(cpyGame, x, y, x + right * i, y + up * i);
     }
 
+    destroyChessGame(cpyGame);
+    destroyGameMove(newMove);
 }
 
 void addOrthogonalMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char player, bool includeCheck) {
