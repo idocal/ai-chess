@@ -50,5 +50,3 @@ int main2() {
     SDL_Quit();
     return 0;
 }
-
-

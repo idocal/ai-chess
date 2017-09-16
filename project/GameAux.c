@@ -354,4 +354,3 @@ int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
 
     return status;
 }
-

@@ -55,4 +55,3 @@ void printMatchSettings(CHESS_MATCH *match){
         printf("GAME_MODE: 2\n");
     }
 }
-

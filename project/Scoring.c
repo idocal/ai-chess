@@ -152,7 +152,7 @@ int pawnStructure(CHESS_GAME *game) {
         }
     }
 
-
+    return defendedPawns;
 }
 
 int expertScore(CHESS_GAME *game) {
