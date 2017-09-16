@@ -31,7 +31,7 @@ void destroyGameCommand(GAME_STATE_COMMAND *command){
 
 
 GAME_STATE_COMMAND_NAME parseStringToGameCommandEnum(char *commandString){
-    SETTING_STATE_COMMAND_NAME commandName;
+    GAME_STATE_COMMAND_NAME commandName;
     if (commandString == NULL){
         commandName = INVALID_GAME_COMMAND;
     } else if (strcmp(commandString, "move") == 0){
@@ -63,18 +63,6 @@ SETTING_STATE_COMMAND *createDefaultStateCommand(){
     return command;
 }
 
-void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command){
-    if (command == NULL){
-        return;
-    }
-
-    // No need to free addressForLoadCommand string. it wasn't allocated by the programmer!
-    // was allocated by the OS as part of stdin creation
-    free(command->addressForLoadCommand);
-    command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
-    command->command_name = INVALID_COMMAND;
-    command->commandArgument = -1;
-}
 
 void destroyStateCommand(SETTING_STATE_COMMAND *command){
     if (command == NULL){
@@ -110,7 +98,7 @@ SETTING_STATE_COMMAND_NAME parseStringToSettingCommandEnum(char *commandString){
     return commandName;
 }
 
-int transformCommandArgFromStrToInt(char *commandArg){
+int transformCommandArgFromStrToInt(const char *commandArg){
     int returnVal = 0;
     char digit = commandArg[0];
     char redundantChar = commandArg[1];
@@ -161,8 +149,12 @@ SETTING_STATE_COMMAND *parseUserSettingCommand(){
             strcpy(settingCommand->addressForLoadCommand, commandArgument); // no need to convert the argument
         }// if the file name is not correct will result in an error in later functions no this one
     } else { // commands with single integer argument
-        settingCommand->commandArgument = transformCommandArgFromStrToInt(commandArgument);
-        // function only checks if the argument is a single digit. matching range will be checked later
+        if (commandArgument == NULL){
+            settingCommand->command_name = INVALID_COMMAND;
+        } else{
+            settingCommand->commandArgument = transformCommandArgFromStrToInt(commandArgument);
+            // function only checks if the argument is a single digit. matching range will be checked later
+        }
     }
     return settingCommand;
 }
@@ -221,8 +213,8 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         } else{
             char get_move_x[2];
             char get_move_y[2];
-            get_move_x[0] = firstArg[1] -1;
-            get_move_y[0] = firstArg[3] -16 -1;
+            get_move_x[0] = (char) (firstArg[1] -1);
+            get_move_y[0] = (char) (firstArg[3] -16 -1);
             get_move_x[1] = '\0';
             get_move_y[1] = '\0';
             gameCommand->x = transformCommandArgFromStrToInt(get_move_x);
@@ -232,7 +224,7 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         }
     } else { // MOVE_TO Command
         if (checkValidityOfMovePositionString(firstArg) == 0
-            || strcmp(secondArg, "to") != 0
+            || secondArg == NULL || strcmp(secondArg, "to") != 0
             || checkValidityOfMovePositionString(thirdArg) == 0){ // the string is not valid / not right format / not right positions
             if (checkStructureOfMovePositionString(firstArg) == 1 && checkStructureOfMovePositionString(thirdArg) == 1 && strcmp(secondArg, "to") == 0){
                 // the structure of the command is right but one of the parameters aren't.
@@ -248,10 +240,10 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
             char move_source_y[2];
             char move_dest_x[2];
             char move_dest_y[2];
-            move_source_x[0] = firstArg[1] -1;
-            move_source_y[0] = firstArg[3] -16 -1;
-            move_dest_x[0] = thirdArg[1] -1;
-            move_dest_y[0] = thirdArg[3] -16 -1;
+            move_source_x[0] = (char) (firstArg[1] -1);
+            move_source_y[0] = (char) (firstArg[3] -16 -1);
+            move_dest_x[0] = (char) (thirdArg[1] -1);
+            move_dest_y[0] = (char) (thirdArg[3] -16 -1);
             move_source_x[1] = '\0';
             move_source_y[1] = '\0';
             move_dest_x[1] = '\0';
