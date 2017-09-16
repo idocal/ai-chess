@@ -95,13 +95,74 @@ int score(CHESS_GAME *game) {
     return score;
 }
 
+int countPossibleMoves(CHESS_GAME *game) {
+    int count = 0;
+
+    for (int x = 0; x < nRows; x++) {
+        for (int y = 0; y < nCols; y++) {
+            char piece = matGet(game->gameBoard, x, y);
+            if (piece >= 'a' && piece <= 'z') { // piece is white
+                MATRIX *possibleMoves = piecePossibleMoves(game, piece, x, y, true);
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nRows; j++) {
+                        count += (int) (matGet(possibleMoves, i, j));
+                    }
+                }
+                matDestroy(possibleMoves);
+            }
+            else if (piece >= 'A' && piece <= 'Z') { // piece is black
+                MATRIX *possibleMoves = piecePossibleMoves(game, piece, x, y, true);
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nRows; j++) {
+                        count -= (int) (matGet(possibleMoves, i, j));
+                    }
+                }
+                matDestroy(possibleMoves);
+            }
+
+        }
+    }
+
+    return count;
+}
+
+int pawnStructure(CHESS_GAME *game) {
+    int defendedPawns = 0;
+
+    for (int x = 0; x < nRows; x++) {
+        for (int y = 0; y < nCols; y++) {
+            char piece = matGet(game->gameBoard, x, y);
+            if (piece == 'm') { // black pawn
+                int adjRow = x + 1;
+                int adjRight = y + 1;
+                int adjLeft = y - 1;
+
+                if (!isOutOfBounds(adjRow, adjLeft)) defendedPawns -= 1;
+                if (!isOutOfBounds(adjRow, adjRight)) defendedPawns -= 1;
+
+            }
+            else if (piece == 'M') { // white pawn
+                int adjRow = x - 1;
+                int adjRight = y + 1;
+                int adjLeft = y - 1;
+
+                if (!isOutOfBounds(adjRow, adjLeft)) defendedPawns += 1;
+                if (!isOutOfBounds(adjRow, adjRight)) defendedPawns += 1;
+            }
+        }
+    }
+
+
+}
+
 int expertScore(CHESS_GAME *game) {
     int expertModeScore = 0;
 
     // combine naive scoring function with expert scoring function. give a different weight to each scoring function
-    expertModeScore += 3 * score(game); // original score function gets weight 3
-    expertModeScore += threatenedScore(game, opponent(game->currentPlayer));
-    expertModeScore -= threatenedScore(game, game->currentPlayer);
+    expertModeScore += 100 * score(game); // original score function gets weight 100
+    expertModeScore += 50 * countPossibleMoves(game); // it's important to have a more possible moves than the opponent, weight is 50
+    expertModeScore += 10 * isGameCheck(game, game->currentPlayer); // The current player is switched before the move, so increment if the player is checked
+    expertModeScore += 5 * pawnStructure(game); // defended pawns are a goal when all other moves lead to the same score
 
     return expertModeScore;
 }
