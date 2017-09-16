@@ -39,8 +39,8 @@ void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION sto
 
     if (stopReason == GAME_OVER_CHECK_MATE){
         // the winner is the opponent of the current player
-        // if the current player is player 1 then the winner is player 0 which scores in positive values
-        node->value = (nodeGame->currentPlayer == 1) ? INT_MAX : INT_MIN;
+        // if the current player is player 1 then the winner is player 0 which scores in negative values
+        node->value = (nodeGame->currentPlayer == 1) ? INT_MIN : INT_MAX;
 
 
     } else if (stopReason == GAME_OVER_TIE){
@@ -163,22 +163,22 @@ void minMaxAlphaBetaAlgorithm(MIN_MAX_NODE *node, int *maxDepth, bool isExpert, 
                                 if (node->beta <= node->alpha || randomProb <= nodeGame->pruningThreshold){
                                     // if alpha-beta pruning condition applies or the random probability is small enough
                                     matDestroy(possibleMoves);
-                                    if (node->beta <= node->alpha){
-                                        printf("---------- Pruned !!!! -----------\n");
-                                        printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
-                                    } else{
-                                        printf("-------- pruned due to random value ----- \n");
+//                                    if (node->beta <= node->alpha){
+//                                        printf("---------- Pruned !!!! -----------\n");
+//                                        printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+//                                    } else{
+//                                        printf("-------- pruned due to random value ----- \n");
                                     }
-                                    printf("\n");
+//                                    printf("\n");
                                     return;
                                 }
 
                             } else {
                                 if (node->beta <= node->alpha) { // alpha-beta pruning terminates the call
                                     matDestroy(possibleMoves);
-                                    printf("---------- Pruned !!!! -----------\n");
-                                    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
-                                    printf("\n");
+//                                    printf("---------- Pruned !!!! -----------\n");
+//                                    printf("------ alpha is %d and beta is %d-------\n", node->alpha, node->beta);
+//                                    printf("\n");
                                     return;
                                 }
                             }
