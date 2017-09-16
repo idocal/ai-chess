@@ -28,26 +28,6 @@ void destroyChessMatch(CHESS_MATCH *match){
     free(match);
 }
 
-void changeMatchGameMode(CHESS_MATCH *match, int newGameMode){
-    if (match == NULL){
-        return;
-    }
-    match->gameMode = newGameMode;
-}
-
-void changeMatchDifficulty(CHESS_MATCH *match, int newDifficulty){
-    if (match == NULL){
-        return;
-    }
-    match->level = newDifficulty;
-}
-
-void changeMatchUserColor(CHESS_MATCH *match, int newUserColor){
-    if (match == NULL){
-        return;
-    }
-    match->userColor = newUserColor;
-}
 
 void resetMatchSettings(CHESS_MATCH *match){
     if (match == NULL){

@@ -1,11 +1,13 @@
 CC = gcc
 CC_COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
-EXEC = /home/okleinfeld/GitProjects/software-project/project/bin/chessprog
+OUT_DIR = $(PWD)/bin
+EXEC = $(OUT_DIR)/chessprog
 OBJS = main.o CommandParsing.o GameAux.o GameMoves.o GameRepresentation.o \
 GameStates.o MatchManagement.o Matrix.o MinMaxNode.o MinMaxTree.o MovesStack.o \
 PieceRules.o Scoring.o XMLLoadParser.o XMLSaveParser.o
 
 all: $(EXEC)
+	mv *.o $(OUT_DIR)
 $(EXEC): $(OBJS)
 	$(CC) $(COMP_FLAG)-o $@ $(OBJS)
 main.o: MatchManagement.h GameAux.h
@@ -39,5 +41,5 @@ GameRepresentation.o: GameRepresentation.h Matrix.h
 Matrix.o: Matrix.h
 	$(CC) $(COMP_FLAG) -c $*.c
 clean:
-	rm -f *.o $(EXEC)
+	rm -f $(OUT_DIR)/*.o $(EXEC)
 

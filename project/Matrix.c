@@ -37,23 +37,3 @@ char matGet(MATRIX *mat, int x, int y) {
     return mat->p[x * mat->rows + y];
 }
 
-void matPrint(MATRIX *mat, char inverse) {
-    if (inverse) {
-        for (int i = 0; i < mat->rows; i++) {
-            for (int j = 0; j < mat->cols; j++) {
-                char cell = matGet(mat, i, j);
-                printf("%d ", cell);
-            }
-            printf("\n");
-        }
-    }
-    else { // inverse
-        for (int i = (mat->rows - 1); i >= 0; i--) {
-            for (int j = 0; j < mat->cols; j++) {
-                char cell = matGet(mat, i, j);
-                printf("%d ", cell);
-            }
-            printf("\n");
-        }
-    }
-}

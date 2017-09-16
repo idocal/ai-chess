@@ -153,7 +153,6 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
     GAME_STATE_COMMAND_NAME name = cmd->command_name;
     GAME_MOVE *move = cmd->move;
     int mode = match->gameMode;
-    int level = match->level;
     char *filename = cmd->filename;
     int x = cmd->x;
     int y = cmd->y;

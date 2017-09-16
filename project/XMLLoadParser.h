@@ -32,6 +32,8 @@ XmlTag parseTagNameStringToEnum(char* tagName);
 
 XMLTagObject* parseXmlLineToTagObject(char* line);
 
+void destroyXMLTagObject(XMLTagObject *tagObject);
+
 void parseTagObjectToMatchAttribute(CHESS_MATCH *match, XMLTagObject *tag);
 
 void parseBoardTagFromFileToMatchAttribute(FILE *fp, char* buffer, CHESS_MATCH *match);

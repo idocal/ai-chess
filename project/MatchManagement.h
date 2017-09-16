@@ -55,33 +55,6 @@ CHESS_MATCH* createNewChessMatch();
  */
 void destroyChessMatch(CHESS_MATCH *match);
 
-/**
- * A "Setter" for the structure filed - Game Mode
- *
- * @param
- * match - pointer to a given ChessMatch object
- * newGameMode - the value of the desired newGameMode field.
- */
-void changeMatchGameMode(CHESS_MATCH *match, int newGameMode);
-
-/**
- * A "Setter" for the structure filed - Match Difficulty
- *
- * @param
- * match - pointer to a given ChessMatch object
- * newDifficulty - the value of the desired Difficulty field.
- */
-void changeMatchDifficulty(CHESS_MATCH *match, int newDifficulty);
-
-
-/**
- * A "Setter" for the structure filed - User Color
- *
- * @param
- * match - pointer to a given ChessMatch object
- * newUserColor- the value of the desired User Color field.
- */
-void changeMatchUserColor(CHESS_MATCH *match, int newUserColor);
 
 /**
  * Reset all the structure's field to their default values as specified in the project's instructions.

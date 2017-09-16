@@ -35,7 +35,8 @@ void destroyStack(MOVES_STACK *stack){
     for (int i = 0; i < stack->capacity; ++i){
         destroyGameMove(stack->movesArray[i]); // before freeing the stack it self, first free every object!
     }
-    free(stack);
+    free(stack->movesArray); // free the array of the GameMoves pointers
+    free(stack); // at least, free the pointers and attribute of the stack object
 }
 
 GAME_MOVE* pop(MOVES_STACK *stack){
@@ -69,10 +70,3 @@ void push(MOVES_STACK *stack, GAME_MOVE* gameMove){
     stack->movesArray[stack->topIndex] = gameMove;
 }
 
-GAME_MOVE* peek(MOVES_STACK *stack){
-    if (stack == NULL){
-        return NULL;
-    } else {
-        return stack->movesArray[stack->topIndex];
-    }
-}

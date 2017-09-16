@@ -97,13 +97,7 @@ typedef struct game_command {
  */
 SETTING_STATE_COMMAND *createDefaultStateCommand();
 
-/**
- * Resets to given command object's field to their default/initial values
- *
- *
- * @param command - a pointer to a valid SETTING_STATE_COMMAND object
- */
-void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command);
+
 
 /**
  * Free all the memory allocated for given command object
@@ -166,7 +160,7 @@ SETTING_STATE_COMMAND_NAME parseStringToSettingCommandEnum(char *string);
  * or a single character that doesn't represent a digit (for example "a")
  * the function will return the value -1 to indicate a fault/error value.
 */
-int transformCommandArgFromStrToInt(char *commandArg);
+int transformCommandArgFromStrToInt(const char *commandArg);
 
 GAME_STATE_COMMAND *createDefaultGameCommand();
 

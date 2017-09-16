@@ -7,9 +7,11 @@
 int writeMatchObjectToXmlFile(CHESS_MATCH *match, char *addressToFile){
     char *fileContent = transformMatchToXMLString(match);
     if (fileContent == NULL){
+        free(fileContent);
         return -1;
     }
     if (writeXMLStringToFile(fileContent, addressToFile) == -1){
+        free(fileContent);
         return -1;
     }
     free(fileContent);
@@ -21,8 +23,8 @@ int writeXMLStringToFile(char *xmlString, char* addressToFile){
     if (fp == NULL){
         return -1;
     }
-    int xmlLength = strlen(xmlString);
-    int bytesWritten = fwrite(xmlString, sizeof(char), xmlLength, fp);
+    int xmlLength = (int) strlen(xmlString);
+    int bytesWritten = (int) fwrite(xmlString, sizeof(char), xmlLength, fp);
     fclose(fp);
     if (bytesWritten == xmlLength) {
         return 0;
@@ -88,12 +90,12 @@ void concatBoardTag(char *fileStr, CHESS_GAME *game){
 char getSettingParameterValue(char *paramDescription, CHESS_MATCH *match){
     char valueChar;
     if (strcmp(paramDescription, "current_turn") == 0){
-        valueChar = match->game->currentPlayer + 48;
+        valueChar = (char) (match->game->currentPlayer + 48);
     } else if (strcmp(paramDescription, "game_mode") == 0){
         valueChar = transformDigitIntToChar(match->gameMode);
     } else if (strcmp(paramDescription, "difficulty") == 0){
         valueChar = transformDigitIntToChar(match->level);
-    } else if (strcmp(paramDescription, "user_color") == 0){
+    } else (strcmp(paramDescription, "user_color") == 0){
         valueChar = transformDigitIntToChar(match->userColor);
     }
     return valueChar;

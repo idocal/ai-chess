@@ -31,7 +31,7 @@ void destroyGameCommand(GAME_STATE_COMMAND *command){
 
 
 GAME_STATE_COMMAND_NAME parseStringToGameCommandEnum(char *commandString){
-    SETTING_STATE_COMMAND_NAME commandName;
+    GAME_STATE_COMMAND_NAME commandName;
     if (commandString == NULL){
         commandName = INVALID_GAME_COMMAND;
     } else if (strcmp(commandString, "move") == 0){
@@ -61,19 +61,6 @@ SETTING_STATE_COMMAND *createDefaultStateCommand(){
     command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
     command->commandArgument = -1;
     return command;
-}
-
-void resetToDefualtStateCommand(SETTING_STATE_COMMAND *command){
-    if (command == NULL){
-        return;
-    }
-
-    // No need to free addressForLoadCommand string. it wasn't allocated by the programmer!
-    // was allocated by the OS as part of stdin creation
-    free(command->addressForLoadCommand);
-    command->addressForLoadCommand = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char));
-    command->command_name = INVALID_COMMAND;
-    command->commandArgument = -1;
 }
 
 void destroyStateCommand(SETTING_STATE_COMMAND *command){
@@ -110,7 +97,7 @@ SETTING_STATE_COMMAND_NAME parseStringToSettingCommandEnum(char *commandString){
     return commandName;
 }
 
-int transformCommandArgFromStrToInt(char *commandArg){
+int transformCommandArgFromStrToInt(const char *commandArg){
     int returnVal = 0;
     char digit = commandArg[0];
     char redundantChar = commandArg[1];

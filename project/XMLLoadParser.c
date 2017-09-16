@@ -72,7 +72,6 @@ void parseTagObjectToMatchAttribute(CHESS_MATCH *match, XMLTagObject *tag){
     } else if (tag ->tagName == USER_COLOR_TAG) {
         match->userColor = tag->tagValue;
     }
-    free(tag);
 }
 
 void parseBoardTagFromFileToMatchAttribute(FILE *fp, char* buffer, CHESS_MATCH *match){
@@ -107,11 +106,19 @@ CHESS_MATCH* parseXMLGameFile(char *fileAddress){
     for (int i = 0; i < 4; ++i){ // parse 4 lines of game setting tags (current turn, game mode, etc)
         readLineFromFileIntoBuffer(fp, buffer);
         XMLTagObject *tag = parseXmlLineToTagObject(buffer);
-        parseTagObjectToMatchAttribute(match, tag); // this function also frees the Tag object memory!
+        parseTagObjectToMatchAttribute(match, tag); //
+        destroyXMLTagObject(tag); // free the Tag object memory!
     }
     parseBoardTagFromFileToMatchAttribute(fp, buffer, match); // parse the board content part
     readLineFromFileIntoBuffer(fp, buffer); // read the "</game>" tag line
     fclose(fp); // close file
     free(buffer); // free read line buffer
     return match;
+}
+
+void destroyXMLTagObject(XMLTagObject *tagObject){
+    if (tagObject == NULL) {
+        return;
+    }
+    free(tagObject);
 }

@@ -367,6 +367,8 @@ bool isMoveLegal(CHESS_GAME *game, GAME_MOVE *move) {
     char indicator = matGet(possibleMoves, destX, destY);
 
     bool retValue = (indicator == 1) ? true : false;
+
+    matDestroy(possibleMoves); // must free memory allocations of possible moves matrix
     return retValue;
 }
 
@@ -383,8 +385,9 @@ bool isThreatened(CHESS_GAME *game, int x, int y) {
                     threatened = true;
                     matDestroy(possibleMoves);
                     return threatened;
+                } else{
+                    matDestroy(possibleMoves);
                 }
-                matDestroy(possibleMoves);
             }
         }
     }

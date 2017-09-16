@@ -78,15 +78,4 @@ GAME_MOVE* pop(MOVES_STACK *stack);
 void push(MOVES_STACK *stack, GAME_MOVE* gameMove);
 
 
-/**
- * Returns the pointer to the last move played
- * without(!) performing pop, the object will stay in the stack
- *
- * @param stack - pointer to a given stack object
- *
- * @return
- * NULL if an empty stack is given or pointer to an object represents the last move played
- */
-GAME_MOVE* peek(MOVES_STACK *stack);
-
 #endif //PROJECT_MOVESSTACK_H
