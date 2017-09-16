@@ -39,8 +39,8 @@ void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION sto
 
     if (stopReason == GAME_OVER_CHECK_MATE){
         // the winner is the opponent of the current player
-        // if the current player is player 1 then the winner is player 0 which scores in positive values
-        node->value = (nodeGame->currentPlayer == 1) ? INT_MAX : INT_MIN;
+        // if the current player is player 1 then the winner is player 0 which scores in negative values
+        node->value = (nodeGame->currentPlayer == 1) ? INT_MIN : INT_MAX;
 
 
     } else if (stopReason == GAME_OVER_TIE){

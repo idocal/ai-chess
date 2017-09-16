@@ -59,7 +59,7 @@ MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game, int *maxDepth) {
     node->move = NULL;
     node->alpha = INT_MIN;
     node->beta = INT_MAX;
-    node->value = (type == MIN_NODE) ? SUFFICIENT_MAX : SUFFICIENT_MIN;
+    node->value = (type == MIN_NODE) ? INT_MAX : INT_MIN;
     node->isLeaf = false;
     node->depth = 0;
     return node;

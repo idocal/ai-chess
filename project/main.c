@@ -4,7 +4,7 @@
 
 #define WELCOME_MESSAGE "Specify game setting or type 'start' to begin a game with the current setting:\n"
 
-int main() {
+int main2() {
     bool live = true;
     while (live) {
         printf(WELCOME_MESSAGE);
