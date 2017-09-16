@@ -410,3 +410,26 @@ MATRIX *getPossibleMoves(CHESS_GAME *game, int x, int y) {
     char piece = matGet(board, x,y);
     return piecePossibleMoves(game, piece, x, y, true);
 }
+
+GAME_MOVE *getFirstPossibleMove(CHESS_GAME *game) {
+    char player = game->currentPlayer;
+    for (int x = 0; x < nRows; x++) {
+        for (int y = 0; y < nCols; y++) {
+            char piece = matGet(game->gameBoard, x ,y);
+            if (pieceOwner(piece, player) == 1) { // piece is player's
+                MATRIX *possibleMoves = getPossibleMoves(game, x, y);
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nCols; j++) {
+                        if (matGet(possibleMoves, i, j)) {
+                            GAME_MOVE *firstMove = createGameMove(game, x, y, i, j);
+                            matDestroy(possibleMoves);
+                            return firstMove;
+                        } // move is possible
+                    }
+                }
+                matDestroy(possibleMoves);
+            }
+        }
+    }
+    return NULL;
+}

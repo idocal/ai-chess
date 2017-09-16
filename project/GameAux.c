@@ -339,7 +339,11 @@ int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
             maxDepth = match->level;
             AIMove = AINextMove(game, &(maxDepth), false);
         }
-        if (AIMove == NULL) return -1;
+        if (AIMove == NULL) {
+            GAME_MOVE *firstPossibleMove = getFirstPossibleMove(game);
+            if (firstPossibleMove == NULL) return -1;
+            AIMove = firstPossibleMove;
+        }
         performMove(game, AIMove);
         push(stack, AIMove);
         switchPlayers(game); // switch back to player

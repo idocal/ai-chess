@@ -267,4 +267,13 @@ MATRIX *kingPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
  */
 bool isThreatened(CHESS_GAME *game, int x, int y);
 
+/**
+ * Returns an arbitrary first move,
+ * this is useful when all nodes in MinMax tree are INT_MAX or INT_MIN and thus any move should be considered as best move.
+ *
+ * @param game
+ * @return GAME_MOVE pointer to the first move
+ */
+GAME_MOVE *getFirstPossibleMove(CHESS_GAME *game);
+
 #endif //PROJECT_PIECERULES_H

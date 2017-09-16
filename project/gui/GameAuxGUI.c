@@ -95,7 +95,11 @@ int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window)
         maxDepth = match->level;
         AIMove = AINextMove(game, &(maxDepth), false);
     }
-    if (AIMove == NULL) return -1;
+    if (AIMove == NULL) {
+        GAME_MOVE *firstPossibleMove = getFirstPossibleMove(game);
+        if (firstPossibleMove == NULL) return -1;
+        AIMove = firstPossibleMove;
+    }
 
     gameMoveToBoardMove(AIMove, window, stack, game);
     switchPlayers(game); // switch back to player
