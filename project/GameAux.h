@@ -18,9 +18,7 @@
 
 #define UNDO_CAPACITY 6
 #define PIECE_NAME_SIZE 512
-#define color(player) ((player == 0) ? "black" : "white")
-#define opponent(player) ((char) (1 - player))
-#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
+
 
 // General messages
 #define FATAL_ERROR_MESSAGE "A fatal error occurred."

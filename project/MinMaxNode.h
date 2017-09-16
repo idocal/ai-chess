@@ -9,12 +9,12 @@
 #include "limits.h"
 #include "stdbool.h"
 
-#define opposite(type) ((type == MIN) ? MAX : MIN)
+#define opposite(type) ((type == MIN_NODE) ? MAX_NODE : MIN_NODE)
 #define opponent(player) ((char) (1 - player))
 
 typedef enum nodeType {
-    MIN,
-    MAX
+    MIN_NODE,
+    MAX_NODE
 } NODE_TYPE;
 
 typedef struct minMaxNode {

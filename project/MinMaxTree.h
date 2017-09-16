@@ -10,9 +10,22 @@
 #include "Scoring.h"
 #include "GameStates.h"
 #include <stdlib.h>
+#include <time.h>
 
-void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_MOVE **AINextMove, bool isExpert);
-void evaluateNode(MIN_MAX_NODE *node, int *maxDepth, bool isExpert);
+#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
+
+typedef enum {
+    GAME_OVER_CHECK_MATE,
+    GAME_OVER_TIE,
+    NODE_IS_LEAF,
+    NOT_TERMINATING
+} TERMINATING_CONDITION;
+
+
 GAME_MOVE *AINextMove(CHESS_GAME *game, int *maxDepth, bool isExpert);
+
+TERMINATING_CONDITION isTerminalNode(MIN_MAX_NODE *node);
+
+void updateScoreForTerminatingNode(MIN_MAX_NODE *node, TERMINATING_CONDITION stopReason, bool isExpert);
 
 #endif //PROJECT_MINMAXTREE_H

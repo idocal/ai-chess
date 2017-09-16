@@ -2,12 +2,18 @@
 // Created by Ido on 8/19/17.
 //
 
-#include "GameMoves.h"
-#include "PieceRules.h"
-#include "stdbool.h"
+
 
 #ifndef PROJECT_GAMESTATES_H
 #define PROJECT_GAMESTATES_H
+
+
+#include "GameMoves.h"
+#include "PieceRules.h"
+#include "stdbool.h"
+#define color(player) ((player == 0) ? "black" : "white")
+#define opponent(player) ((char) (1 - player))
+#define switchPlayers(game) (game->currentPlayer = opponent(game->currentPlayer))
 
 /**
  * Detect whether the game is in "Check" mode.
