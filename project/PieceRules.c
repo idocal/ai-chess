@@ -126,7 +126,6 @@ void linearMoves(MATRIX *movesMatrix, CHESS_GAME *game, int x, int y, char playe
         // if slot is a conquering one or player's, stop going
         char piece = matGet(board, x + right * i, y + up * i);
         if (pieceOwner(piece, player) == 1) {
-            freeNeeded = false;
             break;
         }
 

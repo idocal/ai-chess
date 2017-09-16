@@ -29,7 +29,10 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
                                                                        node->alpha, node->beta, node->depth + 1,
                                                                        maxDepth);
 
-                            if (childNode == NULL) return;
+                            if (childNode == NULL) {
+                                destroyGameMove(nextMove);
+                                return;
+                            }
                             evaluateNode(childNode, maxDepth, isExpert);
 
                             if (node->type == MAX && childNode->value > node->value){
@@ -50,6 +53,7 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
                             if (node->type == MIN && childNode->value < node->value){
                                 node->value = childNode->value;
                                 node->beta = childNode->value;
+
                                 if (isRoot) {
                                     if (*AINextMove == NULL){
                                         *AINextMove = copyGameMove(childNode->move);
@@ -63,23 +67,19 @@ void loopAllPossibleMoves(MIN_MAX_NODE *node, int *maxDepth, bool isRoot, GAME_M
                             }
 
                             destroyNode(childNode);
+                            destroyGameMove(nextMove);
                         }
 
-                        if (node->alpha >= node->beta) break; // prune this node
+                        if (node->alpha >= node->beta) { // prune this node
+                            matDestroy(possibleMoves);
+                            return;
+                        }
                     }
-
-                    if (node->alpha >= node->beta) break; // prune this node
                 }
-
+                matDestroy(possibleMoves);
             }
-
-            if (node->alpha >= node->beta) break; // prune this node
         }
-
-        if (node->alpha >= node->beta) break; // prune this node
     }
-
-    return;
 }
 
 void evaluateNode(MIN_MAX_NODE *node, int *maxDepth, bool isExpert) {

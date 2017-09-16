@@ -48,7 +48,6 @@ MIN_MAX_NODE *createTreeRoot(NODE_TYPE type, CHESS_GAME *game) {
 void destroyNode(MIN_MAX_NODE *node) {
     if (node == NULL) return;
     destroyChessGame(node->game);
-    destroyGameMove(node->move);
     free(node);
 }
 
