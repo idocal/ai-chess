@@ -5,7 +5,7 @@
 #ifndef PROJECT_GAMEMOVES_H
 #define PROJECT_GAMEMOVES_H
 
-#include "GameRepresenation.h"
+#include "GameRepresentation.h"
 #include <stdbool.h>
 
 

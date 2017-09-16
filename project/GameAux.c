@@ -38,7 +38,14 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         }
 
         case USER_COLOR : {
-            if (match->gameMode == 1) match->userColor = arg;
+            if (match->gameMode == 2) {
+                printf(USER_COLOR_NOT_AVAILABLE);
+            } else{
+                if (arg == 0 || arg == 1)
+                    match->userColor = arg;
+                else
+                    printf(WRONG_USER_COLOR);
+            }
             return 0;
         }
 

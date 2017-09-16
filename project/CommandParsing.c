@@ -161,8 +161,12 @@ SETTING_STATE_COMMAND *parseUserSettingCommand(){
             strcpy(settingCommand->addressForLoadCommand, commandArgument); // no need to convert the argument
         }// if the file name is not correct will result in an error in later functions no this one
     } else { // commands with single integer argument
-        settingCommand->commandArgument = transformCommandArgFromStrToInt(commandArgument);
-        // function only checks if the argument is a single digit. matching range will be checked later
+        if (commandArgument == NULL){
+            settingCommand->command_name = INVALID_COMMAND;
+        } else{
+            settingCommand->commandArgument = transformCommandArgFromStrToInt(commandArgument);
+            // function only checks if the argument is a single digit. matching range will be checked later
+        }
     }
     return settingCommand;
 }
@@ -221,8 +225,8 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         } else{
             char get_move_x[2];
             char get_move_y[2];
-            get_move_x[0] = firstArg[1] -1;
-            get_move_y[0] = firstArg[3] -16 -1;
+            get_move_x[0] = (char) (firstArg[1] -1);
+            get_move_y[0] = (char) (firstArg[3] -16 -1);
             get_move_x[1] = '\0';
             get_move_y[1] = '\0';
             gameCommand->x = transformCommandArgFromStrToInt(get_move_x);
@@ -232,7 +236,7 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
         }
     } else { // MOVE_TO Command
         if (checkValidityOfMovePositionString(firstArg) == 0
-            || strcmp(secondArg, "to") != 0
+            || secondArg == NULL || strcmp(secondArg, "to") != 0
             || checkValidityOfMovePositionString(thirdArg) == 0){ // the string is not valid / not right format / not right positions
             if (checkStructureOfMovePositionString(firstArg) == 1 && checkStructureOfMovePositionString(thirdArg) == 1 && strcmp(secondArg, "to") == 0){
                 // the structure of the command is right but one of the parameters aren't.
@@ -248,10 +252,10 @@ GAME_STATE_COMMAND *parseUserGameCommand() {
             char move_source_y[2];
             char move_dest_x[2];
             char move_dest_y[2];
-            move_source_x[0] = firstArg[1] -1;
-            move_source_y[0] = firstArg[3] -16 -1;
-            move_dest_x[0] = thirdArg[1] -1;
-            move_dest_y[0] = thirdArg[3] -16 -1;
+            move_source_x[0] = (char)(firstArg[1] -1);
+            move_source_y[0] = (char) (firstArg[3] -16 -1);
+            move_dest_x[0] = (char) (thirdArg[1] -1);
+            move_dest_y[0] = (char) (thirdArg[3] -16 -1);
             move_source_x[1] = '\0';
             move_source_y[1] = '\0';
             move_dest_x[1] = '\0';

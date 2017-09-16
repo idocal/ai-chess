@@ -2,7 +2,7 @@
 // Created by okleinfeld on 7/27/2017.
 //
 
-#include "GameRepresenation.h"
+#include "GameRepresentation.h"
 
 CHESS_GAME* createEmptyGame(){
     CHESS_GAME *game = (CHESS_GAME *) malloc(sizeof(CHESS_GAME));
