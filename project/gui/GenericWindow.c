@@ -8,6 +8,8 @@ GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*, SDL_Window *
     GENERIC_WINDOW *genericWindow = (GENERIC_WINDOW *) calloc(sizeof(GENERIC_WINDOW), sizeof(char));
     if (genericWindow == NULL) return NULL;
 
+    genericWindow->overlays = 0;
+
     (*drawFunc)(genericWindow, sdlWindow, renderer, match);
     return genericWindow;
 }
@@ -15,7 +17,9 @@ GENERIC_WINDOW *createGenericWindow(int(*drawFunc)(GENERIC_WINDOW*, SDL_Window *
 void destroyWindow(GENERIC_WINDOW *genericWindow) {
     if (genericWindow == NULL) return;
 
-    for (int i = 0; i < genericWindow->numWidgets; ++i) {
+    int numWidgets = genericWindow->numWidgets + genericWindow->overlays;
+
+    for (int i = 0; i < numWidgets; ++i) {
         destroyWidget(genericWindow->widgets[i]);
     }
     free(genericWindow->widgets);
@@ -72,7 +76,8 @@ int getClickedWidget(GENERIC_WINDOW *window, SDL_Event *event) {
 }
 
 void renderWindowWidgets(GENERIC_WINDOW *window) {
-    for (int i = 0; i < window->numWidgets; ++i) {
+    int numWidgets = window->numWidgets + window->overlays;
+    for (int i = 0; i < numWidgets; ++i) {
         SDL_RenderCopy(window->renderer, window->widgets[i]->texture, NULL, &(window->widgets[i]->rect));
     }
 }

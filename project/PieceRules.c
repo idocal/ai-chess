@@ -243,7 +243,8 @@ MATRIX *pawnPossibleMoves(CHESS_GAME *game, int x, int y, char player, bool incl
     testPossibility(movesMatrix, game, moveOne, x, y, y, player, includeCheck, 1);
 
     // move two forward
-    if (isPawnInitialLocation(player, x))
+    char moveOnePiece = matGet(board, moveOne, y);
+    if (isPawnInitialLocation(player, x) && pieceOwner(moveOnePiece, player) == -1)
         testPossibility(movesMatrix, game, moveTwo, x, y, y, player, includeCheck, 1);
 
     // apply diagonal conquer moves

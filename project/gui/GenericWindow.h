@@ -27,6 +27,7 @@ typedef struct generic_window {
     SDL_Renderer *renderer;
     WIDGET **widgets;
     int numWidgets;
+    int overlays;
     WINDOW_TYPE type;
     void *(*handleWindowEvent)(struct generic_window *, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 } GENERIC_WINDOW;

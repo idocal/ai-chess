@@ -15,7 +15,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     genericWindow->renderer = renderer;
 
 
-    WIDGET **widgets = (WIDGET **) calloc(39, sizeof(WIDGET *)); // 39 is 16 + 16 + 6 + 1 (pieces + buttons + board)
+    WIDGET **widgets = (WIDGET **) calloc(39 + 32, sizeof(WIDGET *)); // 39 is 16 + 16 + 6 + 1 (pieces + buttons + board) 32 is number of max overlays
     if (widgets == NULL) return destroyWindowOnFailure(genericWindow, genericWindow->numWidgets); // On failure
     genericWindow->widgets = widgets;
 
@@ -90,6 +90,15 @@ int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer) {
     return createButton(BUTTON_MARGIN, PAGE_MARGIN + 5 * BUTTON_MARGIN/2 + 5 * BUTTON_HEIGHT, "./img/exit.bmp", renderer, widget, false);
 }
 
+void removeOverlays(GENERIC_WINDOW *window) {
+    for (int i = 0; i < window->overlays; i++) {
+        int numWidgets = window->numWidgets + i;
+        destroyWidget(window->widgets[numWidgets]);
+    }
+    window->overlays = 0;
+    reRenderWindow(window);
+}
+
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
     WINDOW_TYPE nextWindow = GAME_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
@@ -101,6 +110,8 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     char player = match->game->currentPlayer;
 
     if (event->button.button == SDL_BUTTON_LEFT) {
+        removeOverlays(window); // on left click remove any overlays remaining
+
         if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
             if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
         }
@@ -169,6 +180,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     }
 
     if (event->button.button == SDL_BUTTON_RIGHT) {
+        removeOverlays(window); // on right click remove any overlays remaining
         if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
             char piece = widget->piece;
             if (pieceOwner(piece, player)) {
@@ -275,14 +287,15 @@ void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, 
                     moveCell = createMoveCell(x, y, window->renderer, MOVE_REGULAR);
                 }
 
-                reRenderWindow(window);
-                SDL_RenderCopy(window->renderer, moveCell->texture, NULL, &(moveCell->rect));
-                SDL_RenderPresent(window->renderer);
+                int numWidgets = window->numWidgets + window->overlays;
+                if (moveCell == NULL) destroyWindowOnFailure(window, numWidgets);
 
-                destroyWidget(moveCell);
-
+                window->widgets[numWidgets] = moveCell;
+                window->overlays++;
             }
         }
     }
+
+    reRenderWindow(window);
     matDestroy(possibleMoves);
 }
