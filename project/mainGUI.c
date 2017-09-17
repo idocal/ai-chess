@@ -5,7 +5,7 @@
 
 #define SDL_ERROR_PREFIX "ERROR: unable to init SDL: %s\n"
 
-int main2() {
+int mainGui() {
     // Init SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf(SDL_ERROR_PREFIX, SDL_GetError());

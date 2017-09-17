@@ -16,12 +16,6 @@ SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.
 GameAuxGUI.o GameWindow.o GuiManager.o
 
 
-
-GUI_OBJS = GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o \
-SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
-GameAuxGUI.o GameWindow.o GuiManager.o
-
-
 all: $(EXEC)
 	mv *.o $(OUT_DIR)
 $(EXEC): $(CONSOLE_OBJS)
@@ -32,8 +26,43 @@ main.o: MatchManagement.h GameAux.h
 
 
 
-Widget.o:  Widget.h config.h
+
+
+mainGui.o: mainGui.c MatchManagement.h WelcomeWindow.h GuiManager.h
+	$(CC) $(COMP_FLAG) -c mainGui.c MatchManagement.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/WelcomeWindow.c $(GUI_DIR)/GuiManager.c
+GuiManager.o: GuiManager.h WelcomeWindow.h SettingWindow.h DifficultyWindow.h ColorWindow.h GameWindow.h LoadGameWindow.h WindowsStack.h
 	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
+GameWindow.o: GameWindow.h GameAuxGUI.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
+GameAuxGUI.o: GameAuxGUI.h PiecesWidget.h Widget.h GameMoves.h GameAux.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/GameAuxGUI.c $(GUI_DIR)/PiecesWidget.c $(GUI_DIR)/Widget.c
+	$(CC) $(COMP_FLAG) -c GameMoves.c GameAux.c
+ColorWindow.o: ColorWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/ColorWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) -c MatchManagement.c
+DifficultyWindow.o: DifficultyWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/DifficultyWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) -c MatchManagement.c
+LoadGameWindow.o: LoadGameWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/LoadGameWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) -c MatchManagement.c
+SettingWindow.o: SettingWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/SettingWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) -c MatchManagement.c
+WelcomeWindow.o: WelcomeWindow.h GenericWindow.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
+WindowsStack.o: WindowsStack.h WindowNode.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
+WindowNode.o: WindowNode.h GenericWindow.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c\
+PiecesWidget.o: PiecesWidget.h GenericWindow.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
+GenericWindow.o: GenericWindow.h GameAux.h Widget.h XMLLoadParser.h XMLSaveParser.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/GenericWindow.c $(GUI_DIR)/Widget.c 
+	$(CC) $(COMP_FLAG) -c GameAux.c XMLLoadParser.c XMLSaveParser.c
+Widget.o: Widget.h config.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/Widget.c
 GameAux.o: GameAux.h MatchManagement.h MovesStack.h CommandParsing.h PieceRules.h GameStates.h XMLLoadParser.h XMLSaveParser.h MinMaxTree.h
 	$(CC) $(COMP_FLAG) -c $*.c
 MinMaxTree.o: MinMaxTree.h MinMaxNode.h Scoring.h PieceRules.h GameStates.h
