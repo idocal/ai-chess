@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mainConsole.h"
-#include "mainGui.h"
+#include "mainGUI.h"
 
 int main(int argc, char *argv[]){
     if (argc > 2){

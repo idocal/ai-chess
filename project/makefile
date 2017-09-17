@@ -13,7 +13,7 @@ PieceRules.o Scoring.o XMLLoadParser.o XMLSaveParser.o mainConsole.o
 
 GUI_OBJS = Widget.o GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o \
 SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
-GameAuxGUI.o GameWindow.o GuiManager.o mainGui.o
+GameAuxGUI.o GameWindow.o GuiManager.o mainGUI.o
 
 SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
 SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
@@ -27,16 +27,16 @@ $(EXEC): $(CONSOLE_OBJS) $(GUI_OBJS)
 
 
 
-main.o: mainConsole.h mainGui.h
+main.o: mainConsole.h mainGUI.h
 	$(CC) $(COMP_FLAG) -c mainConsole.c
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/mainGui
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c mainGUI.c
 
 mainConsole.o: mainConsole.h MatchManagement.h GameAux.h
 	$(CC) $(COMP_FLAG) -c $*.c
 
-mainGui.o: mainGui.h MatchManagement.h WelcomeWindow.h GuiManager.h
-	$(CC) $(COMP_FLAG) -c mainGui.c MatchManagement.c
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/WelcomeWindow.c $(GUI_DIR)/GuiManager.c
+mainGUI.o: mainGUI.h MatchManagement.h WelcomeWindow.h GuiManager.h
+	$(CC) $(COMP_FLAG) -c MatchManagement.c
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/WelcomeWindow.c $(GUI_DIR)/GuiManager.c mainGUI.c
 
 GuiManager.o: GuiManager.h WelcomeWindow.h SettingWindow.h DifficultyWindow.h ColorWindow.h GameWindow.h LoadGameWindow.h WindowsStack.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
