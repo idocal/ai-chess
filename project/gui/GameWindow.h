@@ -7,21 +7,106 @@
 
 #include "GameAuxGUI.h"
 
+/**
+ * The drawer function for Game window.
+ * @param genericWindow
+ * @param match
+ * @return 1 on success
+ */
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *, SDL_Renderer *, CHESS_MATCH *match);
 
+/**
+ * The board function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createBoard(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "restart" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createRestartButton(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "save" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createSaveButton(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "load" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createLoadButtonGame(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "undo" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createUndoButton(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "main menu" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createMenuButton(WIDGET *widget, SDL_Renderer *renderer);
+
+/**
+ * The "exit" button function
+ * @param widget
+ * @param renderer
+ * @return 1 on success
+ */
 int createExitButtonGame(WIDGET *widget, SDL_Renderer *renderer);
 
+/**
+ * The Game window event handler
+ * @param window
+ * @param event
+ * @param match
+ * @param stack
+ * @return the response for GUI manager
+ */
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
+
+/**
+ * A function to only handle a piece move event
+ * @param window
+ * @param event
+ * @param match
+ * @param stack
+ * @return true iff move was successfully done
+ */
 bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex);
+
+/**
+ * Handles the "get moves" bonus presentation
+ * @param game
+ * @param row
+ * @param col
+ * @param window
+ * @param difficulty
+ */
 void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, int difficulty);
 
-// handle save game option
+/**
+ * Handle save game options
+ * @param loadFromIndex
+ * @param loadTwoIndex
+ * @return 0 on success, -1 on failure
+ */
 int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadTwoIndex);
 
 #endif //PROJECT_GAMEWINDOW_H

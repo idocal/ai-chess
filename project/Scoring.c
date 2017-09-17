@@ -155,13 +155,19 @@ int pawnStructure(CHESS_GAME *game) {
     return defendedPawns;
 }
 
+int isCheckScore(CHESS_GAME *game) {
+    char player = game->currentPlayer;
+    int sign = (player == 1) ? 1 : -1;
+    return sign * isGameCheck(game, game->currentPlayer);
+}
+
 int expertScore(CHESS_GAME *game) {
     int expertModeScore = 0;
 
     // combine naive scoring function with expert scoring function. give a different weight to each scoring function
     expertModeScore += 100 * score(game); // original score function gets weight 100
     expertModeScore += 50 * countPossibleMoves(game); // it's important to have a more possible moves than the opponent, weight is 50
-    expertModeScore += 10 * isGameCheck(game, game->currentPlayer); // The current player is switched before the move, so increment if the player is checked
+    expertModeScore += 10 * isCheckScore(game); // The current player is switched before the move, so increment if the player is checked
     expertModeScore += 5 * pawnStructure(game); // defended pawns are a goal when all other moves lead to the same score
 
     return expertModeScore;
