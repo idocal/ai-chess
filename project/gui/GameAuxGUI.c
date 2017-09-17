@@ -73,7 +73,7 @@ bool swapTurns(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window) {
         return false; // quit
     }
     else {
-        if (mode == 1) {
+        if (mode == 1 && match->userColor != game->currentPlayer) { // after switch the turn is computer's
             if (handleAIMove(match, stack, window) == -1) return false; // if an error occurred with AI - quit
         }
     }
@@ -102,7 +102,7 @@ int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window)
     }
 
     gameMoveToBoardMove(AIMove, window, stack, game);
-    switchPlayers(game); // switch back to player
+    swapTurns(match, stack, window);
 
     return 1;
 }
