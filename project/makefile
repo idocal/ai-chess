@@ -1,17 +1,39 @@
 CC = gcc
 COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
+
 OUT_DIR = $(PWD)/bin
 EXEC = $(OUT_DIR)/chessprog
-OBJS = main.o CommandParsing.o GameAux.o GameMoves.o GameRepresentation.o \
+GUI_DIR = $(PWD)/gui
+
+VPATH := $(GUI_DIR)
+
+CONSOLE_OBJS = main.o CommandParsing.o GameAux.o GameMoves.o GameRepresentation.o \
 GameStates.o MatchManagement.o Matrix.o MinMaxNode.o MinMaxTree.o MovesStack.o \
 PieceRules.o Scoring.o XMLLoadParser.o XMLSaveParser.o
 
+GUI_OBJS = Widget.o GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o \
+SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
+GameAuxGUI.o GameWindow.o GuiManager.o
+
+
+
+GUI_OBJS = GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o \
+SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
+GameAuxGUI.o GameWindow.o GuiManager.o
+
+
 all: $(EXEC)
 	mv *.o $(OUT_DIR)
-$(EXEC): $(OBJS)
-	$(CC) $(COMP_FLAG) -o $@ $(OBJS)
+$(EXEC): $(CONSOLE_OBJS)
+	$(CC) $(COMP_FLAG) -o $@ $(CONSOLE_OBJS)
 main.o: MatchManagement.h GameAux.h
 	$(CC) $(COMP_FLAG) -c $*.c
+
+
+
+
+Widget.o:  Widget.h config.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c
 GameAux.o: GameAux.h MatchManagement.h MovesStack.h CommandParsing.h PieceRules.h GameStates.h XMLLoadParser.h XMLSaveParser.h MinMaxTree.h
 	$(CC) $(COMP_FLAG) -c $*.c
 MinMaxTree.o: MinMaxTree.h MinMaxNode.h Scoring.h PieceRules.h GameStates.h
