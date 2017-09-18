@@ -63,16 +63,16 @@ SettingWindow.o: SettingWindow.h GenericWindow.h MatchManagement.h
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 
 WelcomeWindow.o: WelcomeWindow.h GenericWindow.h
-	$(CC) $(COMP_FLAG)  $(SDL_COMP_FLAG)-c $(GUI_DIR)/$*.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c $(shell pkg-config --cflags --libs sdl2)
 
 WindowsStack.o: WindowsStack.h WindowNode.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c $(shell pkg-config --cflags --libs sdl2)
 
 WindowNode.o: WindowNode.h GenericWindow.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c $(shell pkg-config --cflags --libs sdl2)
 
 PiecesWidget.o: PiecesWidget.h GenericWindow.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/$*.c $(shell pkg-config --cflags --libs sdl2)
 
 GenericWindow.o: GenericWindow.h GameAux.h Widget.h XMLLoadParser.h XMLSaveParser.h
 	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/GenericWindow.c $(GUI_DIR)/Widget.c $(shell pkg-config --cflags --libs sdl2)
