@@ -15,7 +15,6 @@ GUI_OBJS = Widget.o GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o 
 SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
 GameAuxGUI.o GameWindow.o GuiManager.o mainGUI.o
 
-SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
 SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
 
 
@@ -76,11 +75,11 @@ PiecesWidget.o: PiecesWidget.h GenericWindow.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
 
 GenericWindow.o: GenericWindow.h GameAux.h Widget.h XMLLoadParser.h XMLSaveParser.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/GenericWindow.c $(GUI_DIR)/Widget.c 
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/GenericWindow.c $(GUI_DIR)/Widget.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c GameAux.c XMLLoadParser.c XMLSaveParser.c
 
 Widget.o: Widget.h config.h
-	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/Widget.c
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/Widget.c $(shell pkg-config --cflags --libs sdl2)
 
 GameAux.o: GameAux.h MatchManagement.h MovesStack.h CommandParsing.h PieceRules.h GameStates.h XMLLoadParser.h XMLSaveParser.h MinMaxTree.h
 	$(CC) $(COMP_FLAG) -c $*.c

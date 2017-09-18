@@ -321,6 +321,8 @@ int loadTexture(WIDGET *widget, char *originalImgPath, SDL_Renderer *renderer) {
     widget->texture = texture;
     SDL_DestroyTexture(prevTexture); // Destroy previous texture
     SDL_FreeSurface(loadingSurface);
+
+    return 0; // everything worked as expected
 }
 
 // Common buttons

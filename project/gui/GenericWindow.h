@@ -81,11 +81,6 @@ int destroyWindowOnFailure(GENERIC_WINDOW *window, int numWidgetsCreated);
  */
 int detectWidgetByLocation(GENERIC_WINDOW *window, int x, int y);
 
-// Common buttons event handlers
-int exitEventHandler(SDL_Event *event);
-
-int loadGameEventHandler(SDL_Event *event);
-
 /**
  * Finds a clicked widget according to the event
  * @param window

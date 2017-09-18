@@ -38,13 +38,6 @@ int destroyWindowOnFailure(GENERIC_WINDOW *window, int numWidgetsCreated) {
     return -1;
 }
 
-int exitEventHandler(SDL_Event *event) {
-    return 0;
-}
-
-int loadGameEventHandler(SDL_Event *event) {
-    return 0;
-}
 
 int detectWidgetByLocation(GENERIC_WINDOW *window ,int x, int y) {
     int widgetNum = -1;
