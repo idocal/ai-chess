@@ -176,11 +176,11 @@ void hidePiece(WIDGET *widget) {
 
 void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window) {
     GAME_MOVE *prevMove = pop(stack);
-    revertMoveGUI(game, prevMove, window, stack);
+    revertMoveGUI(game, prevMove, window);
     destroyGameMove(prevMove);
 }
 
-void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack) {
+void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window) {
     GAME_MOVE *inverseMove = createGameMove(game, move->destRowIndex, move->destColIndex, move->sourceRowIndex, move->sourceColIndex);
     performMove(game, inverseMove);
     matSet(game->gameBoard, move->destRowIndex, move->destColIndex, move->destOriginalSymbol); // assign the original piece on original destination

@@ -89,7 +89,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
  * @param stack
  * @return true iff move was successfully done
  */
-bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex);
+bool handlePieceEvent(GENERIC_WINDOW *window, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex);
 
 /**
  * Handles the "get moves" bonus presentation

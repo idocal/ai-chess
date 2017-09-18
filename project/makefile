@@ -41,18 +41,18 @@ GuiManager.o: GuiManager.h WelcomeWindow.h SettingsWindow.h DifficultyWindow.h C
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
 
 GameWindow.o: GameWindow.h GameAuxGUI.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c $(shell pkg-config --cflags --libs sdl2)
 
 GameAuxGUI.o: GameAuxGUI.h PiecesWidget.h Widget.h GameMoves.h GameAux.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/GameAuxGUI.c $(GUI_DIR)/PiecesWidget.c $(GUI_DIR)/Widget.c
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/GameAuxGUI.c $(GUI_DIR)/PiecesWidget.c $(GUI_DIR)/Widget.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c GameMoves.c GameAux.c
 
 ColorWindow.o: ColorWindow.h GenericWindow.h MatchManagement.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/ColorWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/ColorWindow.c $(GUI_DIR)/GenericWindow.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 
 DifficultyWindow.o: DifficultyWindow.h GenericWindow.h MatchManagement.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/DifficultyWindow.c $(GUI_DIR)/GenericWindow.c 
+	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/DifficultyWindow.c $(GUI_DIR)/GenericWindow.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 
 LoadGamesWindow.o: LoadGamesWindow.h GenericWindow.h MatchManagement.h

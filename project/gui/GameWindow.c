@@ -113,7 +113,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         removeOverlays(window); // on left click remove any overlays remaining
 
         if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
-            if (!handlePieceEvent(window, event, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
+            if (!handlePieceEvent(window, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
         }
 
         if (widgetIndex == numWidgets - 6) { // The button clicked is Restart
@@ -184,8 +184,6 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
             char piece = widget->piece;
             if (pieceOwner(piece, player)) {
-                int x = screenPositionX(widget->position->col);
-                int y = screenPositionY(widget->position->row);
                 handleGetMoves(match->game, widget->position->row, widget->position->col, window, match->level);
             }
         }
@@ -193,7 +191,7 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
     return response;
 }
 
-bool handlePieceEvent(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
+bool handlePieceEvent(GENERIC_WINDOW *window, CHESS_MATCH *match, MOVES_STACK *stack, int widgetIndex) {
     WIDGET *widget = window->widgets[widgetIndex];
     WIDGET *undoButton = window->widgets[window->numWidgets - 3]; // Undo is 3rd from last button
 

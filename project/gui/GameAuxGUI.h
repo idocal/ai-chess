@@ -102,7 +102,7 @@ void handleUndo(CHESS_GAME *game, MOVES_STACK *stack, GENERIC_WINDOW *window);
  * @param window
  * @param stack
  */
-void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window, MOVES_STACK *stack);
+void revertMoveGUI(CHESS_GAME *game, GAME_MOVE *move, GENERIC_WINDOW *window);
 
 /**
  * Translates a GAME_MOVE to board move on GUI

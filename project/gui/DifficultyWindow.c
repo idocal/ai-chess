@@ -56,6 +56,11 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
 
     reRenderWindow(genericWindow);
 
+    useMatchAndStack(match, NULL);
+    // because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+    // the match/stack object is changed by few windows like the load game and setting and game window
+    // therefore in order to avoid "unused argument error" we must use the arguments inside the function
+
     return 1;
 }
 
@@ -113,6 +118,11 @@ EVENT_RESPONSE *difficultyWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *
         response->windowType = SETTINGS_COLOR_WINDOW;
         response->status = NEW_WINDOW;
     }
+
+    useMatchAndStack(match, stack);
+    // because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+    // the match/stack object is changed by few windows like the load game and setting and game window
+    // therefore in order to avoid "unused argument error" we must use the arguments inside the function
 
     return response;
 }
