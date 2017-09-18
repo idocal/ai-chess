@@ -43,6 +43,11 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
 
     reRenderWindow(genericWindow);
 
+    useMatchAndStack(match, NULL);
+    // because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+    // the match/stack object is changed by few windows like the load game and setting and game window
+    // therefore in order to avoid "unused argument error" we must use the arguments inside the function
+
     return 1;
 }
 
@@ -107,6 +112,11 @@ EVENT_RESPONSE *settingsWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *ev
         }
         response->status = NEW_WINDOW;
     }
+
+    useMatchAndStack(NULL, stack);
+    // because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+    // the match/stack object is changed by few windows like the load game and setting and game window
+    // therefore in order to avoid "unused argument error" we must use the arguments inside the function
 
     return response;
 }

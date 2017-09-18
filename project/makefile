@@ -12,7 +12,7 @@ GameStates.o MatchManagement.o Matrix.o MinMaxNode.o MinMaxTree.o MovesStack.o \
 PieceRules.o Scoring.o XMLLoadParser.o XMLSaveParser.o mainConsole.o
 
 GUI_OBJS = Widget.o GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o \
-SettingWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
+SettingsWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
 GameAuxGUI.o GameWindow.o GuiManager.o mainGUI.o
 
 SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
@@ -37,7 +37,7 @@ mainGUI.o: mainGUI.h MatchManagement.h WelcomeWindow.h GuiManager.h
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/WelcomeWindow.c $(GUI_DIR)/GuiManager.c mainGUI.c
 
-GuiManager.o: GuiManager.h WelcomeWindow.h SettingWindow.h DifficultyWindow.h ColorWindow.h GameWindow.h LoadGameWindow.h WindowsStack.h
+GuiManager.o: GuiManager.h WelcomeWindow.h SettingsWindow.h DifficultyWindow.h ColorWindow.h GameWindow.h LoadGameWindow.h WindowsStack.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/$*.c
 
 GameWindow.o: GameWindow.h GameAuxGUI.h
@@ -54,12 +54,13 @@ ColorWindow.o: ColorWindow.h GenericWindow.h MatchManagement.h
 DifficultyWindow.o: DifficultyWindow.h GenericWindow.h MatchManagement.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/DifficultyWindow.c $(GUI_DIR)/GenericWindow.c 
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
-LoadGameWindow.o: LoadGameWindow.h GenericWindow.h MatchManagement.h
-	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/LoadGameWindow.c $(GUI_DIR)/GenericWindow.c 
+
+LoadGamesWindow.o: LoadGamesWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/LoadGamesWindow.c $(GUI_DIR)/GenericWindow.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 
-SettingWindow.o: SettingWindow.h GenericWindow.h MatchManagement.h
-	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $(GUI_DIR)/SettingWindow.c $(GUI_DIR)/GenericWindow.c 
+SettingsWindow.o: SettingsWindow.h GenericWindow.h MatchManagement.h
+	$(CC) $(COMP_FLAG) -c $(GUI_DIR)/SettingsWindow.c $(GUI_DIR)/GenericWindow.c $(shell pkg-config --cflags --libs sdl2)
 	$(CC) $(COMP_FLAG) -c MatchManagement.c
 
 WelcomeWindow.o: WelcomeWindow.h GenericWindow.h

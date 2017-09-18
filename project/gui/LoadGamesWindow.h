@@ -8,7 +8,6 @@
 #include "GenericWindow.h"
 #include "../MatchManagement.h"
 
-
 #define WINDOW_MIDDLE_X_POS (WINDOW_WIDTH - BUTTON_WIDTH) / 2
 
 /**
