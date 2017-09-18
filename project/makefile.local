@@ -15,18 +15,16 @@ GUI_OBJS = Widget.o GenericWindow.o WindowNode.o WindowsStack.o WelcomeWindow.o 
 SettingsWindow.o LoadGamesWindow.o DifficultyWindow.o ColorWindow.o PiecesWidget.o \
 GameAuxGUI.o GameWindow.o GuiManager.o mainGUI.o
 
-SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
-
 
 all: $(EXEC)
 	mv *.o $(OUT_DIR)
 $(EXEC): $(CONSOLE_OBJS) $(GUI_OBJS)
-	$(CC) $(COMP_FLAG) $(SDL_LIB) -o $@ $(CONSOLE_OBJS) $(GUI_OBJS)
+	$(CC) $(COMP_FLAG) -o $@ $(CONSOLE_OBJS) $(GUI_OBJS) $(shell pkg-config --cflags --libs sdl2)
 
 
 main.o: mainConsole.h mainGUI.h
 	$(CC) $(COMP_FLAG) -c mainConsole.c
-	$(CC) $(COMP_FLAG) -c mainGUI.c $(shell pkg-config --cflags --libs sdl2)
+	$(CC) $(COMP_FLAG) -c main.c mainGUI.c $(shell pkg-config --cflags --libs sdl2)
 
 mainConsole.o: mainConsole.h MatchManagement.h GameAux.h
 	$(CC) $(COMP_FLAG) -c $*.c

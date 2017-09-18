@@ -2,10 +2,10 @@
 // Created by okleinfeld on 9/17/17.
 //
 
-#define TOO_MANY_ARGS_ERROR "Only one command line argument is allowed\n"
-#define WRONG_ARG_ERROR "The only allowesd command line arguments are -c or -g\n"
-#define GUIDING_MESSAGE_PART_1 "Calling the program with '-c' flag will execute the console mode\n"
-#define GUIDING_MESSAGE_PART_2 "Calling the program with '-g' flag will execute the GUI mode\n"
+#define TOO_MANY_ARGS_ERROR "Error: Only one command line argument is allowed\n"
+#define WRONG_ARG_ERROR "Error: The only allowed command line arguments are -c or -g\n"
+#define GUIDING_MESSAGE_PART_1 "Calling the program with \"-c\" flag will execute the console mode\n"
+#define GUIDING_MESSAGE_PART_2 "Calling the program with \"-g\" flag will execute the GUI mode\n"
 #define GUIDING_MESSAGE_PART_3 "Calling the program without a flag will execute the console mode by default\n"
 
 #include <stdio.h>
