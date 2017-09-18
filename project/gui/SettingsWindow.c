@@ -10,7 +10,7 @@ int drawSettingsWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;
     genericWindow->type = SETTINGS_MODE_WINDOW;
-    genericWindow->handleWindowEvent = (void *) settingsWindowEventHandler;
+    genericWindow->handleWindowEvent = settingsWindowEventHandler;
 
     // Assign application's window and renderer
     genericWindow->window = sdlWindow;

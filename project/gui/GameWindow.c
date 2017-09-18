@@ -8,7 +8,7 @@
 int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Renderer *renderer, CHESS_MATCH *match) {
     genericWindow->numWidgets = 0;
     genericWindow->type = GAME_WINDOW;
-    genericWindow->handleWindowEvent = (void *) gameWindowEventHandler;
+    genericWindow->handleWindowEvent = gameWindowEventHandler;
 
     // Assign the application window and renderer
     genericWindow->window = sdlWindow;

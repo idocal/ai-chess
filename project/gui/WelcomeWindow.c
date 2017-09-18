@@ -9,7 +9,7 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;
     genericWindow->type = WELCOME_WINDOW;
-    genericWindow->handleWindowEvent = (void *) welcomeWindowEventHandler;
+    genericWindow->handleWindowEvent = welcomeWindowEventHandler;
 
     // Assign the application window and renderer
     genericWindow->window = sdlWindow;
@@ -33,6 +33,11 @@ int drawWelcomeWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_
     numWidgetsCreated++;
 
     reRenderWindow(genericWindow);
+
+    useMatchAndStack(match, NULL);
+    // because of the generic infrastructure of the code a match pointer has to be passed to a draw window function
+    // the match object is changed by few windows like the load game and setting
+    // therefore in order to avoid "unused argument error" we must use the argument inside the function
 
     return 1;
 }
@@ -69,6 +74,13 @@ EVENT_RESPONSE *welcomeWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *eve
     if (widgetIndex == 2) { // The button clicked is Exit
         response->status = EXIT_WINDOW; // NULL window determines exiting
     }
+
+    useMatchAndStack(match, stack);
+    // because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+    // the match/stack object is changed by few windows like the load game and setting and game window
+    // therefore in order to avoid "unused argument error" we must use the arguments inside the function
+
+
 
     return response;
 }

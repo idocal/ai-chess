@@ -10,7 +10,7 @@ int drawDifficultyWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, S
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;
     genericWindow->type = SETTINGS_DIFFICULTY_WINDOW;
-    genericWindow->handleWindowEvent = (void *) difficultyWindowEventHandler;
+    genericWindow->handleWindowEvent = difficultyWindowEventHandler;
 
     // Assign the application window and renderer
     genericWindow->window = sdlWindow;

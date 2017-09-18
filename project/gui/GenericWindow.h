@@ -22,16 +22,6 @@ typedef enum {
     SETTINGS_COLOR_WINDOW
 } WINDOW_TYPE;
 
-typedef struct generic_window {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    WIDGET **widgets;
-    int numWidgets;
-    int overlays;
-    WINDOW_TYPE type;
-    void *(*handleWindowEvent)(struct generic_window *, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
-} GENERIC_WINDOW;
-
 typedef enum {
     NEW_WINDOW,
     SAME_WINDOW,
@@ -44,6 +34,16 @@ typedef struct eventResponse {
     WINDOW_TYPE windowType;
     RESPONSE_STATUS status;
 } EVENT_RESPONSE;
+
+typedef struct generic_window {
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    WIDGET **widgets;
+    int numWidgets;
+    int overlays;
+    WINDOW_TYPE type;
+    EVENT_RESPONSE *(*handleWindowEvent)(struct generic_window *, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
+} GENERIC_WINDOW;
 
 /**
  * Creates a generic window.
@@ -138,4 +138,16 @@ int getNumSavedFilesInGameDir();
  */
 void generateAddressToChosenGame(char *allocStr, int activeButtonIndex);
 
+/**
+ * because of the generic infrastructure of the code a match/stack pointers have to be passed to an event handle function
+ * the match/stack object is changed by few windows like the load game and setting and game window
+ * therefore in order to avoid "unused argument error" we must use the arguments inside the function
+ * @param match
+ * @param stack
+ * @return unused int
+ */
+int useMatchAndStack(CHESS_MATCH *match, MOVES_STACK *stack);
+
 #endif //PROJECT_GENERICWINDOW_H
+
+

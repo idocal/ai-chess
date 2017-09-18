@@ -132,3 +132,11 @@ void generateAddressToChosenGame(char *allocStr, int activeButtonIndex){
     *allocStr = '\0';
     strcat(allocStr, ".xml");
 }
+
+int useMatchAndStack(CHESS_MATCH *match, MOVES_STACK *stack){
+    if (match != NULL && stack != NULL){
+        return 1;
+    } else{
+        return 0;
+    }
+}

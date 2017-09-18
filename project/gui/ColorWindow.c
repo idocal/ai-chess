@@ -9,7 +9,7 @@ int drawColorWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Re
     genericWindow->numWidgets = numWidgets;
     int numWidgetsCreated = 0;
     genericWindow->type = SETTINGS_COLOR_WINDOW;
-    genericWindow->handleWindowEvent = (void *) colorWindowEventHandler;
+    genericWindow->handleWindowEvent = colorWindowEventHandler;
 
     // Assign the application window and renderer
     genericWindow->window = sdlWindow;
