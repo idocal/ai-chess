@@ -109,7 +109,6 @@ int handleAIMove(CHESS_MATCH *match, MOVES_STACK *stack, GENERIC_WINDOW *window)
 
 int handleAIFirstMove(CHESS_MATCH *match, GENERIC_WINDOW *window) {
     CHESS_GAME *game = match->game;
-    switchPlayers(game); // switch to opponent for computer move
     int maxDepth;
     GAME_MOVE *AIMove = NULL;
 
@@ -138,6 +137,7 @@ int handleAIFirstMove(CHESS_MATCH *match, GENERIC_WINDOW *window) {
     widget->rect.y = y;
 
     switchPlayers(game); // switch back to player
+    destroyGameMove(AIMove); // this move is not going to be on the stack
 
     return 1;
 }

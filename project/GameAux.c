@@ -6,6 +6,7 @@
 
 int applyGameState(CHESS_GAME *);
 int AIMove(CHESS_MATCH *, MOVES_STACK *);
+int AIFirstMove(CHESS_MATCH *match);
 
 int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *cmd) {
     SETTING_STATE_COMMAND_NAME name = cmd->command_name;
@@ -246,6 +247,8 @@ bool initiateChessGame(CHESS_MATCH *match) {
 
     MOVES_STACK *stack = createEmptyStack(UNDO_CAPACITY);
 
+    if (match->userColor == 0) status = AIFirstMove(match);
+
     // Game state loop
     while (status == 0 || status == 3) {
         bool shouldPrintMessage = (status == 3) ? false : true;
@@ -353,4 +356,27 @@ int AIMove(CHESS_MATCH *match, MOVES_STACK *stack) {
     }
 
     return status;
+}
+
+int AIFirstMove(CHESS_MATCH *match) {
+    CHESS_GAME *game = match->game;
+    int maxDepth;
+    GAME_MOVE *AIMove = NULL;
+
+    if (match->level == 5) {
+        maxDepth = 4;
+        AIMove = AINextMove(game, &(maxDepth), true);
+    } else {
+        maxDepth = match->level;
+        AIMove = AINextMove(game, &(maxDepth), false);
+    }
+    if (AIMove == NULL) return -1;
+
+    performMove(game, AIMove);
+    handleAIMoveMessage(AIMove);
+    destroyGameMove(AIMove); // this move is not going to be on the stack
+
+    switchPlayers(game); // switch back to player
+
+    return 0;
 }
