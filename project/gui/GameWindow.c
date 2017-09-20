@@ -101,7 +101,6 @@ void removeOverlays(GENERIC_WINDOW *window) {
 }
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
-    printf("the status of the game changes is %d\n", window->savedLastChange);
     WINDOW_TYPE nextWindow = GAME_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
@@ -350,6 +349,7 @@ int displayQuitWithoutSaveMessageBox() {
             {0, 1, "no"},
             {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "cancel"},
     };
+    const SDL_MessageBoxColorScheme *colorScheme = NULL;
     const SDL_MessageBoxData messageBoxData = {
             SDL_MESSAGEBOX_INFORMATION, /* .flags */
             NULL, /* .window */
@@ -357,6 +357,7 @@ int displayQuitWithoutSaveMessageBox() {
             "Your current game will be lost. Would you like to proceed?", /* .message */
             SDL_arraysize(buttons), /* .numbuttons */
             buttons, /* .buttons */
+            colorScheme
     };
     int buttonId;
     if (SDL_ShowMessageBox(&messageBoxData, &buttonId) < 0) {
