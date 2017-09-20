@@ -42,6 +42,7 @@ typedef struct generic_window {
     int numWidgets;
     int overlays;
     WINDOW_TYPE type;
+    int savedLastChange;
     EVENT_RESPONSE *(*handleWindowEvent)(struct generic_window *, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack);
 } GENERIC_WINDOW;
 

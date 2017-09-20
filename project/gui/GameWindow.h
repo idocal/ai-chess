@@ -109,4 +109,15 @@ void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, 
  */
 int swapBetweenAdjacentSavedGames(int loadFromIndex, int loadTwoIndex);
 
+/**
+ * prompt a message box to for the user to choose whether to continue without saving or go
+ * back and save to game.
+ * @return
+ * 1 if the user wishes to continue without saving (clicked "yes")
+ * 0 if the user wishes to go back and save his game before proceeding ("no" or "cancel")
+ * -1 if an error occurred
+ */
+
+int displayQuitWithoutSaveMessageBox();
+
 #endif //PROJECT_GAMEWINDOW_H

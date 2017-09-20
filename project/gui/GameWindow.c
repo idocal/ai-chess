@@ -9,6 +9,7 @@ int drawGameWindow(GENERIC_WINDOW *genericWindow, SDL_Window *sdlWindow, SDL_Ren
     genericWindow->numWidgets = 0;
     genericWindow->type = GAME_WINDOW;
     genericWindow->handleWindowEvent = gameWindowEventHandler;
+    genericWindow->savedLastChange = 1;
 
     // Assign the application window and renderer
     genericWindow->window = sdlWindow;
@@ -100,6 +101,7 @@ void removeOverlays(GENERIC_WINDOW *window) {
 }
 
 EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event, CHESS_MATCH *match, MOVES_STACK *stack) {
+    printf("the status of the game changes is %d\n", window->savedLastChange);
     WINDOW_TYPE nextWindow = GAME_WINDOW;
     int widgetIndex = getClickedWidget(window, event);
     WIDGET *widget = window->widgets[widgetIndex];
@@ -113,16 +115,31 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
         removeOverlays(window); // on left click remove any overlays remaining
 
         if (widgetIndex >= 1 && widgetIndex <= numWidgets - 7) { // Piece handle
-            if (!handlePieceEvent(window, match, stack, widgetIndex)) response->status = EXIT_WINDOW;
+            if (!handlePieceEvent(window, match, stack, widgetIndex)) {
+                response->status = EXIT_WINDOW;
+            }
+            window->savedLastChange = 0;
         }
 
         if (widgetIndex == numWidgets - 6) { // The button clicked is Restart
-            CHESS_GAME *newGame = createEmptyGame();
-            initGameBoard(newGame);
-            destroyChessGame(match->game);
-            match->game = newGame;
-            response->windowType = GAME_WINDOW;
-            response->status = NEW_WINDOW;
+            if (window->savedLastChange == 0){
+                int userConfirmed = displayQuitWithoutSaveMessageBox();
+                if (userConfirmed == 1){
+                    CHESS_GAME *newGame = createEmptyGame();
+                    initGameBoard(newGame);
+                    destroyChessGame(match->game);
+                    match->game = newGame;
+                    response->windowType = GAME_WINDOW;
+                    response->status = NEW_WINDOW;
+                }
+            } else{ // last changes are saved
+                CHESS_GAME *newGame = createEmptyGame();
+                initGameBoard(newGame);
+                destroyChessGame(match->game);
+                match->game = newGame;
+                response->windowType = GAME_WINDOW;
+                response->status = NEW_WINDOW;
+            }
         }
 
         if (widgetIndex == numWidgets - 5) { // The button clicked is Save
@@ -141,12 +158,21 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
             }
             writeMatchObjectToXmlFile(match, SAVE_FILE_PATH);
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, SAVE_SUCCESSFUL_TITLE, SAVE_GAME_BODY_MESSAGE, NULL);
+            window->savedLastChange = 1;
         }
 
         if (widgetIndex == numWidgets - 4) { // The button clicked is Load
-            response->windowType = LOAD_WINDOW;
-            response->status = NEW_WINDOW;
-        }
+            if (window->savedLastChange == 0) {
+                int userConfirmed = displayQuitWithoutSaveMessageBox();
+                if (userConfirmed == 1) {
+                    response->windowType = LOAD_WINDOW;
+                    response->status = NEW_WINDOW;
+                }
+            } else { // last changes are saved no need to prompt message boxv
+                    response->windowType = LOAD_WINDOW;
+                    response->status = NEW_WINDOW;
+                }
+            }
 
         if (widgetIndex == numWidgets - 3) { // The button clicked is Undo
             if (mode == 2) return response;
@@ -159,23 +185,43 @@ EVENT_RESPONSE *gameWindowEventHandler(GENERIC_WINDOW *window, SDL_Event *event,
                 if (stack->currentSize == 0) { // Turn off undo button if reached empty stack
                     toggleButtonAbility(window->widgets[widgetIndex], renderer);
                     reRenderWindow(window);
+                    window->savedLastChange = 0;
                 }
-
             }
         }
 
         if (widgetIndex == numWidgets - 2) { // The button clicked is Main Menu
-            CHESS_GAME *newGame = createEmptyGame();
-            initGameBoard(newGame);
-            destroyChessGame(match->game);
-            match->game = newGame;
-            resetMatchSettings(match);
-            response->windowType = WELCOME_WINDOW;
-            response->status = NEW_WINDOW;
+            if (window->savedLastChange == 0){
+                int userConfirmed = displayQuitWithoutSaveMessageBox();
+                if (userConfirmed == 1) {
+                    CHESS_GAME *newGame = createEmptyGame();
+                    initGameBoard(newGame);
+                    destroyChessGame(match->game);
+                    match->game = newGame;
+                    resetMatchSettings(match);
+                    response->windowType = WELCOME_WINDOW;
+                    response->status = NEW_WINDOW;
+                }
+            } else{ // last changes are saved no need to prompt message box
+                CHESS_GAME *newGame = createEmptyGame();
+                initGameBoard(newGame);
+                destroyChessGame(match->game);
+                match->game = newGame;
+                resetMatchSettings(match);
+                response->windowType = WELCOME_WINDOW;
+                response->status = NEW_WINDOW;
+            }
         }
 
         if (widgetIndex == numWidgets - 1) { // The button clicked is Exit
-            response->status = EXIT_WINDOW;
+            if (window->savedLastChange == 0) {
+                int userConfirmed = displayQuitWithoutSaveMessageBox();
+                if (userConfirmed == 1) {
+                    response->status = EXIT_WINDOW;
+                }
+            } else { // last changes are saved no need to prompt message box
+                response->status = EXIT_WINDOW;
+            }
         }
     }
 
@@ -296,4 +342,31 @@ void handleGetMoves(CHESS_GAME *game, int row, int col, GENERIC_WINDOW *window, 
 
     reRenderWindow(window);
     matDestroy(possibleMoves);
+}
+
+int displayQuitWithoutSaveMessageBox() {
+    const SDL_MessageBoxButtonData buttons[] = {
+            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "yes"},
+            {0, 1, "no"},
+            {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "cancel"},
+    };
+    const SDL_MessageBoxData messageBoxData = {
+            SDL_MESSAGEBOX_INFORMATION, /* .flags */
+            NULL, /* .window */
+            "You Didn't save your current game", /* .title */
+            "Your current game will be lost. Would you like to proceed?", /* .message */
+            SDL_arraysize(buttons), /* .numbuttons */
+            buttons, /* .buttons */
+    };
+    int buttonId;
+    if (SDL_ShowMessageBox(&messageBoxData, &buttonId) < 0) {
+        return -1; // SDL error. cannot display the message box
+    }
+    if (buttonId == -1){
+        return 0; //the user colsed the message box with x button - redirect the user to the same window
+    } else if(buttonId == 1 || buttonId == 2){
+        return 0; // redirect user to the same window
+    } else { // the user clicked on 'yes' continue to desired window
+        return 1;
+    }
 }
