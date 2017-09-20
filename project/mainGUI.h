@@ -13,6 +13,11 @@
 
 #define SDL_ERROR_PREFIX "ERROR: unable to init SDL: %s\n"
 
+/**
+ * main function to operate the game in GUI mode
+ * @return
+ */
+
 int mainGui();
 
 #endif //PROJECT_MAINGUI_H

@@ -11,6 +11,11 @@
 
 #define WELCOME_MESSAGE "Specify game setting or type 'start' to begin a game with the current setting:\n"
 
+/**
+ * main function to operate the game in Console mode
+ * @return
+ */
+
 int mainConsole();
 
 #endif //PROJECT_MAINCONSOLE_H_H

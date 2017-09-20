@@ -1,9 +1,10 @@
 CC = gcc
 COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
 
-OUT_DIR = $(PWD)/bin
+OUT_DIR = $(PWD)
 EXEC = $(OUT_DIR)/chessprog
 GUI_DIR = $(PWD)/gui
+BIN = $(OUT_DIR)/bin
 
 VPATH := $(GUI_DIR)
 
@@ -17,7 +18,8 @@ GameAuxGUI.o GameWindow.o GuiManager.o mainGUI.o
 
 
 all: $(EXEC)
-	mv *.o $(OUT_DIR)
+	mv *.o $(BIN)
+	mv $(EXEC) $(BIN)
 $(EXEC): $(CONSOLE_OBJS) $(GUI_OBJS)
 	$(CC) $(COMP_FLAG) -o $@ $(CONSOLE_OBJS) $(GUI_OBJS) $(shell pkg-config --cflags --libs sdl2)
 
@@ -121,5 +123,5 @@ Matrix.o: Matrix.h
 	$(CC) $(COMP_FLAG) -c $*.c
 
 clean:
-	rm -f $(OUT_DIR)/*.o $(EXEC)
+	rm -f $(BIN)/*.o $(BIN)/chessprog
 

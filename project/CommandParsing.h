@@ -88,7 +88,7 @@ typedef struct game_command {
  *
  * @return
  * NULL if  a memory allocation failure occurs.
- * Otherwise, a pointer to a new move stack instance is returned.
+ * Otherwise, a pointer to a new SETTING_STATE_COMMAND object.
  *
  * Initialization of the object's fields (default initialization values)
  * command_name -> INVALID_COMMAND
@@ -162,13 +162,61 @@ SETTING_STATE_COMMAND_NAME parseStringToSettingCommandEnum(char *string);
 */
 int transformCommandArgFromStrToInt(const char *commandArg);
 
+/**
+ * Creates a new empty/default GameCommand object and return a pointer to it.
+ * Preforms all the memory allocation commands needed.
+ *
+ *
+ * @return
+ * NULL if  a memory allocation failure occurs.
+ * Otherwise, a pointer to a new GAME_STATE_COMMAND object is returned
+ *
+ * Initialization of the object's fields (default initialization values)
+ * command_name -> INVALID_COMMAND_NAME
+ * command move -> NULL
+ * command file name -> NULL
+ * command x -> -1
+ * command y -> -1
+ */
+
 GAME_STATE_COMMAND *createDefaultGameCommand();
+
+/**
+ * a destructor for a game command.
+ * frees all the associated memory
+ * @param command
+ */
 
 void destroyGameCommand(GAME_STATE_COMMAND *command);
 
+/**
+ * parse the first token of the user's input string
+ * @param commandString
+ * @return a matching command name enum or INVALID_GAME_COMMAND of no match was found
+ */
+
 GAME_STATE_COMMAND_NAME parseStringToGameCommandEnum(char *commandString);
 
+/**
+ * the function checks if a position string is in valid format and has valid value,
+ * i.e movePosSting == "<[1-8],[A-H]>"
+ * @param movePosSting
+ * @return
+ * 1 if the string is in the right format and has valid values
+ * 0 otherwise
+ */
+
 int checkValidityOfMovePositionString(char *movePosSting);
+
+/**
+ * the function checks if the position string is in the right format,
+ * without checking for validity of the values themselves.
+ * i.e movePosSting == "<.{1}, .{1}>"
+ * @param movePosSting
+ * @return
+ * 1 if the string is in the right format
+ * 0 otherwise
+ */
 
 int checkStructureOfMovePositionString(char *movePosSting);
 
