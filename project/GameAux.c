@@ -59,11 +59,12 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
             CHESS_MATCH *destroyMatch = match;
             *matchPtr = newMatch;
             destroyChessMatch(destroyMatch);
-            return 1;
+            return 0;
         }
 
         case DEFAULT : {
             resetMatchSettings(match);
+            initGameBoard(match->game);
             return 0;
         }
 
@@ -78,7 +79,6 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         }
 
         case START : {
-            initGameBoard(match->game);
             return 1;
         }
 
@@ -177,10 +177,12 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
             }
             else if (!isSlotOccupied(game, move->sourceRowIndex, move->sourceColIndex, player)) {
                 printf(NO_PLAYER_PIECE_LOCATION_MESSAGE);
+                destroyGameMove(move);
                 return 3; // should not print board
             }
             else if (!isMoveLegal(game, move)) {
                 printf(ILLEGAL_MOVE_MESSAGE);
+                destroyGameMove(move);
                 return 3; // should not print board
             }
             else {
@@ -261,6 +263,9 @@ bool initiateChessGame(CHESS_MATCH *match) {
         firstTurn = false;
 
         status = applyGameState(game);
+        if (status == 2){
+            break;
+        }
 
         if (shouldPrintMessage) {
             printChessGameBoard(game);
@@ -268,8 +273,8 @@ bool initiateChessGame(CHESS_MATCH *match) {
                 if (mode == 1) printf(CHECK_AI_MESSAGE);
                 if (mode == 2) printf(CHECK_MESSAGE, color(player));
             }
-            printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
         }
+        printf("%s %s", color(game->currentPlayer), NEXT_MOVE_MESSAGE);
 
         GAME_STATE_COMMAND *cmd = parseUserGameCommand();
         status = evaluateGameStateCommand(match, cmd, stack);

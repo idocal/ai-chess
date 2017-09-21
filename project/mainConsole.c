@@ -10,6 +10,7 @@ int mainConsole() {
         }
 
         // Match settings state loop
+        initGameBoard(match->game);
         bool initGame = initiateChessMatch(&match);
         if (initGame == false){
             destroyChessMatch(match);
