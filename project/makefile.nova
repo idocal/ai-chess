@@ -4,7 +4,6 @@ COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
 OUT_DIR = $(PWD)
 EXEC = $(OUT_DIR)/chessprog
 GUI_DIR = $(PWD)/gui
-BIN = $(OUT_DIR)/bin
 
 VPATH := $(GUI_DIR)
 
@@ -21,8 +20,6 @@ SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib
 
 
 all: $(EXEC)
-	mv *.o $(BIN)
-	mv $(EXEC) $(BIN)
 $(EXEC): $(CONSOLE_OBJS) $(GUI_OBJS)
 	$(CC) $(COMP_FLAG) $(CONSOLE_OBJS) $(GUI_OBJS) $(SDL_LIB) -o $@
 
@@ -126,5 +123,5 @@ Matrix.o: Matrix.h
 	$(CC) $(COMP_FLAG) -c $*.c
 
 clean:
-	rm -f $(BIN)/*.o $(BIN)/chessprog
+	rm -f $(OUT_DIR)/*.o $(OUT_DIR)/chessprog
 
