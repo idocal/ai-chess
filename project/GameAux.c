@@ -31,6 +31,9 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
         }
 
         case DIFFICULTY : {
+            if (match->gameMode == 2){
+                printf(INVALID_COMMAND_ERROR);
+            }
             if (match->gameMode == 1) {
                 if (arg >= 1 && arg <= 5) match->level = arg;
                 else printf(WRONG_DIFFICULTY_LEVEL_ERROR);
@@ -40,7 +43,7 @@ int evaluateSettingStateCommand(CHESS_MATCH **matchPtr, SETTING_STATE_COMMAND *c
 
         case USER_COLOR : {
             if (match->gameMode == 2) {
-                printf(USER_COLOR_NOT_AVAILABLE);
+                printf(INVALID_COMMAND_ERROR);
             } else{
                 if (arg == 0 || arg == 1)
                     match->userColor = arg;
@@ -138,7 +141,7 @@ void handleGetMovesCommand(int x, int y, CHESS_GAME *game){
                 } else if (capture){
                     printf("<%c,%c>^\n", iChar, jChar); // <x,y>^
                 } else if (threat){
-                    printf("<%c, %c>*\n", iChar, jChar); // <x,y>*
+                    printf("<%c,%c>*\n", iChar, jChar); // <x,y>*
                 } else{
                     printf("<%c,%c>\n", iChar, jChar); // <x,y>
                 }
@@ -193,7 +196,12 @@ int evaluateGameStateCommand(CHESS_MATCH *match, GAME_STATE_COMMAND *cmd, MOVES_
         }
 
         case GET_MOVES : {
+            if (match->gameMode == 2){
+                printf(GET_MOVES_NOT_SUPPORT_TWO_PLAYER);
+                return 3; // feature is not supported for two players mode
+            }
             if (match->level > 2) { // feature is not supported for level > 2
+                printf(GET_MOVES_NOT_SUPPORT_LEVEL);
                 return 3; // should not print board
             }
             if (x == -1 || y == -1){

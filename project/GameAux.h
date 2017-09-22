@@ -32,8 +32,9 @@
 #define WRONG_GAME_MODE_COMMAND "Wrong game mode\n"
 #define WRONG_DIFFICULTY_LEVEL_ERROR "Wrong difficulty level. the value should be between 1 to 5\n"
 #define LOAD_FILE_ERROR "Error: File doesn't exist or cannot be opened\n"
-#define USER_COLOR_NOT_AVAILABLE "Error: Choosing user color is only available in 1 player mode\n"
 #define WRONG_USER_COLOR "Wrong color choice: You can only choose user color 0 (Black) or user color 1 (White)\n"
+#define GET_MOVES_NOT_SUPPORT_TWO_PLAYER "Invalid command. Get moves functionality is only supported on 1 player mode\n"
+#define GET_MOVES_NOT_SUPPORT_LEVEL "Invalid command. Get moves functionality is only supported on levels 1 (Noob) or 2 (Easy)\n"
 #define EXIT_MESSAGE "Exiting...\n"
 
 // Game state messages

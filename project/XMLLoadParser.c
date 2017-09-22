@@ -4,6 +4,45 @@
 
 #include "XMLLoadParser.h"
 
+CHESS_MATCH* parseXMLGameFile(char *fileAddress){
+    FILE *fp = fopen(fileAddress, "r");
+    if (fp == NULL){
+        return NULL;
+    }
+    char * buffer = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    if (buffer == NULL){
+        fclose(fp);
+        return NULL;
+    }
+    CHESS_MATCH * match = createNewChessMatch();
+    if (match == NULL){
+        fclose(fp);
+        free(buffer);
+        return NULL;
+    }
+    readLineFromFileIntoBuffer(fp, buffer); // read header xml line
+    readLineFromFileIntoBuffer(fp, buffer); // read "<game>" tag line
+    for (int i = 0; i < 2; ++i){ // parse 2 lines of game setting tags (current turn and game mode will always appear)
+        readLineFromFileIntoBuffer(fp, buffer);
+        XMLTagObject *tag = parseXmlLineToTagObject(buffer);
+        parseTagObjectToMatchAttribute(match, tag); //
+        destroyXMLTagObject(tag); // free the Tag object memory!
+    }
+    if (match->gameMode == 1){ // if the mode is 1 player need to parse also difficulty and user color
+        for (int i = 0; i < 2; ++i){
+            readLineFromFileIntoBuffer(fp, buffer);
+            XMLTagObject *tag = parseXmlLineToTagObject(buffer);
+            parseTagObjectToMatchAttribute(match, tag); //
+            destroyXMLTagObject(tag); // free the Tag object memory!
+        }
+    }
+    parseBoardTagFromFileToMatchAttribute(fp, buffer, match); // parse the board content part
+    readLineFromFileIntoBuffer(fp, buffer); // read the "</game>" tag line
+    fclose(fp); // close file
+    free(buffer); // free read line buffer
+    return match;
+}
+
 void readLineFromFileIntoBuffer(FILE* fp, char* buffer){
     if (fp == NULL){
         return;
@@ -92,28 +131,6 @@ void parseRowTagLineToMatchAttribute(char *line, CHESS_MATCH *match, int rowInde
         matSet(match->game->gameBoard, rowIndex, j, *line);
         line++;
     }
-}
-
-CHESS_MATCH* parseXMLGameFile(char *fileAddress){
-    FILE *fp = fopen(fileAddress, "r");
-    if (fp == NULL){
-        return NULL;
-    }
-    char * buffer = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    CHESS_MATCH * match = createNewChessMatch();
-    readLineFromFileIntoBuffer(fp, buffer); // read header xml line
-    readLineFromFileIntoBuffer(fp, buffer); // read "<game>" tag line
-    for (int i = 0; i < 4; ++i){ // parse 4 lines of game setting tags (current turn, game mode, etc)
-        readLineFromFileIntoBuffer(fp, buffer);
-        XMLTagObject *tag = parseXmlLineToTagObject(buffer);
-        parseTagObjectToMatchAttribute(match, tag); //
-        destroyXMLTagObject(tag); // free the Tag object memory!
-    }
-    parseBoardTagFromFileToMatchAttribute(fp, buffer, match); // parse the board content part
-    readLineFromFileIntoBuffer(fp, buffer); // read the "</game>" tag line
-    fclose(fp); // close file
-    free(buffer); // free read line buffer
-    return match;
 }
 
 void destroyXMLTagObject(XMLTagObject *tagObject){
