@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <game>
-	<current_turn>1</current_turn>
-	<game_mode>1</game_mode>
-	<difficulty>3</difficulty>
-	<user_color>1</user_color>
+	<current_turn>0</current_turn>
+	<game_mode>2</game_mode>
 	<board>
-		<row_8>RNBQKBNR</row_8>
-		<row_7>__MM_MMM</row_7>
-		<row_6>_M__M___</row_6>
-		<row_5>______n_</row_5>
-		<row_4>__b_m___</row_4>
-		<row_3>m_______</row_3>
-		<row_2>m_mm_mmm</row_2>
-		<row_1>rnbqk__r</row_1>
+		<row_8>RNBQKB_R</row_8>
+		<row_7>_MMMMMMM</row_7>
+		<row_6>M____N__</row_6>
+		<row_5>________</row_5>
+		<row_4>__m____m</row_4>
+		<row_3>_______r</row_3>
+		<row_2>mm_mmmm_</row_2>
+		<row_1>rnbqkbn_</row_1>
 	</board>
 </game>
