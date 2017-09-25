@@ -3,15 +3,15 @@ Short Remarks on the Expert Level:
 The expert level combines an improved heuristic for the scoring function together with a method for avoiding convergence to a local optimum:
 
 1. Scoring function heuristic:
-We would like to balance 3 things:
+We would like to balance 4 things:
 
-Material score - Normal scoring based on piece ranking.
+a.	Material score - Normal scoring based on piece ranking.
 
-Pawns Structure - The amount of defended pawns by other pawns is great for early game, we check for each pawn how many pawns are located in a position where they can re-conquer once it is conquered.
+b.	Pawns Structure - The amount of defended pawns by other pawns is great for early game, we check for each pawn how many pawns are located in a position where they can re-conquer once it is conquered.
 
-Check Aiming - We added slight weight for a move that leads to a check, since normally performing a check is a good way to either dodge dangerous situation and moving towards checkmate.
+c.	Check Aiming - We added slight weight for a move that leads to a check, since normally performing a check is a good way to either dodge dangerous situation and moving towards checkmate.
 
-Possible Positions - We check for each piece how many possible moves there are and try to maximize, a rule of thumb in chess is that you want as many possible options as possible, especially during mid-game.
+d.	Possible Positions - We check for each piece how many possible moves there are and try to maximize, a rule of thumb in chess is that you want as many possible options as possible, especially during mid-game.
 
 2. Avoiding convergence to a local optimum:
 a. 	The Minimax algorithm is a greedy algorithm, thus may converge to a local optimum in case of a non convex scoring function.
