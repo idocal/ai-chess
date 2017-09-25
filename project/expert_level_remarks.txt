@@ -1,0 +1,14 @@
+Short Remarks on the Expert Level:
+
+The expert level combines an improved heuristic for the scoring function together with a method for avoiding convergence to a local optimum:
+
+1. Scoring function heuristic:
+//TODO: calman add 2-3 sentences here
+
+2. Avoiding convergence to a local optimum:
+a. 	The minmax algorithm is a greedy algorithm, thus may converge to a local optimum in case of a non convex scoring function.
+	Trying to avoid that, we wanted to give the algorithm the option to choose non optimal moves at early stages of the game,
+	hoping that exploring these moves will expose us to better moves at later stages of the game (reaching global optimum).
+
+b.	In order to implement this idea, we used a prunning threshold which decreases as the game evolves (staring at 0.01,decreaing by 0.001 after every move).
+	At each stage during the minmax algorithm a random probability is generated and the specific branch is pruned if the probability is lower then the current threshold.
