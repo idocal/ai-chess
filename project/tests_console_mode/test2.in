@@ -1,0 +1,5 @@
+load test2.xml
+start
+move <5,H> to <6,H>
+undo
+quit

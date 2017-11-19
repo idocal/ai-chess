@@ -1,0 +1,4 @@
+load test13.xml
+start
+move <5,D> to <6,F>
+quit

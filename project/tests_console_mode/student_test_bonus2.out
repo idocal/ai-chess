@@ -1,0 +1,87 @@
+Specify game setting or type 'start' to begin a game with the current setting:
+Game mode is set to 1 player
+8| R N B Q K B N R |
+7| M M M M M M M M |
+6| _ _ _ _ _ _ _ _ |
+5| _ _ _ _ _ _ _ _ |
+4| _ _ _ _ _ _ _ _ |
+3| _ _ _ _ _ _ _ _ |
+2| m m m m m m m m |
+1| r n b q k b n r |
+  -----------------
+   A B C D E F G H
+white player - enter your move:
+The specified position does not contain your piece
+white player - enter your move:
+Invalid position on the board
+white player - enter your move:
+<3,A>
+<4,A>
+white player - enter your move:
+white player - enter your move:
+<3,A>
+<3,C>
+white player - enter your move:
+Computer: move pawn at <7,A> to <5,A>
+8| R N B Q K B N R |
+7| _ M M M M M M M |
+6| _ _ _ _ _ _ _ _ |
+5| M _ _ _ _ _ _ _ |
+4| m _ _ _ _ _ _ _ |
+3| _ _ _ _ _ _ _ _ |
+2| _ m m m m m m m |
+1| r n b q k b n r |
+  -----------------
+   A B C D E F G H
+white player - enter your move:
+<2,A>
+<3,A>
+white player - enter your move:
+Computer: move pawn at <7,B> to <6,B>
+8| R N B Q K B N R |
+7| _ _ M M M M M M |
+6| _ M _ _ _ _ _ _ |
+5| M _ _ _ _ _ _ _ |
+4| m _ _ _ _ m _ _ |
+3| _ _ _ _ _ _ _ _ |
+2| _ m m m m _ m m |
+1| r n b q k b n r |
+  -----------------
+   A B C D E F G H
+white player - enter your move:
+white player - enter your move:
+Computer: move pawn at <7,C> to <6,C>
+8| R N B Q K B N R |
+7| _ _ _ M M M M M |
+6| _ M M _ _ _ _ _ |
+5| M _ _ _ _ _ _ _ |
+4| m _ _ m _ m _ _ |
+3| _ _ _ _ _ _ _ _ |
+2| _ m m _ m _ m m |
+1| r n b q k b n r |
+  -----------------
+   A B C D E F G H
+white player - enter your move:
+<2,D>
+<3,D>
+white player - enter your move:
+<2,D>
+<3,E>
+white player - enter your move:
+Computer: move pawn at <7,D> to <5,D>
+8| R N B Q K B N R |
+7| _ _ _ _ M M M M |
+6| _ M M _ _ _ _ _ |
+5| M _ _ M _ _ _ _ |
+4| m _ _ m _ m _ _ |
+3| _ _ _ _ b _ _ _ |
+2| _ m m _ m _ m m |
+1| r n _ q k b n r |
+  -----------------
+   A B C D E F G H
+white player - enter your move:
+<1,C>
+<2,D>
+<2,F>
+white player - enter your move:
+Exiting...

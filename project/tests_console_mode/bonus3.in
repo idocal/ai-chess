@@ -1,0 +1,18 @@
+game_mode 2
+start
+move <2,A> to <4,A>
+move <7,A> to <5,A>
+move <2,B> to <4,B>
+move <7,B> to <5,B>
+move <4,A> to <5,B>
+move <7,H> to <5,H>
+move <4,B> to <5,A>
+move <8,A> to <6,A>
+move <5,B> to <6,A>
+move <5,H> to <4,H>
+move <6,A> to <7,A>
+move <4,H> to <3,H>
+move <7,A> to <8,A>
+abc
+queen
+quit

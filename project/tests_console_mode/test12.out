@@ -1,0 +1,25 @@
+Specify game setting or type 'start' to begin a game with the current setting:
+8| _ _ _ _ _ _ _ _ |
+7| K R M B r _ _ _ |
+6| _ M b _ _ _ _ _ |
+5| _ _ _ _ M _ _ _ |
+4| M _ _ _ N _ _ _ |
+3| _ _ _ _ _ _ _ _ |
+2| _ _ _ _ _ _ _ _ |
+1| _ _ _ _ _ _ _ k |
+  -----------------
+   A B C D E F G H
+black player - enter your move:
+Computer: move bishop at <6,C> to <4,E>
+8| _ _ _ _ _ _ _ _ |
+7| K R M B r _ _ _ |
+6| _ M _ _ _ _ _ _ |
+5| _ _ _ _ M _ _ _ |
+4| _ _ _ _ b _ _ _ |
+3| M _ _ _ _ _ _ _ |
+2| _ _ _ _ _ _ _ _ |
+1| _ _ _ _ _ _ _ k |
+  -----------------
+   A B C D E F G H
+black player - enter your move:
+Exiting...

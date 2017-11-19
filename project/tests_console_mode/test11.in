@@ -1,0 +1,13 @@
+game_mode 2
+start
+move <2,A> to <4,A>
+move <7,H> to <5,H>
+save test11.xml
+move <4,A> to <5,A>
+move <5,H> to <4,H>
+reset
+load test11.xml
+start
+move <2,B> to <4,B>
+move <7,G> to <5,G>
+quit

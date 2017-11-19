@@ -1,0 +1,4 @@
+load test12.xml
+start
+move <4,A> to <3,A>
+quit

@@ -1,0 +1,18 @@
+game_mode 1
+start
+get_moves <7,A>
+get_moves <10,A>
+get_moves <2,A>
+get_moves <1,A>
+get_moves <1,B>
+move <2,A> to <4,A>
+get_moves <1,A>
+move <2,F> to <4,F>
+get_moves <1,F>
+move <2,D> to <4,D>
+get_moves <1,D>
+get_moves <1,C>
+move <1,C> to <3,E>
+get_moves <3,E>
+quit
+
